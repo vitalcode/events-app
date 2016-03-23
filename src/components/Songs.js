@@ -55,10 +55,10 @@ class Songs extends Component {
     }
   }
 
-  playSong(i) {
-    const {playlist, dispatch, navigator} = this.props
+  playSong(id) {
+    const {dispatch, navigator} = this.props
     InteractionManager.runAfterInteractions(() => {
-      dispatch(playSong(playlist, i))
+      dispatch(playSong(id))
       navigator.push({
         component: SongContainer,
         name: 'Song'
@@ -81,7 +81,9 @@ class Songs extends Component {
     const isFetching = playlist in playlists ? playlists[playlist].isFetching : false
 
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    let dataSource = playlist in playlists ? ds.cloneWithRows(playlists[playlist].items) : ds.cloneWithRows([])
+    // let dataSource = playlist in playlists ? ds.cloneWithRows(playlists[playlist].items) : ds.cloneWithRows([])
+
+    let dataSource = songs && songs.length > 0 ? ds.cloneWithRows(songs) : ds.cloneWithRows([])
 
     return (
       <View style={[styles.container, {
@@ -102,24 +104,24 @@ class Songs extends Component {
           onEndReached={this.onEndReached}
           renderRow={(song, sectionId, rowId) => {
             return (
-              <TouchableOpacity onPress={this.playSong.bind(this, parseInt(rowId))}>
+              <TouchableOpacity onPress={this.playSong.bind(this, song.id)}>
                 <View style={styles.card}>
                   <View>
                     <Image
-                      key={songs[song]['artwork_url']}
+                      key={song.image}
                       style={styles.avatar}
-                      source={{uri: songs[song]['artwork_url'] || users[songs[song].user_id].avatar_url }}
+                      source={{uri: song.image }}
                     />
                   </View>
                   <View style={styles.description}>
                     <View style={styles.firstRow}>
-                      <Text style={styles.username}>{users[songs[song].user_id].username}</Text>
-                      <Text style={styles.username}>{this.millisToMinutesAndSeconds(songs[song].duration)}</Text>
+                      <Text style={styles.username}>username</Text>
+                      <Text style={styles.username}>duration</Text>
                     </View>
-                    <Text style={styles.title}>{songs[song].title}</Text>
+                    <Text style={styles.title}>{song.description}</Text>
                     <View style={styles.countContainer}>
                       <Icon name='play-arrow' size={14} />
-                      <Text style={styles.count}>{songs[song].playback_count}</Text>
+                      <Text style={styles.count}>Count</Text>
                     </View>
                   </View>
                 </View>

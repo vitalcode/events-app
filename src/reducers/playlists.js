@@ -10,8 +10,9 @@ function playlist(state = {
   case types.RECEIVE_SONGS:
     return Object.assign({}, state, {
       isFetching: false,
-      items: [...state.items, ...action.songs],
-      nextUrl: action.nextUrl
+      items: [...state.items, ...action.events],
+      // items: [...state.items, ...action.songs],
+      // nextUrl: action.nextUrl
     })
 
   case types.REQUEST_SONGS:
@@ -28,9 +29,11 @@ function playlist(state = {
 export default function playlists(state = {}, action) {
   switch(action.type) {
   case types.RECEIVE_SONGS:
-    return Object.assign({}, state, {
-      [action.playlist]: playlist(state[action.playlist], action)
-    })
+    const newState = Object.assign({}, state, {entities: action.events})
+    return newState
+    // return Object.assign({}, state, {
+    //   [action.playlist]: playlist(state[action.playlist], action)
+    // })
 
   case types.REQUEST_SONGS:
     return Object.assign({}, state, {

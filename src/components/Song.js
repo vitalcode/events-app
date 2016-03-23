@@ -47,13 +47,13 @@ class Song extends React.Component {
 
   render () {
     const {player, playingSongId, songs, users} = this.props
-    const song = songs[playingSongId]
-    const user = users[song.user_id]
+    const song = playingSongId || {}
+    //const user = users[song.user_id]
 
     return (
       <View style={styles.container}>
         <Image
-          source={{uri: song['artwork_url'] ? getLargeImage(song['artwork_url']) : getLargeImage(user['avatar_url'])}}
+          source={{uri: song.image}}
           style={styles.backgroundImage}
         >
           <TouchableOpacity onPress={() => this.props.navigator.pop()}>
@@ -61,10 +61,10 @@ class Song extends React.Component {
           </TouchableOpacity>
           <View style={styles.description}>
             <View style={styles.background}>
-              <Text style={styles.username}>{user.username}</Text>
+              <Text style={styles.username}>username</Text>
             </View>
             <View style={styles.background}>
-              <Text style={styles.title}>{song.title}</Text>
+              <Text style={styles.title}>{song.description}</Text>
             </View>
           </View>
           <View style={styles.player}>

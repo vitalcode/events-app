@@ -25,7 +25,7 @@ function mapStateToProps(state) {
     playingSongId,
     playlist,
     playlists,
-    songs: entities.songs,
+    songs: playlists.entities,
     users: entities.users
   }
 }

@@ -17,12 +17,12 @@ class SongContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { entities, player, playlists } = state
-  const playingSongId = player.currentSongIndex !== null ? playlists[player.selectedPlaylists[player.selectedPlaylists.length - 1]].items[player.currentSongIndex] : null
+  const { entities, player, playlists, playingSongId } = state
+  //const playingSongId = player.currentSongIndex !== null ? playlists[player.selectedPlaylists[player.selectedPlaylists.length - 1]].items[player.currentSongIndex] : null
 
   return {
     player,
-    playingSongId,
+    playingSongId: player.playingSongId,
     songs: entities.songs,
     users: entities.users
   }
