@@ -5,7 +5,19 @@ import rootReducer from '../reducers/index';
 const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 
 export default function configureStore(initialState) {
-    const store = createStoreWithMiddleware(rootReducer, initialState);
-
-    return store;
+  const store = createStoreWithMiddleware(rootReducer, initialState);
+  return store;
 }
+
+
+/*
+store
+{
+  page: {
+    isLoading: false,
+    events: [{}, {}],
+    nextPageUrl
+  }
+  selectedEvent: {}
+}
+ */

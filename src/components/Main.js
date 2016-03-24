@@ -1,55 +1,38 @@
-let React = require('react-native')
-let {
+import React, {
+  Component,
   StyleSheet,
   View,
   Dimensions,
   PropTypes,
   ToolbarAndroid
-} = React
+} from 'react-native'
 import {connect} from 'react-redux/native'
-
-let deviceWidth = Dimensions.get('window').width
-
 import InteractionManager from 'InteractionManager'
-import {fetchSongsIfNeeded} from '../actions/playlists'
-import {parseUrl} from '../utils/RouteUtils'
-
-import PlayerContainer from '../containers/PlayerContainer'
+import {fetchEventsIfNeeded} from '../actions/playlists'
 import SearchContainer from '../containers/SearchContainer'
 import Songs from './Songs'
 
-let toolbarActions = [
+const toolbarActions = [
   {title: 'Search', icon: require('../../assets/search100.png'), show: 'always'}
 ]
 
-class Main extends React.Component {
-  constructor (props) {
+class Main extends Component {
+  constructor(props) {
     super(props)
-
     this.onActionSelected = this.onActionSelected.bind(this)
   }
 
-  renderContent () {
-    const { playlist } = this.props
+  renderContent() {
+    const {playlist} = this.props
     return (
       <Songs
         {...this.props}
-        scrollFunc={fetchSongsIfNeeded.bind(null, playlist)} />
+        scrollFunc={fetchEventsIfNeeded.bind(null, playlist)}/>
     )
   }
 
-  renderPlayer () {
-    const {dispatch, navigator} = this.props
-
-    return (
-      <PlayerContainer
-        dispatch={dispatch}
-        navigator={navigator} />
-    )
-  }
-
-  onActionSelected (position) {
-    const { navigator } = this.props
+  onActionSelected(position) {
+    const {navigator} = this.props
     InteractionManager.runAfterInteractions(() => {
       if (position === 0) {
         navigator.push({
@@ -60,7 +43,7 @@ class Main extends React.Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <View style={styles.container}>
         <ToolbarAndroid
@@ -68,10 +51,9 @@ class Main extends React.Component {
           actions={toolbarActions}
           onActionSelected={this.onActionSelected}
           titleColor='#fff'
-          title={'Sound Redux Native'}
+          title={'Fill Your Day'}
         />
         {this.renderContent()}
-        {this.renderPlayer()}
       </View>
     )
   }
@@ -80,12 +62,12 @@ class Main extends React.Component {
 let styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   toolbar: {
     backgroundColor: '#3a3f41',
     height: 50,
-    color: '#fff'
+    color: '#fff',
   }
 })
 

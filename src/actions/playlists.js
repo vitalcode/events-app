@@ -32,7 +32,7 @@ function fetchSongs(url, playlist) {
   }
 }
 
-export function fetchSongsIfNeeded(playlist) {
+export function fetchEventsIfNeeded(playlist) {
   return (dispatch, getState) => {
     const {playlists, songs} = getState()
     if (shouldFetchSongs(playlists, playlist)) {

@@ -19,7 +19,7 @@ let deviceHeight = Dimensions.get('window').height
 
 import Toolbar from './Toolbar'
 import {playSong} from '../actions/player'
-import {fetchSongsIfNeeded} from '../actions/playlists'
+import {fetchEventsIfNeeded} from '../actions/playlists'
 import SongContainer from '../containers/SongContainer'
 
 class Songs extends Component {
@@ -43,14 +43,14 @@ class Songs extends Component {
 
   componentWillMount() {
     const {dispatch, playlist} = this.props
-    dispatch(fetchSongsIfNeeded(playlist))
+    dispatch(fetchEventsIfNeeded(playlist))
   }
 
   componentWillReceiveProps(nextProps) {
     const {dispatch, playlist, playlists} = this.props
     if (playlist !== nextProps.playlist) {
       if (!(nextProps.playlist in playlists) || playlists[nextProps.playlist].items.length === 0) {
-        dispatch(fetchSongsIfNeeded(nextProps.playlist))
+        dispatch(fetchEventsIfNeeded(nextProps.playlist))
       }
     }
   }
