@@ -18,7 +18,7 @@ let deviceWidth = Dimensions.get('window').width
 let deviceHeight = Dimensions.get('window').height
 
 import Toolbar from './Toolbar'
-import {playSong} from '../actions/player'
+import {showEventDescription} from '../actions/player'
 import {fetchEventsIfNeeded} from '../actions/playlists'
 import SongContainer from '../containers/SongContainer'
 
@@ -58,7 +58,7 @@ class Songs extends Component {
   playSong(id) {
     const {dispatch, navigator} = this.props
     InteractionManager.runAfterInteractions(() => {
-      dispatch(playSong(id))
+      dispatch(showEventDescription(id))
       navigator.push({
         component: SongContainer,
         name: 'Song'

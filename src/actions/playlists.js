@@ -1,9 +1,8 @@
 import {arrayOf, normalize} from 'normalizr'
 import * as types from '../constants/ActionTypes'
-import {songSchema} from '../constants/Schemas'
 import {constructUrl} from '../utils/SongUtils'
 
-function fetchSongs(url, playlist) {
+function fetchEvents(url, playlist) {
   return (dispatch, getState) => {
     dispatch(requestSongs(playlist))
     return fetch(url)
@@ -22,23 +21,8 @@ function fetchSongs(url, playlist) {
           })
 
         dispatch(receiveSongs(events))
-
-        // const songs = json.collection.filter(song => song.streamable && song.duration < 600000 )
-        // const nextUrl = json.next_href
-        // const normalized = normalize(songs, arrayOf(songSchema))
-        // dispatch(receiveSongs(normalized.entities, normalized.result, nextUrl, playlist))
       })
       .catch(error => console.log(error))
-  }
-}
-
-export function fetchEventsIfNeeded(playlist) {
-  return (dispatch, getState) => {
-    const {playlists, songs} = getState()
-    if (shouldFetchSongs(playlists, playlist)) {
-      const nextUrl = 'http://192.168.59.1:9200/lisenok/_search' //getNextUrl(playlists, playlist)
-      return dispatch(fetchSongs(nextUrl, playlist))
-    }
   }
 }
 
@@ -54,10 +38,6 @@ function receiveSongs(events) {
   return {
     type: types.RECEIVE_SONGS,
     events: events,
-    // entities,
-    // nextUrl,
-    // playlist,
-    // songs
   }
 }
 
@@ -68,7 +48,8 @@ function requestSongs(playlist) {
   }
 }
 
-function shouldFetchSongs(playlists, playlist) {
+
+function shouldFetchEvents(playlists, playlist) {
   const activePlaylist = playlists[playlist]
   if (!activePlaylist || !activePlaylist.isFetching && (activePlaylist.nextUrl !== null)) {
     return true
@@ -77,9 +58,12 @@ function shouldFetchSongs(playlists, playlist) {
   return false
 }
 
-export function changePlaylist(playlist) {
-  return {
-    type: types.CHANGE_PLAYLIST,
-    playlist: playlist
+export function fetchEventsIfNeeded(playlist) {
+  return (dispatch, getState) => {
+    const {playlists, songs} = getState()
+    if (shouldFetchEvents(playlists, playlist)) {
+      const nextUrl = 'http://192.168.59.1:9200/lisenok/_search' //getNextUrl(playlists, playlist)
+      return dispatch(fetchEvents(nextUrl, playlist))
+    }
   }
 }

@@ -5,7 +5,6 @@ let {
   Component
 } = React
 import {connect} from 'react-redux/native'
-
 import Main from '../components/Main'
 
 class MainContainer extends Component {

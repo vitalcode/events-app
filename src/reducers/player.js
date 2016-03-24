@@ -7,41 +7,10 @@ export default function player(state = {
   status: 'init'
 }, action) {
   switch (action.type) {
-    case types.CHANGE_CURRENT_TIME:
-      return Object.assign({}, state, {
-        currentTime: action.time
-      });
-
-    
-    
-    
-    
-    
-
     case types.CHANGE_PLAYING_SONG:
-      const newState = Object.assign({}, state, {
+      return Object.assign({}, state, {
         playingSongId: action.event
       });
-
-      console.log(newState);
-
-      return newState;
-
-    
-    
-    
-    
-
-    case types.CHANGE_SELECTED_PLAYLISTS:
-      return Object.assign({}, state, {
-        selectedPlaylists: action.playlists
-      });
-
-    case types.CHANGE_PLAYER_STATUS:
-      return Object.assign({}, state, {
-        status: action.status
-      })
-
     default:
       return state;
   }

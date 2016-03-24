@@ -3,28 +3,42 @@ let {
   StyleSheet,
   View,
   Text,
-  Dimensions,
   ScrollView,
   TouchableOpacity
 } = React
 
 import {changePlaylist} from '../actions/playlists'
-import {GENRES, GENRES_MAP} from '../constants/SongConstants'
-let deviceWidth = Dimensions.get('window').width
+import {GENRES} from '../constants/SongConstants'
+import moment from 'moment'
 
 class Toolbar extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  onPress (g) {
+  onPress(g) {
     const {dispatch} = this.props
     dispatch(changePlaylist(g))
   }
 
-  render () {
-    const { playlist } = this.props
+  createDates() {
+    const current = moment().startOf('day')
+    const end = current.clone().add(30, 'days')
+    const dates = []
 
+    while (end.isAfter(current)) {
+      dates.push({
+        dayOfMonth: current.date(),
+        month: current.format('MMM'),
+        dayOfWeek: current.format('ddd'),
+      })
+      current.add(1, 'day')
+    }
+    return dates;
+  }
+
+  render() {
+    const {playlist} = this.props
     return (
       <View>
         <ScrollView
@@ -32,16 +46,18 @@ class Toolbar extends React.Component {
           contentContainerStyle={styles.container}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          >
-          { GENRES.map((g, idx) => {
+        >
+          { this.createDates().map((g, idx) => {
             return (
               <TouchableOpacity key={idx} style={[styles.item, {
                 'borderLeftWidth': idx === 0 ? 0 : 1,
                 'borderBottomWidth': g === playlist ? 2 : 1,
                 'borderBottomColor': g === playlist ? '#a6d2a5' : '#e3e3e3'
               }]} onPress={this.onPress.bind(this, g)}>
-                <Text style={styles.genre}>{g.toUpperCase()}</Text>
+                <Text style={[styles.content, styles.dayOfMonth]}>{g.dayOfMonth}</Text>
+                <Text style={[styles.content, styles.dayOfWeek]}>{g.dayOfWeek}</Text>
               </TouchableOpacity>
+
             )
           })}
         </ScrollView>
@@ -53,7 +69,6 @@ class Toolbar extends React.Component {
 let styles = StyleSheet.create({
   container: {
     height: 40,
-    width: deviceWidth,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#e3e3e3'
@@ -61,14 +76,22 @@ let styles = StyleSheet.create({
   item: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
+    justifyContent: 'space-between',
+    width: 40,
     borderLeftColor: '#e3e3e3'
   },
-  genre: {
-    fontWeight: '300',
-    fontSize: 11,
+  content: {
+    fontWeight: '400',
     color: '#adadad',
+  },
+  dayOfMonth: {
+    height: 20,
+    fontSize: 18,
+  },
+  dayOfWeek: {
+    height: 14,
+    marginBottom: 5,
+    fontSize: 12,
   }
 })
 

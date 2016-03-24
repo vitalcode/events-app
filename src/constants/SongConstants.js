@@ -16,13 +16,13 @@ export const GENRES = [
   'deep',
   'dubstep',
   'house',
-  'tropical'
+  'tropical',
+
+  'chill',
+  'deep',
+  'dubstep',
+  'house',
+  'tropical',
 ]
 
-export const GENRES_MAP = (() => {
-    let result = {}
-    GENRES.forEach((genre) => {
-        result[genre] = 1
-    })
-    return result
-})()
+
