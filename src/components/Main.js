@@ -6,7 +6,7 @@ import React, {
   PropTypes,
   ToolbarAndroid
 } from 'react-native'
-import {connect} from 'react-redux/native'
+import {Provider} from 'react-redux'
 import InteractionManager from 'InteractionManager'
 import {fetchEventsIfNeeded} from '../actions/playlists'
 import SearchContainer from '../containers/SearchContainer'
@@ -67,7 +67,6 @@ let styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#3a3f41',
     height: 50,
-    color: '#fff',
   }
 })
 

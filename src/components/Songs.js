@@ -10,7 +10,7 @@ let {
   Component
 } = React
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import shallowEqual from 'react-pure-render/shallowEqual'
+//import shallowEqual from 'react-pure-render/shallowEqual'
 
 import InteractionManager from 'InteractionManager'
 import ProgressBar from 'ProgressBarAndroid'
@@ -34,12 +34,12 @@ class Songs extends Component {
     this.playSong = this.playSong.bind(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const shouldUpdate =
-      !shallowEqual(this.props, nextProps) ||
-      !shallowEqual(this.state, nextState)
-    return shouldUpdate
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const shouldUpdate =
+  //     !shallowEqual(this.props, nextProps) ||
+  //     !shallowEqual(this.state, nextState)
+  //   return shouldUpdate
+  // }
 
   componentWillMount() {
     const {dispatch, playlist} = this.props

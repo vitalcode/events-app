@@ -1,4 +1,3 @@
-import {arrayOf, normalize} from 'normalizr'
 import * as types from '../constants/ActionTypes'
 import {constructUrl} from '../utils/SongUtils'
 

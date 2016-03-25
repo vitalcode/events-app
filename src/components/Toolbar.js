@@ -54,8 +54,10 @@ class Toolbar extends React.Component {
                 'borderBottomWidth': g === playlist ? 2 : 1,
                 'borderBottomColor': g === playlist ? '#a6d2a5' : '#e3e3e3'
               }]} onPress={this.onPress.bind(this, g)}>
-                <Text style={[styles.content, styles.dayOfMonth]}>{g.dayOfMonth}</Text>
-                <Text style={[styles.content, styles.dayOfWeek]}>{g.dayOfWeek}</Text>
+                <View>
+                  <Text style={[styles.content, styles.dayOfMonth]}>{g.dayOfMonth}</Text>
+                  <Text style={[styles.content, styles.dayOfWeek]}>{g.dayOfWeek}</Text>
+                </View>
               </TouchableOpacity>
 
             )
