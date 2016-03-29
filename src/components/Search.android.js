@@ -9,10 +9,11 @@ let {
 } = React
 
 import InteractionManager from 'InteractionManager'
-import Songs from './Songs'
+import EventsList from './EventsList'
 
 import {fetchEventsIfNeeded, changePlaylist} from '../actions/playlists'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import EventsListContainer from '../containers/EventsListContainer'
 let deviceWidth = Dimensions.get('window').width
 
 class Search extends React.Component {
@@ -30,7 +31,7 @@ class Search extends React.Component {
   renderContent () {
     let { playlist } = this.props
     return (
-      <Songs
+      <EventsList
         {...this.props}
         playlist={playlist}
         scrollFunc={fetchEventsIfNeeded.bind(null, playlist)} />

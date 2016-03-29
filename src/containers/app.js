@@ -1,10 +1,7 @@
-import React from 'react-native'
-
-let {
+import React, {
   StyleSheet,
   Navigator,
-  PropTypes
-} = React
+} from 'react-native';
 
 import MainContainer from './MainContainer'
 
@@ -14,10 +11,10 @@ class App extends React.Component {
   }
 
   renderScene(route, navigator) {
-    let Component = route.component
+    let Component = route.component;
 
     return (
-      <Component navigator={navigator} route={route} />
+      <Component navigator={navigator} route={route}/>
     )
   }
 
@@ -49,6 +46,6 @@ let styles = StyleSheet.create({
   navigator: {
     flex: 1
   }
-})
+});
 
 export default App

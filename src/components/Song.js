@@ -13,9 +13,9 @@ class Song extends React.Component {
   constructor (props) {
     super(props)
   }
-
+  
   render () {
-    const {playingSongId, songs, users} = this.props
+    const {playingSongId} = this.props
     const song = playingSongId || {}
 
     return (

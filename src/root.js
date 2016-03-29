@@ -1,10 +1,11 @@
 import React from 'react-native'
 import {Provider} from 'react-redux';
 import configureStore from './store/configure-store'
+import eventsList from './reducers/eventsList'
 
 import App from './containers/app'
 
-const store = configureStore()
+const store = configureStore();
 
 class Root extends React.Component {
   render() {

@@ -1,12 +1,8 @@
-import React from 'react-native'
-import { connect } from 'react-redux';
-
-let {
-  View,
-  Component
-} = React
-import { Provider } from 'react-redux'
+import React, {Component} from 'react-native'
+import {connect} from 'react-redux';
+import {searchEvents} from '../actions/eventsList'
 import Search from '../components/Search'
+import {bindActionCreators} from 'redux'
 
 class SearchContainer extends Component {
   render() {
@@ -17,17 +13,18 @@ class SearchContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { playlist, playlists, entities, player } = state
-  const playingSongId = player.currentSongIndex !== null ? playlists[player.selectedPlaylists[player.selectedPlaylists.length - 1]].items[player.currentSongIndex] : null
-
+  const {eventsList} = state;
   return {
-    player,
-    playingSongId,
-    playlist,
-    playlists,
-    songs: entities.songs,
-    users: entities.users
+    isLoading: eventsList.isLoading,
+    events: eventsList.events,
+    nextPageUrl: eventsList.nextPageUrl
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitEditing: bindActionCreators(searchEvents, dispatch)
   }
 }
 
-export default connect(mapStateToProps)(SearchContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer)

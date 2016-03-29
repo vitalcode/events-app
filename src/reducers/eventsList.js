@@ -1,0 +1,59 @@
+import {
+  RECEIVE_EVENTS,
+  REQUEST_EVENTS,
+  SEARCH_EVENTS,
+  REQUEST_EVENT_DETAILS,
+  COLLAPSE_HEADER
+} from '../constants/ActionTypes'
+import update from 'react/lib/update'
+import {buildAllEventsUrl} from '../utils/urlUtils'
+import moment from 'moment'
+
+const initialState = {
+  events: [],
+  isLoading: null,
+  nextPageUrl: buildAllEventsUrl(),
+  collapseHeader: false
+};
+
+export default function eventsList(state = initialState, action) {
+  switch (action.type) {
+    case REQUEST_EVENTS:
+      return update(state, {
+        isLoading: {$set: true}
+      });
+
+    case RECEIVE_EVENTS:
+      return update(state, {
+        events: {$push: eventToDisplayEvent(action.events)},
+        isLoading: {$set: false},
+        nextPageUrl: {$set: action.nextPageUrl}
+      });
+    
+    case REQUEST_EVENT_DETAILS:
+      return update(state, {
+        eventDetails: {$set: action.event}
+      });
+
+    case SEARCH_EVENTS:
+      return state;
+
+    case COLLAPSE_HEADER:
+      return update(state, {
+        collapseHeader: {$set: action.collapse}
+      });
+      
+    default:
+      return state;
+  }
+}
+
+function eventToDisplayEvent(events){
+  return events.map(event => {
+    const fromTime = moment(event.from).format('LT');
+    const toTime = event.to ? moment(event.to).format('LT'): '';
+    event.timeRangeDisplay = toTime ? `${fromTime} - ${toTime}`: `${fromTime}`;
+    event.title = event.description.substring(0, 100) + '...';
+    return event;
+  });
+}

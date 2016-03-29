@@ -6,11 +6,11 @@ import React, {
   PropTypes,
   ToolbarAndroid
 } from 'react-native'
-import {Provider} from 'react-redux'
 import InteractionManager from 'InteractionManager'
 import {fetchEventsIfNeeded} from '../actions/playlists'
 import SearchContainer from '../containers/SearchContainer'
-import Songs from './Songs'
+import EventsListContainer from '../containers/EventsListContainer'
+import EventsList from './EventsList'
 
 const toolbarActions = [
   {title: 'Search', icon: require('../../assets/search100.png'), show: 'always'}
@@ -25,7 +25,7 @@ class Main extends Component {
   renderContent() {
     const {playlist} = this.props
     return (
-      <Songs
+      <EventsList
         {...this.props}
         scrollFunc={fetchEventsIfNeeded.bind(null, playlist)}/>
     )
@@ -53,7 +53,7 @@ class Main extends Component {
           titleColor='#fff'
           title={'Fill Your Day'}
         />
-        {this.renderContent()}
+        <EventsListContainer/>
       </View>
     )
   }

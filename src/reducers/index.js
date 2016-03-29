@@ -1,12 +1,10 @@
 import {combineReducers} from 'redux'
-import entities from '../reducers/entities'
 import player from '../reducers/player'
-import playlists from '../reducers/playlists'
+import eventsList from '../reducers/eventsList'
 
 const rootReducer = combineReducers({
-  entities,
   player,
-  playlists,
-})
+  eventsList
+});
 
 export default rootReducer
