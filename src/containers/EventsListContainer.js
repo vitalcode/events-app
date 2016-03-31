@@ -1,16 +1,29 @@
-import React, {Component} from 'react-native'
+import React, {
+  Component
+} from 'react-native'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
-import {fetchEvents, fetchEventDetails, collapseHeader} from '../actions/eventsList'
+import {
+  fetchEvents,
+  fetchEventDetails,
+  collapseHeader
+} from '../actions/eventsList'
 import EventsList from '../components/EventsList'
 import EventDetailsContainer from '../containers/EventDetailsContainer'
 
 class EvensListContainer extends Component {
-
   render() {
     return (
-      <EventsList {...this.props} />
+      <EventsList {...this.props}
+        navigateToEventDetailsPage={this.navigateToEventDetailsPage.bind(this)}/>
     )
+  }
+
+  navigateToEventDetailsPage() {
+    this.props.navigator.push({
+      component: EventDetailsContainer,
+      name: 'Summary'
+    });
   }
 }
 
@@ -18,27 +31,16 @@ function mapStateToProps(state) {
   const {eventsList} = state;
   return {
     isLoading: eventsList.isLoading,
-    events: eventsList.events,
-    nextPageUrl: eventsList.nextPageUrl
+    events: eventsList.events
   };
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
     fetchEvents: bindActionCreators(fetchEvents, dispatch),
     fetchEventDetails: bindActionCreators(fetchEventDetails, dispatch),
-    showEventDetailsPage: () => showEventDetailsPage(ownProps.navigator),
     collapseHeader: bindActionCreators(collapseHeader, dispatch)
   }
 }
-
-
-function showEventDetailsPage(navigator) {
-  navigator.push({
-    component: EventDetailsContainer,
-    name: 'Summary'
-  });
-}
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(EvensListContainer)
