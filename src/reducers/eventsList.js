@@ -12,8 +12,8 @@ import moment from 'moment'
 const initialState = {
   events: [],
   isLoading: null,
-  nextPageUrl: buildAllEventsUrl(),
-  collapseHeader: false
+  clue: null,
+  collapseHeader: false,
 };
 
 export default function eventsList(state = initialState, action) {
@@ -24,10 +24,15 @@ export default function eventsList(state = initialState, action) {
       });
 
     case RECEIVE_EVENTS:
+      if (action.refresh) {
+        return update(state, {
+          events: {$set: eventToDisplayEvent(action.events)},
+          isLoading: {$set: false}
+        });
+      }
       return update(state, {
         events: {$push: eventToDisplayEvent(action.events)},
-        isLoading: {$set: false},
-        nextPageUrl: {$set: action.nextPageUrl}
+        isLoading: {$set: false}
       });
     
     case REQUEST_EVENT_DETAILS:
@@ -36,7 +41,9 @@ export default function eventsList(state = initialState, action) {
       });
 
     case SEARCH_EVENTS:
-      return state;
+      return update(state, {
+      clue: {$set: action.clue}
+    });
 
     case COLLAPSE_HEADER:
       return update(state, {

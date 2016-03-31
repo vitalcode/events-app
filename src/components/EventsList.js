@@ -1,5 +1,4 @@
-let React = require('react-native')
-let {
+import React, {
   StyleSheet,
   View,
   Text,
@@ -8,16 +7,12 @@ let {
   TouchableOpacity,
   Component,
   ActivityIndicatorIOS,
-  PanResponder
-} = React;
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import InteractionManager from 'InteractionManager'
-import ProgressBar from 'ProgressBarAndroid'
-import {showEventDescription} from '../actions/player'
-import {fetchEventsIfNeeded} from '../actions/eventsList'
-import SongContainer from '../containers/SongContainer'
+  PanResponder,
+  InteractionManager
+} from 'react-native'
 import _ from 'lodash'
 import moment from 'moment'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class EventsList extends Component {
   constructor(props) {
@@ -64,42 +59,9 @@ class EventsList extends Component {
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
     });
 
-    // var dataBlob = {};
-    // var sectionIDs = [];
-    // var rowIDs = [];
-    // for (var ii = 0; ii < NUM_SECTIONS; ii++) {
-    //   var sectionName = 'Section ' + ii;
-    //   sectionIDs.push(sectionName);
-    //   dataBlob[sectionName] = sectionName;
-    //   rowIDs[ii] = [];
-    //
-    //   for (var jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
-    //     var rowName = 'S' + ii + ', R' + jj;
-    //     rowIDs[ii].push(rowName);
-    //     dataBlob[rowName] = rowName;
-    //   }
-    // }
-    // return dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs);
     return dataSource.cloneWithRowsAndSections(this.props.events);
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const shouldUpdate =
-  //     !shallowEqual(this.props, nextProps) ||
-  //     !shallowEqual(this.state, nextState)
-  //   return shouldUpdate
-  // }
-
-
-  componentWillReceiveProps(nextProps) {
-    // const {dispatch, playlist, playlists} = this.props
-    // if (playlist !== nextProps.playlist) {
-    //   if (!(nextProps.playlist in playlists) || playlists[nextProps.playlist].items.length === 0) {
-    //     dispatch(fetchEventsIfNeeded(nextProps.playlist))
-    //   }
-    // }
-    //this.props.scrollFunc(nextProps.playlist)
-  }
+  
 
   showEventDetails(id) {
     const {fetchEventDetails, showEventDetailsPage} = this.props;
@@ -112,7 +74,6 @@ class EventsList extends Component {
   onEndReached() {
     console.log('onEndReached');
     this.props.fetchEvents()
-    //this.props.dispatch(this.props.scrollFunc())
   }
 
   render() {
@@ -135,11 +96,6 @@ class EventsList extends Component {
 
     return (
       <View {...this._panResponder.panHandlers} style={styles.container}>
-        { this.state.isLoading &&
-        <View style={styles.progressbar}>
-          <ProgressBar styleAttr='Small'/>
-        </View>
-        }
         <ListView
           dataSource={dataSource2}
           onEndReached={this.onEndReached}

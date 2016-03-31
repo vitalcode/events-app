@@ -8,17 +8,25 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class Search extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
 
     this.state = {
       text: ''
-    }
+    };
 
-    this.onSubmitEditing = this.onSubmitEditing.bind(this)
+    this.onSubmitEditing = this.onSubmitEditing.bind(this);
+    this.onChangeText = this.onChangeText.bind(this)
   }
 
   onSubmitEditing() {
     this.props.onSubmitEditing(this.state.text);
+  }
+
+  onChangeText(text){
+    this.setState({text});
+    if (!text) {
+      this.props.onSubmitEditing();
+    }
   }
 
   render () {
@@ -35,7 +43,7 @@ class Search extends React.Component {
             autoCorrect={false}
             clearButtonMode="always"
             placeholder="Search..."
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={this.onChangeText}
             onSubmitEditing={this.onSubmitEditing}
             value={this.state.text}
           />

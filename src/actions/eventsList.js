@@ -9,10 +9,19 @@ import {
 import {buildAllEventsUrl, updateTotal} from '../utils/urlUtils'
 
 export function collapseHeader(collapse) {
+  return (dispatch, getState) => {
+    const {eventsList} = getState();
+    if (eventsList.collapseHeader !== collapse) {
+      dispatch(collapseHeader2(collapse))
+    }
+  };
+}
+
+function collapseHeader2(collapse) {
   return {
     type: COLLAPSE_HEADER,
     collapse: collapse
-  }
+  };
 }
 
 export function fetchEventDetails(id) {
@@ -48,13 +57,13 @@ function receiveEventDescription(event) {
   };
 }
 
-export function fetchEvents() {
+export function fetchEvents(refresh) {
   return (dispatch, getState) => {
     const {eventsList} = getState();
-    if (eventsList && !eventsList.isLoading && eventsList.nextPageUrl) {
-      const url = eventsList.nextPageUrl;
+    const request = buildAllEventsUrl(eventsList.clue, refresh);
+    if (request) {
       dispatch(requestEvents());
-      return fetch(url)
+      return request
         .then(response => response.json())
         .then(json => {
           console.log('fetchEvents', json);
@@ -70,7 +79,7 @@ export function fetchEvents() {
                 to: source.to && source.to.length > 0 ? source.to[0] : ''
               }
             });
-          dispatch(receiveEvents(events, buildAllEventsUrl()))
+          dispatch(receiveEvents(events, refresh))
         })
         .catch(error => console.log(error))
     }
@@ -83,15 +92,23 @@ function requestEvents() {
   }
 }
 
-function receiveEvents(events, nextPageUrl) {
+function receiveEvents(events, refresh) {
   return {
     type: RECEIVE_EVENTS,
     events: events,
-    nextPageUrl: nextPageUrl
+    refresh: refresh
   }
 }
 
 export function searchEvents(clue) {
+  return (dispatch, getState) => {
+    console.log('in searchEvents')
+    dispatch(SearchClueUpdated(clue));
+    dispatch(fetchEvents(true));
+  }
+}
+
+function SearchClueUpdated(clue) {
   return {
     type: SEARCH_EVENTS,
     clue: clue

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
 import {fetchEvents, fetchEventDetails, collapseHeader} from '../actions/eventsList'
 import EventsList from '../components/EventsList'
-import SongContainer from '../containers/SongContainer'
+import EventDetailsContainer from '../containers/EventDetailsContainer'
 
 class EvensListContainer extends Component {
 
@@ -35,7 +35,7 @@ function mapDispatchToProps(dispatch, ownProps) {
 
 function showEventDetailsPage(navigator) {
   navigator.push({
-    component: SongContainer,
+    component: EventDetailsContainer,
     name: 'Summary'
   });
 }

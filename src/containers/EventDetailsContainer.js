@@ -1,11 +1,11 @@
 import React, {Component} from 'react-native'
 import {connect} from 'react-redux';
-import Song from '../components/Song'
+import EventDetails from '../components/EventDetails'
 
-class SongContainer extends Component {
+class EventDetailsContainer extends Component {
   render() {
     return (
-      <Song {...this.props} />
+      <EventDetails {...this.props} />
     )
   }
 }
@@ -20,4 +20,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(SongContainer)
+export default connect(mapStateToProps)(EventDetailsContainer)

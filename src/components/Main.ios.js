@@ -10,18 +10,6 @@ import SearchContainer from '../containers/SearchContainer'
 import EventsListContainer from '../containers/EventsListContainer'
 
 class Main extends Component {
-
-  // onActionSelected(position) {
-  //   const {navigator} = this.props;
-  //   InteractionManager.runAfterInteractions(() => {
-  //     if (position === 0) {
-  //       navigator.push({
-  //         component: SearchContainer,
-  //         name: 'Search'
-  //       })
-  //     }
-  //   })
-  // }
   
   render() {
     return (
