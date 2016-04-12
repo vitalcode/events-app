@@ -1,3 +1,5 @@
+import {Config} from './config'
+
 const pageSize = 10;
 
 let from = 0;
@@ -10,7 +12,7 @@ export function buildAllEventsUrl(clue, refresh) {
   }
 
   if (!total || from < total) {
-    const url = `http://192.168.59.1:9200/lisenok/_search?from=${from}&size=${pageSize}&sort=from:asc`;
+    const url = `http://${Config.host}:9200/lisenok/_search?from=${from}&size=${pageSize}&sort=from:asc`;
     console.log('url', url);
     from += pageSize;
 

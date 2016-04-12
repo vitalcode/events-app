@@ -7,6 +7,7 @@ import {
   COLLAPSE_HEADER
 } from '../constants/ActionTypes'
 import {buildAllEventsUrl, updateTotal} from '../utils/urlUtils'
+import {Config} from '../utils/config'
 
 export function collapseHeader(collapse) {
   return (dispatch, getState) => {
@@ -26,7 +27,7 @@ function collapseHeader2(collapse) {
 
 export function fetchEventDetails(id) {
   return (dispatch, getState) => {
-    const eventUrl = `http://192.168.59.1:9200/lisenok/events/${encodeURIComponent(id)}`
+    const eventUrl = `http://${Config.host}:9200/lisenok/events/${encodeURIComponent(id)}`
     return dispatch(fetchEventDescription(eventUrl))
   };
 }
