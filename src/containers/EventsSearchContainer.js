@@ -8,14 +8,13 @@ import {
   fetchEventDetails,
   collapseHeader
 } from '../actions/eventsList'
-import EventsList from '../components/EventsList'
+import EventsSearch from '../components/EventsSearch'
 import EventDetailsContainer from '../containers/EventDetailsContainer'
-import EventsSearchContainer from '../containers/EventsSearchContainer'
 
-class EvensListContainer extends Component {
+class EventsSearchContainer extends Component {
   render() {
     return (
-      <EventsList {...this.props}
+      <EventsSearch {...this.props}
         navigateToEventDetailsPage={this.navigateToEventDetailsPage.bind(this)}
         navigateToSearchPage={this.navigateToSearchPage.bind(this)}
       />
@@ -53,4 +52,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EvensListContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(EventsSearchContainer)

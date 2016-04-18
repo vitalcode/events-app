@@ -15,13 +15,13 @@ class Song extends React.Component {
   }
   
   render () {
-    const {playingSongId} = this.props
-    const song = playingSongId || {}
+    const {eventDetails} = this.props;
+    const event = eventDetails || {};
 
     return (
       <View style={styles.container}>
         <Image
-          source={{uri: song.image}}
+          source={{uri: event.image}}
           style={styles.backgroundImage}
         >
           <TouchableOpacity onPress={() => this.props.navigator.pop()}>
@@ -32,7 +32,7 @@ class Song extends React.Component {
               <Text style={styles.username}>username</Text>
             </View>
             <View style={styles.background}>
-              <Text style={styles.title}>{song.description}</Text>
+              <Text style={styles.title}>{event.description}</Text>
             </View>
           </View>
         </Image>

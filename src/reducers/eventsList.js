@@ -26,41 +26,43 @@ export default function eventsList(state = initialState, action) {
     case RECEIVE_EVENTS:
       if (action.refresh) {
         return update(state, {
-          events: {$set: eventToDisplayEvent(action.events)},
+          events: {$set: eventsToDisplayEvents(action.events)},
           isLoading: {$set: false}
         });
       }
       return update(state, {
-        events: {$push: eventToDisplayEvent(action.events)},
+        events: {$push: eventsToDisplayEvents(action.events)},
         isLoading: {$set: false}
       });
-    
+
     case REQUEST_EVENT_DETAILS:
       return update(state, {
-        eventDetails: {$set: action.event}
+        eventDetails: {$set: eventToDisplayEvent(action.event)}
       });
 
     case SEARCH_EVENTS:
       return update(state, {
-      clue: {$set: action.clue}
-    });
+        clue: {$set: action.clue}
+      });
 
     case COLLAPSE_HEADER:
       return update(state, {
         collapseHeader: {$set: action.collapse}
       });
-      
+
     default:
       return state;
   }
 }
 
-function eventToDisplayEvent(events){
-  return events.map(event => {
-    const fromTime = moment(event.from).format('LT');
-    const toTime = event.to ? moment(event.to).format('LT'): '';
-    event.timeRangeDisplay = toTime ? `${fromTime} - ${toTime}`: `${fromTime}`;
-    event.title = event.description.substring(0, 100) + '...';
-    return event;
-  });
+function eventsToDisplayEvents(events) {
+  return events.map(event => eventToDisplayEvent(event));
+}
+
+function eventToDisplayEvent(event) {
+  const fromTime = moment(event.from).format('LT');
+  const toTime = event.to ? moment(event.to).format('LT') : '';
+  event.timeRangeDisplay = toTime ? `${fromTime} - ${toTime}` : `${fromTime}`;
+  event.title = event.description.substring(0, 80);
+  return event;
 }

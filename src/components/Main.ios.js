@@ -2,29 +2,27 @@ import React, {
   Component,
   StyleSheet,
   View,
-  Text,
-  PropTypes
+  PropTypes,
+  Dimensions,
+  StatusBar
 } from 'react-native'
-import CalendarContainer from '../containers/CalendarContainer'
-import SearchContainer from '../containers/SearchContainer'
 import EventsListContainer from '../containers/EventsListContainer'
 
 class Main extends Component {
-  
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>
-          Fill Your Day
-        </Text>
-        <SearchContainer/>
-        <CalendarContainer/>
+        <StatusBar
+          backgroundColor="black"
+          barStyle="light-content"
+        />
         <EventsListContainer navigator={this.props.navigator}/>
       </View>
     )
   }
 }
 
+const window = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,

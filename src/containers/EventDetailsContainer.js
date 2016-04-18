@@ -1,11 +1,12 @@
 import React, {Component} from 'react-native'
 import {connect} from 'react-redux';
 import EventDetails from '../components/EventDetails'
+import Talks from '../components/Talks'
 
 class EventDetailsContainer extends Component {
   render() {
     return (
-      <EventDetails {...this.props} />
+      <Talks {...this.props} />
     )
   }
 }
@@ -16,7 +17,7 @@ function mapStateToProps(state) {
     isLoading: eventsList.isLoading,
     events: eventsList.events,
     nextPageUrl: eventsList.nextPageUrl,
-    playingSongId: eventsList.eventDetails
+    eventDetails: eventsList.eventDetails
   };
 }
 
