@@ -50,6 +50,12 @@ export default function eventsList(state = initialState, action) {
         collapseHeader: {$set: action.collapse}
       });
 
+    // case types.CHANGE_PLAYING_SONG:
+// return Object.assign({}, state, {
+//   playingSongId: action.event
+// });
+
+      
     default:
       return state;
   }

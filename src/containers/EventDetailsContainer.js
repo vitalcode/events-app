@@ -1,12 +1,11 @@
 import React, {Component} from 'react-native'
 import {connect} from 'react-redux';
 import EventDetails from '../components/EventDetails'
-import Talks from '../components/Talks'
 
 class EventDetailsContainer extends Component {
   render() {
     return (
-      <Talks {...this.props} />
+      <EventDetails {...this.props} />
     )
   }
 }
