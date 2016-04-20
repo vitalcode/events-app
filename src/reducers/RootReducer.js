@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
 import eventsList from '../reducers/eventsList'
 
-const rootReducer = combineReducers({
+const RootReducer = combineReducers({
   eventsList
 });
 
-export default rootReducer
+export default RootReducer

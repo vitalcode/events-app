@@ -5,11 +5,11 @@ import {
   DATE_SELECTED,
   REQUEST_EVENT_DETAILS,
   COLLAPSE_HEADER
-} from '../constants/ActionTypes'
+} from '../constants/ActionType'
 import {buildAllEventsUrl, updateTotal} from '../utils/urlUtils'
-import {Config} from '../utils/config'
+import {Config} from '../Config'
 
-export function collapseHeader(collapse) {
+function collapseHeader(collapse) {
   return (dispatch, getState) => {
     const {eventsList} = getState();
     if (eventsList.collapseHeader !== collapse) {
@@ -25,7 +25,7 @@ function collapseHeader2(collapse) {
   };
 }
 
-export function fetchEventDetails(id) {
+function fetchEventDetails(id) {
   return (dispatch, getState) => {
     const eventUrl = `http://${Config.host}:9200/lisenok/events/${encodeURIComponent(id)}`
     return dispatch(fetchEventDescription(eventUrl))
@@ -58,7 +58,7 @@ function receiveEventDescription(event) {
   };
 }
 
-export function fetchEvents(refresh) {
+function fetchEvents(refresh) {
   return (dispatch, getState) => {
     const {eventsList} = getState();
     const request = buildAllEventsUrl(eventsList.clue, refresh);
@@ -101,7 +101,7 @@ function receiveEvents(events, refresh) {
   }
 }
 
-export function searchEvents(clue) {
+function searchEvents(clue) {
   return (dispatch, getState) => {
     console.log('in searchEvents')
     dispatch(SearchClueUpdated(clue));
@@ -116,13 +116,17 @@ function SearchClueUpdated(clue) {
   }
 }
 
-export function dateSelected(date) {
+function dateSelected(date) {
   return {
     type: DATE_SELECTED,
     date: date
   }
 }
 
-
-
-
+export {
+  collapseHeader,
+  fetchEventDetails,
+  fetchEvents,
+  searchEvents,
+  dateSelected
+}

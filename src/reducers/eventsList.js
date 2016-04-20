@@ -4,9 +4,8 @@ import {
   SEARCH_EVENTS,
   REQUEST_EVENT_DETAILS,
   COLLAPSE_HEADER
-} from '../constants/ActionTypes'
+} from '../constants/ActionType'
 import update from 'react/lib/update'
-import {buildAllEventsUrl} from '../utils/urlUtils'
 import moment from 'moment'
 
 const initialState = {
@@ -16,7 +15,7 @@ const initialState = {
   collapseHeader: false,
 };
 
-export default function eventsList(state = initialState, action) {
+function eventsList(state = initialState, action) {
   switch (action.type) {
     case REQUEST_EVENTS:
       return update(state, {
@@ -51,9 +50,9 @@ export default function eventsList(state = initialState, action) {
       });
 
     // case types.CHANGE_PLAYING_SONG:
-// return Object.assign({}, state, {
-//   playingSongId: action.event
-// });
+    // return Object.assign({}, state, {
+    //   playingSongId: action.event
+    // });
 
       
     default:
@@ -72,3 +71,5 @@ function eventToDisplayEvent(event) {
   event.title = event.description.substring(0, 80);
   return event;
 }
+
+export default eventsList;
