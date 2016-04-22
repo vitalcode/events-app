@@ -104,6 +104,7 @@ export default class EventsSearch extends Component {
             { this.state.searchMode &&
             <TextInput
               style={[styles.searchTextInput, this.props.searchTextInputStyle]}
+              keyboardType="web-search"
               clearButtonMode="never"
               underlineColorAndroid={'#3a3f41'}
               autoCapitalize="none"

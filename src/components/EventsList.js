@@ -4,17 +4,30 @@ import React, {
   Text,
   Image,
   ListView,
-  TouchableOpacity,
   Component,
   ActivityIndicatorIOS,
   PanResponder,
-  InteractionManager
+  InteractionManager,
+  DatePickerIOS,
+  TouchableOpacity,
+  Animated,
+  ScrollView,
 } from 'react-native'
 import _ from 'lodash'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default class EventsList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: new Date(),
+      goButtonPressed: false,
+      datePickerShown: false,
+      fadeAnim: new Animated.Value(0),
+    }
+  }
 
   componentWillMount() {
     this.props.fetchEvents();
@@ -51,21 +64,38 @@ export default class EventsList extends Component {
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
     });
 
-    const data = _(this.props.events)
+    const that = this
+
+    let data = _(this.props.events)
       .map(event => {
         event.fromDisplay = moment(event.from).format('dddd, MMMM D');
+        event.that = that
         return event;
       })
       .groupBy('fromDisplay').value();
 
+    //debugger
+
+    //data.that = this;
+
+    //debugger
+
     return dataSource.cloneWithRowsAndSections(data);
+  }
+
+  _showDatePicker() {
+    Animated.timing(          // Uses easing functions
+      this.state.fadeAnim,    // The value to drive
+      {toValue: 1}            // Configuration
+    ).start();
+    this.setState({datePickerShown: true});
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.header2}>
-          <Icon name="today" style={styles.searchIcon2} size={25}/>
+          <Icon name="today" style={styles.searchIcon2} size={25} onPress={this._showDatePicker.bind(this)}/>
           <Text style={styles.sectionHeader2}>All Events</Text>
           <Icon name="search" style={styles.searchIcon2} size={25} onPress={this._showSearchPage.bind(this)}/>
         </View>
@@ -87,17 +117,74 @@ export default class EventsList extends Component {
             renderRow={this._renderRow.bind(this)}
           />
         </View>
-      </View>
-    )
+        { this.state.datePickerShown &&
+        <View style={styles.datePickerWrapper}>
+          <View sytle={styles.datePickerContainer}>
+            <DatePickerIOS style={styles.datePicker}
+                           date={this.state.date}
+                           mode="date"
+                           onDateChange={this._onDateChange.bind(this)}
+            />
+          </View>
+          <View style={styles.datePickerButtonContainer}>
+            <TouchableOpacity
+              style={[styles.datePickerButton, this.state.goButtonPressed && styles.datePickerGoPressed]}
+              activeOpacity={1}
+              onPressIn={() => {this.setState({goButtonPressed: true})}}
+              onPressOut={() => {this.setState({goButtonPressed: false})}}
+              onPress={this._onDatePickerTodayPress.bind(this)}>
+              <Text
+                style={[styles.dateText, this.state.goButtonPressed && styles.datePickerDoneTextPressed]}>Today</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.datePickerButton, this.state.goButtonPressed && styles.datePickerGoPressed]}
+              activeOpacity={1}
+              onPressIn={() => {this.setState({goButtonPressed: true})}}
+              onPressOut={() => {this.setState({goButtonPressed: false})}}
+              onPress={this._onDatePickerGoPress.bind(this)}>
+              <Text
+                style={[styles.dateText, this.state.goButtonPressed && styles.datePickerDoneTextPressed]}>Done</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        }
+
+
+      </View >
+    );
+  }
+
+  _onDatePickerTodayPress() {
+    this.setState({date: new Date()})
+  }
+
+  _onDatePickerGoPress() {
+    this.setState({datePickerShown: false})
+  }
+
+  _onDateChange(newDate) {
+    this.setState({date: newDate})
   }
 
   _renderHeader(sectionData, sectionID) {
+
+    let that = sectionData[0].that;
+
+    //debugger
+
+
     return (
       <View style={styles.header}>
-        <Text style={styles.sectionHeader}>{sectionID}</Text>
+        <TouchableOpacity onPress={() => {
+      that._showDatePicker()
+    }}>
+          <Text style={styles.sectionHeader}>{sectionID}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
+
+  // onPress={this._showDatePicker.bind(this)}
 
   _renderSeparator(sectionID, rowID) {
     return (
@@ -140,6 +227,62 @@ export default class EventsList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  datePickerWrapper: {
+    flexDirection: 'column',
+    padding: 10,
+    paddingTop: 0,
+    borderTopColor: '#ddd',
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+  },
+  datePickerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  datePicker: {
+    alignItems: 'center',
+  },
+
+  datePickerButtonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  datePickerButton: {
+    padding: 5,
+    borderRadius: 3,
+    borderColor: '#007aff',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    backgroundColor: '#007aff'
+  },
+  dateText: {
+    color: '#fff'
+  },
+
+
+  datePickerGo: {
+    width: 50,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#007aff'
+  },
+  datePickerGoPressed: {
+    backgroundColor: '#fff',
+    borderColor: '#007aff',
+    borderWidth: 1,
+    borderStyle: 'solid',
+
+  },
+  datePickerDoneText: {
+    color: '#fff',
+  },
+  datePickerDoneTextPressed: {
+    color: '#000',
+
   },
   header: {
     backgroundColor: '#ff8000',
@@ -238,7 +381,7 @@ const styles = StyleSheet.create({
   },
   searchIcon2: {
     color: 'white',
-    marginLeft:20,
+    marginLeft: 20,
     marginRight: 20,
 
   },
@@ -251,8 +394,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     fontSize: 16
   },
-  container: {
-    flex: 1,
-  },
+  // container: {
+  //   flex: 1,
+  // },
 });
 
