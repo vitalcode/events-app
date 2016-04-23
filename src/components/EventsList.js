@@ -12,6 +12,7 @@ import React, {
   TouchableOpacity,
   Animated,
   ScrollView,
+  Picker
 } from 'react-native'
 import _ from 'lodash'
 import moment from 'moment'
@@ -26,6 +27,7 @@ export default class EventsList extends Component {
       goButtonPressed: false,
       datePickerShown: false,
       fadeAnim: new Animated.Value(0),
+      language: 'java'
     }
   }
 
@@ -91,6 +93,69 @@ export default class EventsList extends Component {
     this.setState({datePickerShown: true});
   }
 
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       <View style={styles.header2}>
+  //         <Icon name="today" style={styles.searchIcon2} size={25} onPress={this._showDatePicker.bind(this)}/>
+  //         <Text style={styles.sectionHeader2}>All Events</Text>
+  //         <Icon name="search" style={styles.searchIcon2} size={25} onPress={this._showSearchPage.bind(this)}/>
+  //       </View>
+  //       <View {...this._panResponder.panHandlers} style={styles.container}>
+  //         <ListView
+  //           dataSource={this._createDataSource()}
+  //           onEndReached={this._onEndReached.bind(this)}
+  //           renderSectionHeader={this._renderHeader}
+  //           renderSeparator={this._renderSeparator}
+  //           renderFooter={() =>
+  //           <View>
+  //           {this.props.isLoading &&
+  //             <ActivityIndicatorIOS style={styles.spinner}
+  //             animating={true}
+  //             size={'large'} />
+  //           }
+  //           </View>
+  //         }
+  //           renderRow={this._renderRow.bind(this)}
+  //         />
+  //       </View>
+  //       { this.state.datePickerShown &&
+  //       <View style={styles.datePickerWrapper}>
+  //         <View sytle={styles.datePickerContainer}>
+  //           <DatePickerIOS style={styles.datePicker}
+  //                          date={this.state.date}
+  //                          mode="date"
+  //                          onDateChange={this._onDateChange.bind(this)}
+  //           />
+  //         </View>
+  //         <View style={styles.datePickerButtonContainer}>
+  //           <TouchableOpacity
+  //             style={[styles.datePickerButton, this.state.goButtonPressed && styles.datePickerGoPressed]}
+  //             activeOpacity={1}
+  //             onPressIn={() => {this.setState({goButtonPressed: true})}}
+  //             onPressOut={() => {this.setState({goButtonPressed: false})}}
+  //             onPress={this._onDatePickerTodayPress.bind(this)}>
+  //             <Text
+  //               style={[styles.dateText, this.state.goButtonPressed && styles.datePickerDoneTextPressed]}>Today</Text>
+  //           </TouchableOpacity>
+  //           <TouchableOpacity
+  //             style={[styles.datePickerButton, this.state.goButtonPressed && styles.datePickerGoPressed]}
+  //             activeOpacity={1}
+  //             onPressIn={() => {this.setState({goButtonPressed: true})}}
+  //             onPressOut={() => {this.setState({goButtonPressed: false})}}
+  //             onPress={this._onDatePickerGoPress.bind(this)}>
+  //             <Text
+  //               style={[styles.dateText, this.state.goButtonPressed && styles.datePickerDoneTextPressed]}>Done</Text>
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //       }
+  //
+  //
+  //     </View >
+  //   );
+  // }
+
   render() {
     return (
       <View style={styles.container}>
@@ -117,14 +182,18 @@ export default class EventsList extends Component {
             renderRow={this._renderRow.bind(this)}
           />
         </View>
-        { this.state.datePickerShown &&
+        { !this.state.datePickerShown &&
         <View style={styles.datePickerWrapper}>
           <View sytle={styles.datePickerContainer}>
-            <DatePickerIOS style={styles.datePicker}
-                           date={this.state.date}
-                           mode="date"
-                           onDateChange={this._onDateChange.bind(this)}
-            />
+            <Picker
+              selectedValue={this.state.date}
+              onValueChange={this._onDateChange.bind(this)}>
+              {
+                this._createDates().map((date) =>
+                  <Picker.Item label={date.format('dddd, MMMM D')} value={date}/>
+                )
+              }
+            </Picker>
           </View>
           <View style={styles.datePickerButtonContainer}>
             <TouchableOpacity
@@ -148,10 +217,20 @@ export default class EventsList extends Component {
           </View>
         </View>
         }
-
-
       </View >
     );
+  }
+
+  _createDates() {
+    const current = moment().startOf('day')
+    const end = current.clone().add(30, 'days')
+    const dates = []
+
+    while (end.isAfter(current)) {
+      dates.push(current.clone())
+      current.add(1, 'day')
+    }
+    return dates;
   }
 
   _onDatePickerTodayPress() {
@@ -163,7 +242,8 @@ export default class EventsList extends Component {
   }
 
   _onDateChange(newDate) {
-    this.setState({date: newDate})
+    console.log(moment(newDate).format('dddd, MMMM D'));
+    this.setState({date: moment(newDate)})
   }
 
   _renderHeader(sectionData, sectionID) {

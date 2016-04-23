@@ -7,8 +7,21 @@ import React, {
   StatusBar
 } from 'react-native'
 import EventsListContainer from '../containers/EventsListContainer'
+import Calendar from '../components/Calendar'
 
 class Main extends Component {
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       <StatusBar
+  //         backgroundColor="black"
+  //         barStyle="light-content"
+  //       />
+  //       <EventsListContainer navigator={this.props.navigator}/>
+  //     </View>
+  //   )
+  // }
+
   render() {
     return (
       <View style={styles.container}>
@@ -16,7 +29,7 @@ class Main extends Component {
           backgroundColor="black"
           barStyle="light-content"
         />
-        <EventsListContainer navigator={this.props.navigator}/>
+        <Calendar navigator={this.props.navigator}/>
       </View>
     )
   }
