@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#555',
     marginBottom: 20,
-    marginTop: 5
+    marginTop: 5,
+    fontFamily: 'Helvetica',
   },
   week: {
     flexDirection: 'row',
