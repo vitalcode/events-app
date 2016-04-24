@@ -86,11 +86,13 @@ export default class EventsList extends Component {
   }
 
   _showDatePicker() {
-    Animated.timing(          // Uses easing functions
-      this.state.fadeAnim,    // The value to drive
-      {toValue: 1}            // Configuration
-    ).start();
-    this.setState({datePickerShown: true});
+    // Animated.timing(          // Uses easing functions
+    //   this.state.fadeAnim,    // The value to drive
+    //   {toValue: 1}            // Configuration
+    // ).start();
+    // this.setState({datePickerShown: true});
+
+    this.props.navigateToCalendar()
   }
 
   // render() {
@@ -160,9 +162,9 @@ export default class EventsList extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header2}>
-          <Icon name="today" style={styles.searchIcon2} size={25} onPress={this._showDatePicker.bind(this)}/>
-          <Text style={styles.sectionHeader2}>All Events</Text>
           <Icon name="search" style={styles.searchIcon2} size={25} onPress={this._showSearchPage.bind(this)}/>
+          <Text style={styles.sectionHeader2}>All Events</Text>
+          <Icon name="more-horiz" style={styles.searchIcon2} size={25} onPress={this._showDatePicker.bind(this)}/>
         </View>
         <View {...this._panResponder.panHandlers} style={styles.container}>
           <ListView
@@ -182,7 +184,7 @@ export default class EventsList extends Component {
             renderRow={this._renderRow.bind(this)}
           />
         </View>
-        { !this.state.datePickerShown &&
+        { this.state.datePickerShown &&
         <View style={styles.datePickerWrapper}>
           <View sytle={styles.datePickerContainer}>
             <Picker

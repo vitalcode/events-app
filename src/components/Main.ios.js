@@ -7,21 +7,9 @@ import React, {
   StatusBar
 } from 'react-native'
 import EventsListContainer from '../containers/EventsListContainer'
-import Calendar from '../components/Calendar'
+import CalendarContainer from '../containers/CalendarContainer'
 
 class Main extends Component {
-  // render() {
-  //   return (
-  //     <View style={styles.container}>
-  //       <StatusBar
-  //         backgroundColor="black"
-  //         barStyle="light-content"
-  //       />
-  //       <EventsListContainer navigator={this.props.navigator}/>
-  //     </View>
-  //   )
-  // }
-
   render() {
     return (
       <View style={styles.container}>
@@ -29,10 +17,22 @@ class Main extends Component {
           backgroundColor="black"
           barStyle="light-content"
         />
-        <Calendar navigator={this.props.navigator}/>
+        <EventsListContainer navigator={this.props.navigator}/>
       </View>
     )
   }
+
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       <StatusBar
+  //         backgroundColor="black"
+  //         barStyle="light-content"
+  //       />
+  //       <CalendarContainer navigator={this.props.navigator}/>
+  //     </View>
+  //   )
+  // }
 }
 
 const window = Dimensions.get('window');

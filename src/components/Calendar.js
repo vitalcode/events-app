@@ -6,7 +6,7 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback
+  TouchableHighlight
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment'
@@ -73,13 +73,19 @@ export default class Calendar extends Component {
     const weekDay = moment().startOf('isoweek');
     const endWeek = moment().endOf('isoweek');
     const weekDays = [];
-    while(weekDay.isSameOrBefore(endWeek)) {
+    while (weekDay.isSameOrBefore(endWeek)) {
       weekDays.push(weekDay.format('dd'));
       weekDay.add(1, 'day')
     }
 
     return (
       <View style={styles.container}>
+        <View style={styles.header2}>
+          <Icon name="arrow-back" style={styles.searchIcon2} size={25} onPress={() => this.props.navigator.pop()}/>
+          <TouchableHighlight style={styles.searchIcon2} onPress={this._onTodayPressButton}>
+            <Text style={styles.sectionHeader2}>Today</Text>
+          </TouchableHighlight>
+        </View>
         <View style={styles.weekHeader}>
           {
             weekDays.map(weekDay =>
@@ -97,6 +103,10 @@ export default class Calendar extends Component {
     );
   }
 
+  _onTodayPressButton() {
+
+  }
+
   _renderRow(month) {
     return (
       <View style={styles.month}>
@@ -109,7 +119,7 @@ export default class Calendar extends Component {
               {
                 week.days.map((day) =>
                   <View style={styles.dayWrapper}>
-                    <View style={styles.day}>
+                    <View style={[styles.day, day.today && styles.today]}>
                       <Text style={[styles.dayText,
                         day.weekend && styles.dayTextWeekend,
                         !day.currentMonth && styles.dayTextHidden]}>
@@ -140,14 +150,14 @@ export default class Calendar extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20
   },
   weekHeader: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20
+    backgroundColor: '#ff8000'
   },
-  weekHeaderText: {},
+  weekHeaderText: {
+  },
   month: {},
   monthTitleContainer: {
     flexDirection: 'row',
@@ -156,7 +166,8 @@ const styles = StyleSheet.create({
   monthTitleText: {
     fontSize: 18,
     color: '#555',
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 5
   },
   week: {
     flexDirection: 'row',
@@ -171,26 +182,55 @@ const styles = StyleSheet.create({
     height: 60,
   },
   day: {
-    // borderTopColor: 'red',
-    // borderTopWidth: 1,
-    // borderStyle: 'solid',
-    // borderRadius: 20,
-    //backgroundColor: 'green'
+  },
+  today: {
+    borderColor: '#ff8000',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 30,
   },
   weekDayText: {
-    fontSize: 14,
-    color: '#555',
+    color: 'white',
+    padding: 5,
     textAlign: 'center',
+    fontFamily: 'Helvetica',
+    fontSize: 14
   },
   dayText: {
     fontSize: 18,
     color: '#555',
-    textAlign: 'center'
+    textAlign: 'center',
+
   },
   dayTextWeekend: {
     color: '#bbb'
   },
   dayTextHidden: {
     color: '#fff'
-  }
+  },
+  header2: {
+    paddingTop: 20,
+    width: window.width,
+    backgroundColor: '#000', //'#82d595',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    opacity: 0.95,
+  },
+  searchIcon2: {
+    color: 'white',
+    marginLeft: 20,
+    marginRight: 20,
+
+  },
+  sectionHeader2: {
+    color: 'white',
+    marginTop: 6,
+    marginBottom: 6,
+    padding: 5,
+    textAlign: 'center',
+    fontFamily: 'Helvetica',
+    fontSize: 16
+  },
+  headerButton: {}
 });

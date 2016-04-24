@@ -11,6 +11,7 @@ import {
 import EventsList from '../components/EventsList'
 import EventDetailsContainer from '../containers/EventDetailsContainer'
 import EventsSearchContainer from '../containers/EventsSearchContainer'
+import CalendarContainer from '../containers/CalendarContainer'
 
 class EvensListContainer extends Component {
   render() {
@@ -18,6 +19,7 @@ class EvensListContainer extends Component {
       <EventsList {...this.props}
         navigateToEventDetailsPage={this.navigateToEventDetailsPage.bind(this)}
         navigateToSearchPage={this.navigateToSearchPage.bind(this)}
+        navigateToCalendar={this.navigateToCalendar.bind(this)}
       />
     )
   }
@@ -33,6 +35,13 @@ class EvensListContainer extends Component {
     this.props.navigator.push({
       component: EventsSearchContainer,
       name: 'Search'
+    });
+  }
+
+  navigateToCalendar() {
+    this.props.navigator.push({
+      component: CalendarContainer,
+      name: 'Calendar'
     });
   }
 }

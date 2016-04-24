@@ -19,7 +19,7 @@ class App extends React.Component {
   }
 
   configureScene(route) {
-    if (route.name && route.name === 'Search') {
+    if (route.name && (route.name === 'Search' || route.name === 'Calendar')) {
       return Navigator.SceneConfigs.FadeAndroid
     } else {
       return Navigator.SceneConfigs.FloatFromBottomAndroid
