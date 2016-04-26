@@ -27,7 +27,7 @@ class EvensListContainer extends Component {
   navigateToEventDetailsPage() {
     this.props.navigator.push({
       component: EventDetailsContainer,
-      name: 'Summary'
+      name: 'Details'
     });
   }
 

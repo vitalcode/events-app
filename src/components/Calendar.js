@@ -6,15 +6,20 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableWithoutFeedback
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment'
+import CalendarDay from './CalendarDay'
 
 export default class Calendar extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      selectedDate: moment()
+    }
   }
 
   _removeTime(date) {
@@ -89,7 +94,7 @@ export default class Calendar extends Component {
         <View style={styles.weekHeader}>
           {
             weekDays.map(weekDay =>
-              <View style={styles.day}>
+              <View style={styles.dayWeek}>
                 <Text style={styles.weekDayText}>{weekDay}</Text>
               </View>
             )
@@ -117,17 +122,7 @@ export default class Calendar extends Component {
           month.weeks.map((week) =>
             <View style={styles.week}>
               {
-                week.days.map((day) =>
-                  <View style={styles.dayWrapper}>
-                    <View style={[styles.day, day.today && styles.today]}>
-                      <Text style={[styles.dayText,
-                        day.weekend && styles.dayTextWeekend,
-                        !day.currentMonth && styles.dayTextHidden]}>
-                        {day.number}
-                      </Text>
-                    </View>
-                  </View>
-                )
+                week.days.map((day) => <CalendarDay day={day}/>)
               }
             </View>
           )
@@ -150,14 +145,14 @@ export default class Calendar extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff'
   },
   weekHeader: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#ff8000'
   },
-  weekHeaderText: {
-  },
+  weekHeaderText: {},
   month: {},
   monthTitleContainer: {
     flexDirection: 'row',
@@ -179,16 +174,27 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   dayWrapper: {
-    width: 30,
+    width: 40,
     height: 60,
   },
+  dayWeek: {
+    padding: 5,
+  },
   day: {
+    padding: 5,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: '#fff',
+    borderRadius: 100,
   },
   today: {
     borderColor: '#ff8000',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 30,
+  },
+  dayTextToday: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
+
   },
   weekDayText: {
     color: 'white',
@@ -202,12 +208,6 @@ const styles = StyleSheet.create({
     color: '#555',
     textAlign: 'center',
 
-  },
-  dayTextWeekend: {
-    color: '#bbb'
-  },
-  dayTextHidden: {
-    color: '#fff'
   },
   header2: {
     paddingTop: 20,

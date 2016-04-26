@@ -19,10 +19,14 @@ class App extends React.Component {
   }
 
   configureScene(route) {
-    if (route.name && (route.name === 'Search' || route.name === 'Calendar')) {
-      return Navigator.SceneConfigs.FadeAndroid
-    } else {
-      return Navigator.SceneConfigs.FloatFromBottomAndroid
+    switch (route.name) {
+      case 'Details':
+        return Navigator.SceneConfigs.FloatFromBottomAndroid;
+      case 'Search':
+      case 'Calendar':
+        return Navigator.SceneConfigs.FloatFromRight; //HorizontalSwipeJump;
+      default:
+        return Navigator.SceneConfigs.FloatFromBottomAndroid;
     }
   }
 
