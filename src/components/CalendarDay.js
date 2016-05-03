@@ -9,8 +9,9 @@ import React, {
   TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
+import {commonStyles} from '../utils/commonStyles'
 
 export default class CalendarDay extends Component {
 
@@ -22,13 +23,12 @@ export default class CalendarDay extends Component {
   }
 
   render() {
-    const day =  this.props.day;
+    const day = this.props.day;
     return (
-      <View style={styles.dayWrapper}>
-        <TouchableWithoutFeedback
-          onPressIn={() => this.setState({selected: true})}
-          onPressOut={() => this.setState({selected: false})}
-        >
+      <TouchableWithoutFeedback
+        onPressIn={() => day.currentMonth && this.setState({selected: true})}
+        onPressOut={() => day.currentMonth && this.setState({selected: false})}>
+        <View style={styles.dayWrapper}>
           <View style={[styles.day,
             day.today && day.currentMonth && styles.today,
             this.state.selected && styles.daySelected]}>
@@ -40,53 +40,56 @@ export default class CalendarDay extends Component {
               {day.number}
             </Text>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = StyleSheet.create({
   dayWrapper: {
-    width: 40,
+    flex: 1,
+    alignItems: 'center',
     height: 60,
+    paddingTop: 5
   },
   day: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 37,
+    height: 37,
     padding: 5,
     borderWidth: 2,
     borderStyle: 'solid',
-    borderColor: '#fff',
+    borderColor: commonStyles.thirdBackground,
     borderRadius: 100,
   },
   today: {
-    backgroundColor: '#ff8000',
-    borderColor: '#ff8000',
+    borderColor: commonStyles.secondBackground,
   },
   dayTextToday: {
     fontSize: 18,
-    color: '#fff',
-    textAlign: 'center',
-
+    color: commonStyles.thirdColor,
+    textAlign: 'center'
   },
   dayText: {
     fontSize: 18,
-    color: '#555',
-    textAlign: 'center',
-
+    color: commonStyles.thirdColor,
+    textAlign: 'center'
   },
   daySelected: {
-    borderColor: '#ff8000',
+    backgroundColor: commonStyles.secondBackground,
+    borderColor: commonStyles.secondBackground,
   },
   dayTextSelected: {
     fontSize: 18,
-    color: '#555',
     textAlign: 'center',
-
+    color: commonStyles.secondColor
   },
   dayTextWeekend: {
-    color: '#bbb'
+    color: commonStyles.thirdFaintColor
   },
   dayTextHidden: {
-    color: '#fff'
+    color: commonStyles.thirdBackground
   },
 });

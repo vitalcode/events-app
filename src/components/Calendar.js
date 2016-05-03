@@ -1,7 +1,6 @@
 import React, {
   Component,
   Dimensions,
-  Image,
   ListView,
   StyleSheet,
   Text,
@@ -12,18 +11,38 @@ import React, {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment'
 import CalendarDay from './CalendarDay'
+import {commonStyles} from '../utils/commonStyles'
 
 export default class Calendar extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      dataSource: this._createDataSource(),
+      weekDays: this._createWeekDays(),
       selectedDate: moment()
     }
   }
 
-  _removeTime(date) {
-    return date.day(0).hour(0).minute(0).second(0).millisecond(0);
+  _createDataSource() {
+    var dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+    });
+
+    const months = this._buildCalendar(moment(), moment().add(1, 'year'));
+    return dataSource.cloneWithRows(months);
+  }
+
+  _createWeekDays() {
+    const weekDay = moment().startOf('isoweek');
+    const endWeek = moment().endOf('isoweek');
+    const weekDays = [];
+    while (weekDay.isSameOrBefore(endWeek)) {
+      weekDays.push(weekDay.format('dd'));
+      weekDay.add(1, 'day')
+    }
+    return weekDays;
   }
 
   _buildCalendar(from, to) {
@@ -75,47 +94,35 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const weekDay = moment().startOf('isoweek');
-    const endWeek = moment().endOf('isoweek');
-    const weekDays = [];
-    while (weekDay.isSameOrBefore(endWeek)) {
-      weekDays.push(weekDay.format('dd'));
-      weekDay.add(1, 'day')
-    }
-
     return (
       <View style={styles.container}>
-        <View style={styles.header2}>
-          <Icon name="arrow-back" style={styles.searchIcon2} size={25} onPress={() => this.props.navigator.pop()}/>
-          <TouchableHighlight style={styles.searchIcon2} onPress={this._onTodayPressButton}>
-            <Text style={styles.sectionHeader2}>Today</Text>
+        <View style={styles.pageHeader}>
+          <Icon name="arrow-back" style={styles.pageHeaderIcon} size={25} onPress={() => this.props.navigator.pop()}/>
+          <TouchableHighlight style={styles.pageHeaderIcon} onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
+            <Text style={styles.pageHeaderText}>Today</Text>
           </TouchableHighlight>
         </View>
         <View style={styles.weekHeader}>
           {
-            weekDays.map(weekDay =>
-              <View style={styles.dayWeek}>
+            this.state.weekDays.map(weekDay =>
+              <View style={styles.weekDay}>
                 <Text style={styles.weekDayText}>{weekDay}</Text>
               </View>
             )
           }
         </View>
-        <ListView
-          dataSource={this._createDataSource()}
-          renderRow={this._renderRow.bind(this)}
+        <ListView ref="ListView"
+                  dataSource={this.state.dataSource}
+                  renderRow={(month) => this._renderRow(month)}
         />
       </View>
     );
   }
 
-  _onTodayPressButton() {
-
-  }
-
   _renderRow(month) {
     return (
       <View style={styles.month}>
-        <View style={styles.monthTitleContainer}>
+        <View style={styles.monthTitle}>
           <Text style={styles.monthTitleText}>{month.name}</Text>
         </View>
         {
@@ -129,17 +136,6 @@ export default class Calendar extends Component {
         }
       </View>)
   }
-
-  _createDataSource() {
-    var dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-    });
-
-    const months = this._buildCalendar(moment(), moment().add(1, 'year'));
-    return dataSource.cloneWithRows(months);
-  }
-
 }
 
 const styles = StyleSheet.create({
@@ -147,85 +143,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff'
   },
-  weekHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#ff8000'
-  },
-  weekHeaderText: {},
-  month: {},
-  monthTitleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  monthTitleText: {
-    fontSize: 18,
-    color: '#555',
-    marginBottom: 20,
-    marginTop: 5,
-    fontFamily: 'Helvetica',
-  },
-  week: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopColor: '#ddd',
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    paddingTop: 10
-  },
-  dayWrapper: {
-    width: 40,
-    height: 60,
-  },
-  dayWeek: {
-    padding: 5,
-  },
-  day: {
-    padding: 5,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderColor: '#fff',
-    borderRadius: 100,
-  },
-  today: {
-    borderColor: '#ff8000',
-  },
-  dayTextToday: {
-    fontSize: 18,
-    color: '#fff',
-    textAlign: 'center',
-
-  },
-  weekDayText: {
-    color: 'white',
-    padding: 5,
-    textAlign: 'center',
-    fontFamily: 'Helvetica',
-    fontSize: 14
-  },
-  dayText: {
-    fontSize: 18,
-    color: '#555',
-    textAlign: 'center',
-
-  },
-  header2: {
+  pageHeader: {
     paddingTop: 20,
-    width: window.width,
-    backgroundColor: '#000', //'#82d595',
+    backgroundColor: commonStyles.firstBackground,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    opacity: 0.95,
+    opacity: 0.95
   },
-  searchIcon2: {
+  pageHeaderIcon: {
     color: 'white',
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
 
   },
-  sectionHeader2: {
-    color: 'white',
+  pageHeaderText: {
+    color: commonStyles.firstColor,
     marginTop: 6,
     marginBottom: 6,
     padding: 5,
@@ -233,5 +166,36 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     fontSize: 16
   },
-  headerButton: {}
+  weekHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: commonStyles.secondBackground
+  },
+  weekDay: {
+    padding: 5
+  },
+  weekDayText: {
+    color: commonStyles.secondColor,
+    textAlign: 'center',
+    fontFamily: 'Helvetica',
+    fontSize: 14
+  },
+  month: {},
+  monthTitle: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  monthTitleText: {
+    marginBottom: 20,
+    marginTop: 5,
+    fontFamily: 'Helvetica',
+    fontSize: 18,
+    color: commonStyles.thirdColor
+  },
+  week: {
+    flexDirection: 'row',
+    borderTopColor:  commonStyles.thirdMoreFaintColor,
+    borderTopWidth: 1,
+    borderStyle: 'solid'
+  }
 });
