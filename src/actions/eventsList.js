@@ -61,7 +61,7 @@ function receiveEventDescription(event) {
 function fetchEvents(refresh) {
   return (dispatch, getState) => {
     const {eventsList} = getState();
-    const request = buildAllEventsUrl(eventsList.clue, refresh);
+    const request = buildAllEventsUrl(eventsList.clue, eventsList.date, refresh);
     if (request) {
       dispatch(requestEvents());
       return request
@@ -117,6 +117,13 @@ function SearchClueUpdated(clue) {
 }
 
 function dateSelected(date) {
+  return (dispatch, getState) => {
+    dispatch(updateDate(date));
+    dispatch(fetchEvents(true));
+  }
+}
+
+function updateDate(date) {
   return {
     type: DATE_SELECTED,
     date: date

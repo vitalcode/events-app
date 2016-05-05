@@ -3,15 +3,18 @@ import {
   REQUEST_EVENTS,
   SEARCH_EVENTS,
   REQUEST_EVENT_DETAILS,
-  COLLAPSE_HEADER
+  COLLAPSE_HEADER,
+  DATE_SELECTED
 } from '../constants/ActionType'
 import update from 'react/lib/update'
 import moment from 'moment'
+import {Config} from '../Config'
 
 const initialState = {
   events: [],
   isLoading: null,
   clue: null,
+  date: moment(Config.today), // todo refactor
   collapseHeader: false,
 };
 
@@ -49,12 +52,11 @@ function eventsList(state = initialState, action) {
         collapseHeader: {$set: action.collapse}
       });
 
-    // case types.CHANGE_PLAYING_SONG:
-    // return Object.assign({}, state, {
-    //   playingSongId: action.event
-    // });
+    case DATE_SELECTED:
+      return update(state, {
+        date: {$set: action.date}
+      });
 
-      
     default:
       return state;
   }

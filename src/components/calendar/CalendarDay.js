@@ -1,17 +1,11 @@
 import React, {
   Component,
-  Dimensions,
-  Image,
-  ListView,
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import moment from 'moment'
-import {commonStyles} from '../utils/commonStyles'
+import {commonStyles} from '../../utils/commonStyles'
 
 export default class CalendarDay extends Component {
 
@@ -26,6 +20,7 @@ export default class CalendarDay extends Component {
     const day = this.props.day;
     return (
       <TouchableWithoutFeedback
+        onPress={() => day.currentMonth && this.props.onDateSelected(day.date)}
         onPressIn={() => day.currentMonth && this.setState({selected: true})}
         onPressOut={() => day.currentMonth && this.setState({selected: false})}>
         <View style={styles.dayWrapper}>
@@ -62,7 +57,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: 'solid',
     borderColor: commonStyles.thirdBackground,
-    borderRadius: 100,
+    borderRadius: 100
   },
   today: {
     borderColor: commonStyles.secondBackground,
@@ -91,5 +86,5 @@ const styles = StyleSheet.create({
   },
   dayTextHidden: {
     color: commonStyles.thirdBackground
-  },
+  }
 });

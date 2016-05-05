@@ -6,37 +6,38 @@ import React, {
   Text,
   View,
   TouchableHighlight,
-  TouchableWithoutFeedback
+  InteractionManager
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import moment from 'moment'
+import Icon from '../../../node_modules/react-native-vector-icons/MaterialIcons';
 import CalendarDay from './CalendarDay'
-import {commonStyles} from '../utils/commonStyles'
+import {commonStyles} from '../../utils/commonStyles'
+import {Config} from '../../Config'
 
 export default class Calendar extends Component {
 
   constructor(props) {
     super(props);
+    const today = Config.today;
     this.state = {
-      dataSource: this._createDataSource(),
-      weekDays: this._createWeekDays(),
-      selectedDate: moment()
+      dataSource: this._createDataSource(today),
+      weekDays: this._createWeekDays(today),
+      selectedDate: today
     }
   }
 
-  _createDataSource() {
+  _createDataSource(today) {
     var dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
     });
 
-    const months = this._buildCalendar(moment(), moment().add(1, 'year'));
+    const months = this._buildCalendar(today.clone(), today.clone().add(1, 'year'));
     return dataSource.cloneWithRows(months);
   }
 
-  _createWeekDays() {
-    const weekDay = moment().startOf('isoweek');
-    const endWeek = moment().endOf('isoweek');
+  _createWeekDays(today) {
+    const weekDay = today.clone().startOf('isoweek');
+    const endWeek = today.clone().endOf('isoweek');
     const weekDays = [];
     while (weekDay.isSameOrBefore(endWeek)) {
       weekDays.push(weekDay.format('dd'));
@@ -53,28 +54,28 @@ export default class Calendar extends Component {
     while (date.isBefore(end)) {
       months.push({
         name: date.format('MMMM'),
-        weeks: this._buildMonth(date.clone(), date.month())
+        weeks: this._buildMonth(from, date.clone(), date.month())
       });
       date.add(1, 'month')
     }
     return months;
   }
 
-  _buildMonth(start, month) {
+  _buildMonth(today, start, month) {
     const weeks = [];
     const end = start.clone().add(1, 'month');
     let date = start.clone().startOf('isoweek');
 
     while (date.isBefore(end)) {
       weeks.push({
-        days: this._buildWeek(date.clone(), month)
+        days: this._buildWeek(today, date.clone(), month)
       });
       date.add(1, 'week');
     }
     return weeks;
   }
 
-  _buildWeek(date, month) {
+  _buildWeek(today, date, month) {
     const days = [];
     const end = date.clone().add(1, 'week');
 
@@ -83,14 +84,22 @@ export default class Calendar extends Component {
       days.push({
         nameOfWeek: date.format('dd'),
         number: date.date(),
-        today: date.isSame(new Date(), 'day'),
+        today: date.isSame(today, 'day'),
         currentMonth: date.month() === month,
         weekend: day === 0 || day == 6,
-        date: date
+        date: date.clone()
       });
       date.add(1, 'day');
     }
     return days;
+  }
+
+  _showEventsList(date) {
+    this.props.navigator.pop();
+    InteractionManager.runAfterInteractions(() => {
+      this.props.navigator.pop();
+      this.props.dateSelected(date);
+    })
   }
 
   render() {
@@ -129,7 +138,7 @@ export default class Calendar extends Component {
           month.weeks.map((week) =>
             <View style={styles.week}>
               {
-                week.days.map((day) => <CalendarDay day={day}/>)
+                week.days.map((day) => <CalendarDay day={day} onDateSelected={(date) => this._showEventsList(date)}/>)
               }
             </View>
           )

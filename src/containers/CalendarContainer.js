@@ -1,11 +1,13 @@
 import React, {Component} from 'react-native'
+import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux';
-import Calendar from '../components/Calendar'
+import Calendar from '../components/calendar/Calendar'
+import {dateSelected} from '../actions/eventsList'
 
 class CalendarContainer extends Component {
   render() {
     return (
-      <Calendar {...this.props} />
+      <Calendar {...this.props}/>
     )
   }
 }
@@ -20,4 +22,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CalendarContainer)
+function mapDispatchToProps(dispatch) {
+  return {
+    dateSelected: bindActionCreators(dateSelected, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarContainer)

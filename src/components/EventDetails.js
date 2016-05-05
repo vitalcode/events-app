@@ -1,6 +1,3 @@
-/*
- * This example demonstrates how to use ParallaxScrollView within a ScrollView component.
- */
 import React, {
   Component,
   Dimensions,
