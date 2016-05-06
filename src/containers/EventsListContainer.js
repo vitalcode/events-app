@@ -8,7 +8,7 @@ import {
   fetchEventDetails,
   collapseHeader
 } from '../actions/eventsList'
-import EventsList from '../components/EventsList'
+import ListView from '../views/ListView'
 import EventDetailsContainer from '../containers/EventDetailsContainer'
 import EventsSearchContainer from '../containers/EventsSearchContainer'
 import CalendarContainer from '../containers/CalendarContainer'
@@ -16,7 +16,7 @@ import CalendarContainer from '../containers/CalendarContainer'
 class EvensListContainer extends Component {
   render() {
     return (
-      <EventsList {...this.props}
+      <ListView {...this.props}
         navigateToEventDetailsPage={this.navigateToEventDetailsPage.bind(this)}
         navigateToSearchPage={this.navigateToSearchPage.bind(this)}
         navigateToCalendar={this.navigateToCalendar.bind(this)}

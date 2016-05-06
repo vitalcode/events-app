@@ -95,7 +95,6 @@ export default class Calendar extends Component {
   }
 
   _showEventsList(date) {
-    this.props.navigator.pop();
     InteractionManager.runAfterInteractions(() => {
       this.props.navigator.pop();
       this.props.dateSelected(date);

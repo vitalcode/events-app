@@ -214,31 +214,34 @@ export default class EventsSearch extends Component {
     )
   }
 
+  // todo refactor
   _showEventList(clue) {
     this.setState({text: clue});
-    const request = buildAllEventsUrl(clue, true);
-    request
-      .then(response => response.json())
-      .then(json => {
-        const events = json.hits.hits
-          .map(hit => {
-            const source = hit._source;
-            const fromTime = moment(source.from).format('LT');
-            const toTime = source.to ? moment(source.to).format('LT') : '';
-            const description = source.description && source.description.length > 0 ? source.description[0] : '';
-            return {
-              id: hit._id,
-              timeRangeDisplay: toTime ? `${fromTime} - ${toTime}` : `${fromTime}`,
-              title: description.substring(0, 80),
-              description: description,
-              image: source.image && source.image.length > 0 ? source.image[0] : '',
-              from: source.from && source.from.length > 0 ? source.from[0] : '',
-              to: source.to && source.to.length > 0 ? source.to[0] : ''
-            }
-          });
-        this.setState({events: events, searchMode: false});
-      })
-      .catch(error => console.log(error))
+    const request = buildAllEventsUrl(clue, this.props.date, true);
+    if (request) {
+      request
+        .then(response => response.json())
+        .then(json => {
+          const events = json.hits.hits
+            .map(hit => {
+              const source = hit._source;
+              const fromTime = moment(source.from).format('LT');
+              const toTime = source.to ? moment(source.to).format('LT') : '';
+              const description = source.description && source.description.length > 0 ? source.description[0] : '';
+              return {
+                id: hit._id,
+                timeRangeDisplay: toTime ? `${fromTime} - ${toTime}` : `${fromTime}`,
+                title: description.substring(0, 80),
+                description: description,
+                image: source.image && source.image.length > 0 ? source.image[0] : '',
+                from: source.from && source.from.length > 0 ? source.from[0] : '',
+                to: source.to && source.to.length > 0 ? source.to[0] : ''
+              }
+            });
+          this.setState({events: events, searchMode: false});
+        })
+        .catch(error => console.log(error))
+    }
   }
 
   _renderRow(event) {

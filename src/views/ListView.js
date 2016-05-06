@@ -6,12 +6,9 @@ import React, {
   ListView,
   Component,
   ActivityIndicatorIOS,
-  PanResponder,
   InteractionManager,
-  DatePickerIOS,
   TouchableOpacity,
   Animated,
-  ScrollView,
   Picker
 } from 'react-native'
 import _ from 'lodash'
@@ -22,24 +19,31 @@ export default class EventsList extends Component {
 
   constructor(props) {
     super(props);
+    this.props.fetchEvents(); // todo refactor
     this.state = {
-      date: new Date(),
-      goButtonPressed: false,
-      datePickerShown: false,
-      fadeAnim: new Animated.Value(0),
-      language: 'java'
-    }
+      dataSource: this._createDataSource()
+    };
   }
 
-  componentWillMount() {
-    this.props.fetchEvents();
-    this._panResponder = PanResponder.create({
-      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this)
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      dataSource: this._createDataSource()
+    })
+  };
+
+  _createDataSource() {
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
     });
-  }
-
-  _handleMoveShouldSetPanResponder(e, gestureState) {
-    this.props.collapseHeader(gestureState.vy < 0);
+    const data = _(this.props.events)
+      .map(event => {
+        event.fromDisplay = moment(event.from).format('dddd, MMMM D');
+        event.that = this;
+        return event;
+      })
+      .groupBy('fromDisplay').value();
+    return dataSource.cloneWithRowsAndSections(data);
   }
 
   _showEventDetails(id) {
@@ -60,25 +64,6 @@ export default class EventsList extends Component {
     this.props.fetchEvents()
   }
 
-  _createDataSource() {
-    var dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-    });
-
-    const that = this
-
-    let data = _(this.props.events)
-      .map(event => {
-        event.fromDisplay = moment(event.from).format('dddd, MMMM D');
-        event.that = that
-        return event;
-      })
-      .groupBy('fromDisplay').value();
-
-    return dataSource.cloneWithRowsAndSections(data);
-  }
-
   _showDatePicker() {
     this.props.navigateToCalendar()
   }
@@ -91,92 +76,24 @@ export default class EventsList extends Component {
           <Text style={styles.sectionHeader2}>All Events</Text>
           <Icon name="more-horiz" style={styles.searchIcon2} size={25} onPress={this._showDatePicker.bind(this)}/>
         </View>
-        <View {...this._panResponder.panHandlers} style={styles.container}>
+        <View style={styles.container}>
           <ListView
-            dataSource={this._createDataSource()}
+            dataSource={this.state.dataSource}
             onEndReached={this._onEndReached.bind(this)}
             renderSectionHeader={this._renderHeader}
             renderSeparator={this._renderSeparator}
-            renderFooter={() =>
-            <View>
-            {this.props.isLoading &&
-              <ActivityIndicatorIOS style={styles.spinner}
-              animating={true}
-              size={'large'} />
-            }
-            </View>
-          }
+            renderFooter={this._renderFooter.bind(this)}
             renderRow={this._renderRow.bind(this)}
           />
         </View>
-        { this.state.datePickerShown &&
-        <View style={styles.datePickerWrapper}>
-          <View sytle={styles.datePickerContainer}>
-            <Picker
-              selectedValue={this.state.date}
-              onValueChange={this._onDateChange.bind(this)}>
-              {
-                this._createDates().map((date) =>
-                  <Picker.Item label={date.format('dddd, MMMM D')} value={date}/>
-                )
-              }
-            </Picker>
-          </View>
-          <View style={styles.datePickerButtonContainer}>
-            <TouchableOpacity
-              style={[styles.datePickerButton, this.state.goButtonPressed && styles.datePickerGoPressed]}
-              activeOpacity={1}
-              onPressIn={() => {this.setState({goButtonPressed: true})}}
-              onPressOut={() => {this.setState({goButtonPressed: false})}}
-              onPress={this._onDatePickerTodayPress.bind(this)}>
-              <Text
-                style={[styles.dateText, this.state.goButtonPressed && styles.datePickerDoneTextPressed]}>Today</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.datePickerButton, this.state.goButtonPressed && styles.datePickerGoPressed]}
-              activeOpacity={1}
-              onPressIn={() => {this.setState({goButtonPressed: true})}}
-              onPressOut={() => {this.setState({goButtonPressed: false})}}
-              onPress={this._onDatePickerGoPress.bind(this)}>
-              <Text
-                style={[styles.dateText, this.state.goButtonPressed && styles.datePickerDoneTextPressed]}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        }
       </View >
     );
-  }
-
-  _createDates() {
-    const current = moment().startOf('day')
-    const end = current.clone().add(30, 'days')
-    const dates = []
-
-    while (end.isAfter(current)) {
-      dates.push(current.clone())
-      current.add(1, 'day')
-    }
-    return dates;
-  }
-
-  _onDatePickerTodayPress() {
-    this.setState({date: new Date()})
-  }
-
-  _onDatePickerGoPress() {
-    this.setState({datePickerShown: false})
-  }
-
-  _onDateChange(newDate) {
-    console.log(moment(newDate).format('dddd, MMMM D'));
-    this.setState({date: moment(newDate)})
   }
 
   _renderHeader(sectionData, sectionID) {
 
     let that = sectionData[0].that;
-    
+
     return (
       <View style={styles.header}>
         <TouchableOpacity onPress={() => {
@@ -223,6 +140,18 @@ export default class EventsList extends Component {
         </View>
       </TouchableOpacity>
     )
+  }
+
+  _renderFooter() {
+    return (
+      <View>
+        {this.props.isLoading &&
+        <ActivityIndicatorIOS style={styles.spinner}
+                              animating={true}
+                              size={'large'}/>
+        }
+      </View>
+    );
   }
 }
 

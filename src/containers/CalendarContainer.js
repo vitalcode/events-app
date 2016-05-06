@@ -18,7 +18,8 @@ function mapStateToProps(state) {
     isLoading: eventsList.isLoading,
     events: eventsList.events,
     nextPageUrl: eventsList.nextPageUrl,
-    eventDetails: eventsList.eventDetails
+    eventDetails: eventsList.eventDetails,
+    date: eventsList.date
   };
 }
 
