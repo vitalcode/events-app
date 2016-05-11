@@ -6,7 +6,7 @@ import React, {
   Dimensions,
   StatusBar
 } from 'react-native'
-import EventsListContainer from '../containers/EventsListContainer'
+import EventsListViewContainer from '../views/EventsListViewContainer'
 import CalendarContainer from '../containers/CalendarContainer'
 
 class Main extends Component {
@@ -17,7 +17,7 @@ class Main extends Component {
           backgroundColor="black"
           barStyle="light-content"
         />
-        <EventsListContainer navigator={this.props.navigator}/>
+        <EventsListViewContainer navigator={this.props.navigator}/>
       </View>
     )
   }

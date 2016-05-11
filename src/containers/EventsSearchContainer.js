@@ -6,7 +6,8 @@ import {bindActionCreators} from 'redux'
 import {
   fetchEvents,
   fetchEventDetails,
-  collapseHeader
+  collapseHeader,
+  clueSelected
 } from '../actions/eventsList'
 import EventsSearch from '../components/EventsSearch'
 import EventDetailsContainer from '../containers/EventDetailsContainer'
@@ -48,7 +49,8 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchEvents: bindActionCreators(fetchEvents, dispatch),
     fetchEventDetails: bindActionCreators(fetchEventDetails, dispatch),
-    collapseHeader: bindActionCreators(collapseHeader, dispatch)
+    collapseHeader: bindActionCreators(collapseHeader, dispatch),
+    clueSelected: bindActionCreators(clueSelected, dispatch)
   }
 }
 

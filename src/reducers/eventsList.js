@@ -4,7 +4,8 @@ import {
   SEARCH_EVENTS,
   REQUEST_EVENT_DETAILS,
   COLLAPSE_HEADER,
-  DATE_SELECTED
+  DATE_SELECTED,
+  CLUE_SELECTED
 } from '../constants/ActionType'
 import update from 'react/lib/update'
 import moment from 'moment'
@@ -55,6 +56,11 @@ function eventsList(state = initialState, action) {
     case DATE_SELECTED:
       return update(state, {
         date: {$set: action.date}
+      });
+
+    case CLUE_SELECTED:
+      return update(state, {
+        clue: {$set: action.clue}
       });
 
     default:

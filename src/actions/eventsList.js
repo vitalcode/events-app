@@ -3,6 +3,7 @@ import {
   RECEIVE_EVENTS,
   SEARCH_EVENTS,
   DATE_SELECTED,
+  CLUE_SELECTED,
   REQUEST_EVENT_DETAILS,
   COLLAPSE_HEADER
 } from '../constants/ActionType'
@@ -123,6 +124,20 @@ function dateSelected(date) {
   }
 }
 
+function clueSelected(clue) {
+  return (dispatch, getState) => {
+    dispatch(updateClue(clue));
+    dispatch(fetchEvents(true));
+  }
+}
+
+function updateClue(clue) {
+  return {
+    type: CLUE_SELECTED,
+    clue: clue
+  }
+}
+
 function updateDate(date) {
   return {
     type: DATE_SELECTED,
@@ -135,5 +150,6 @@ export {
   fetchEventDetails,
   fetchEvents,
   searchEvents,
-  dateSelected
+  dateSelected,
+  clueSelected
 }

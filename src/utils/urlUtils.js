@@ -34,7 +34,7 @@ export function buildAllEventsUrl(clue, date, refresh) {
         multi_match: {
           query: clue,
           fields: [
-            description
+            "description"
           ],
           operator: "and"
         }
