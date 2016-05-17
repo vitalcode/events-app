@@ -9,9 +9,10 @@ import React, {
   InteractionManager
 } from 'react-native';
 import Icon from '../../../node_modules/react-native-vector-icons/MaterialIcons';
-import CalendarDay from './CalendarDay'
+import CalendarDay from './calendarDay'
 import {commonStyles} from '../../utils/commonStyles'
-import {Config} from '../../Config'
+import {Config} from '../../config'
+import {Actions} from 'react-native-router-flux'
 
 export default class Calendar extends Component {
 
@@ -96,7 +97,7 @@ export default class Calendar extends Component {
 
   _showEventsList(date) {
     InteractionManager.runAfterInteractions(() => {
-      this.props.navigator.pop();
+      Actions.pop();
       this.props.dateSelected(date);
     })
   }

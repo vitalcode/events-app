@@ -8,7 +8,7 @@ import {
   COLLAPSE_HEADER
 } from '../constants/ActionType'
 import {buildAllEventsUrl, updateTotal} from '../utils/urlUtils'
-import {Config} from '../Config'
+import {Config} from '../config'
 
 function collapseHeader(collapse) {
   return (dispatch, getState) => {

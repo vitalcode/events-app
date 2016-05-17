@@ -1,6 +1,6 @@
 import React, {
   AppRegistry,
 } from 'react-native'
-import Root from './src/Root'
+import App from './src/app'
 
-AppRegistry.registerComponent('eventsApp', () => Root)
+AppRegistry.registerComponent('eventsApp', () => App)

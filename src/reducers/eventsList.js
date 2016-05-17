@@ -9,7 +9,7 @@ import {
 } from '../constants/ActionType'
 import update from 'react/lib/update'
 import moment from 'moment'
-import {Config} from '../Config'
+import {Config} from '../config'
 
 const initialState = {
   events: [],

@@ -3,13 +3,13 @@ import React, {
 } from 'react-native'
 import {Provider} from 'react-redux';
 import configureStore from './store/storeConfig'
-import App from './containers/App'
+import Router from './router'
 
 class Root extends Component {
   render() {
     return (
       <Provider store={configureStore()}>
-        <App />
+        <Router />
       </Provider>
     )
   }
