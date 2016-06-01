@@ -3,7 +3,6 @@ import React, {
   Dimensions,
   Image,
   ListView,
-  PixelRatio,
   StyleSheet,
   Text,
   View,

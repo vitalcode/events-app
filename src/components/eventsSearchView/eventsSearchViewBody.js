@@ -14,81 +14,49 @@ import React, {
 import _ from 'lodash'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import EventsListContainer from '../common/eventsListContainer'
+import {container} from '../../coreModule'
 import {buildAllEventsUrl, updateTotal} from '../../utils/urlUtils'
 
 export default class eventsSearchViewBody extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       text: '',
-      searchMode: false,
-      suggestions: []
+      //searchMode: true,
+      dataSource: this._createDataSource(props.clueSuggestions)
     };
-
-    this.onSubmitEditing = this.onSubmitEditing.bind(this);
   }
 
-  onSubmitEditing() {
-    this._showEventList(this.state.text);
-    //this.props.onSubmitEditing(this.state.text);
-  }
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(newProps.clueSuggestions)
+    });
+  };
 
-  _createSearchResultsDataSource() {
+  _createDataSource(clueSuggestions) {
     let dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
-
-    return dataSource.cloneWithRows(this.state.suggestions);
-  }
-
-  _clearSearchText() {
-    this.setState({text: '', searchMode: true, suggestions: []});
+    return dataSource.cloneWithRows(clueSuggestions);
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header2}>
-          <Icon name="arrow-back" style={styles.searchIcon2} size={25} onPress={() => this.props.navigator.pop()}/>
-          <View style={styles.searchTextInputContainer}>
-            { this.state.searchMode &&
-            <TextInput
-              style={[styles.searchTextInput, this.props.searchTextInputStyle]}
-              keyboardType="web-search"
-              clearButtonMode="never"
-              underlineColorAndroid={'#3a3f41'}
-              autoCapitalize="none"
-              autoFocus={true}
-              autoCorrect={false}
-              placeholder="Search event"
-              placeholderTextColor={'#ccc'}
-              onChangeText={this._onSearchClueChange.bind(this)}
-              onSubmitEditing={this.onSubmitEditing}
-              value={this.state.text}
-            />
-            }
-            { !this.state.searchMode &&
-            <Text style={styles.searchText}>{this.state.text}</Text>
-            }
-          </View>
-          <Icon name="clear" style={styles.searchIcon3} size={25} onPress={this._clearSearchText.bind(this)}/>
-        </View>
-        <View style={styles.container}>
-          { !this.state.searchMode &&
-          <EventsListContainer navigator={this.props.navigator}/>
-          }
-          { this.state.searchMode &&
+        {
+          !!this.props.clue && <container.eventsListContainer/>
+        }
+        {
+          !this.props.clue &&
           <View style={styles.searchContainer}>
             {
               <ListView
-                dataSource={this._createSearchResultsDataSource()}
+                dataSource={this.state.dataSource}
                 renderRow={this._renderSearchRow.bind(this)}
                 renderFooter={() =>
                     <View>
-                    {this.state.isSearching &&
+                    {this.props.requestingClueSuggestions &&
                       <ActivityIndicatorIOS style={styles.spinner}
                       animating={true}
                       size={'small'} />
@@ -98,34 +66,9 @@ export default class eventsSearchViewBody extends Component {
               />
             }
           </View>
-          }
-        </View>
+        }
       </View>
     )
-  }
-
-
-  _onSearchClueChange(clue) {
-    this.setState({text: clue});
-    this._fetchSearchSuggestions(clue)
-  }
-
-  _fetchSearchSuggestions(clue) {
-    if (clue) {
-      const url = `http://suggestqueries.google.com/complete/search?q=${clue}&client=firefox`;
-      this.setState({isSearching: true});
-      fetch(url)
-        .then(response => response.json())
-        .then(json => {
-          const suggestions = json[1];
-          this.setState({suggestions: suggestions});
-          this.setState({isSearching: false});
-        })
-        .catch(error => console.log(error))
-    }
-    else {
-      this.setState({suggestions: []});
-    }
   }
 
   _renderSearchRow(item) {
@@ -138,17 +81,18 @@ export default class eventsSearchViewBody extends Component {
     )
   }
 
-  // _showEventList(clue) {
-  //   InteractionManager.runAfterInteractions(() => {
-  //     this.props.clueSelected(clue);
-  //     this.setState({text: clue, searchMode: false});
-  //   })
-  // }
+  _showEventList(clue) {
+    InteractionManager.runAfterInteractions(() => {
+      //this.props.clueSelected(clue);
+      this.setState({text: clue, searchMode: false});
+    })
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 64,
     backgroundColor: '#fff',
   },
   header: {

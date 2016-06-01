@@ -19,12 +19,13 @@ export default class EventsSearchViewBar extends AppNavBar {
 
   _onSearchClueChange(clue) {
     this.setState({text: clue});
+    this.props.actions.clueSuggest(clue);
     // TODO this._fetchSearchSuggestions(clue)
   }
 
   _onSearchClueSubmit() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.clueSelected(this.state.text);
+      this.props.actions.clueUpdate(this.state.text);
     })
   }
 
@@ -50,7 +51,7 @@ export default class EventsSearchViewBar extends AppNavBar {
           />
         }
         {
-          this.props.clue &&
+          !!this.props.clue &&
           <Text style={styles.searchText}>{this.props.clue}</Text>
         }
       </View>

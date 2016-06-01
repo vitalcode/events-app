@@ -1,8 +1,11 @@
 import {combineReducers} from 'redux'
-import eventsList from '../reducers/eventsList'
+import _ from 'lodash';
+//import eventsList from '../reducers/eventsList'
+import {reducer} from '../coreModule'
 
 const RootReducer = combineReducers({
-  eventsList
+  core: reducer,
+  //eventsList: eventsList
 });
 
 export default RootReducer

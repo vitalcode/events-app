@@ -13,31 +13,36 @@ import React, {
 } from 'react-native'
 import _ from 'lodash'
 import moment from 'moment'
+import {Actions} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import EventsListContainer from './eventsListContainer'
 
 export default class EventsList extends Component {
 
   constructor(props) {
     super(props);
-    this.props.fetchEvents(); // todo refactor
+
+    console.log('EventsList extends Component')
     this.state = {
-      dataSource: this._createDataSource()
+      dataSource: this._createDataSource(props)
     };
+  }
+
+  componentWillMount() {
+    this.props.actions.updateEvents(); // todo refactor
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      dataSource: this._createDataSource()
+      dataSource: this._createDataSource(nextProps)
     })
   };
 
-  _createDataSource() {
+  _createDataSource(props) {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
     });
-    const data = _(this.props.events)
+    const data = _(props.events)
       .map(event => {
         event.fromDisplay = moment(event.from).format('dddd, MMMM D');
         event.that = this;
@@ -50,8 +55,10 @@ export default class EventsList extends Component {
   _showEventDetails(id) {
     const {fetchEventDetails, navigateToEventDetailsPage} = this.props;
     InteractionManager.runAfterInteractions(() => {
-      fetchEventDetails(id);
-      navigateToEventDetailsPage();
+      this.props.actions.getEventDetails(id);
+      Actions.eventsDetails();
+      //fetchEventDetails(id);
+      //navigateToEventDetailsPage();
     })
   }
 
@@ -62,11 +69,12 @@ export default class EventsList extends Component {
   }
 
   _onEndReached() {
-    this.props.fetchEvents()
+    this.props.actions.updateEvents()
   }
 
   _showDatePicker() {
-    this.props.navigateToCalendar()
+    Actions.calendarView();
+    //this.props.navigateToCalendar()
   }
 
   render() {

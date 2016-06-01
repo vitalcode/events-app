@@ -7,6 +7,9 @@ let total = 0;
 
 export function buildAllEventsUrl(clue, date, refresh) {
 
+
+  console.log('buildAllEventsUrl');
+
   if (refresh) {
     from = 0;
   }

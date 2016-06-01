@@ -8,8 +8,8 @@ import React, {
   Picker
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import EventsListContainer from '../common/eventsListContainer'
 import {commonStyles} from '../../utils/commonStyles'
+import {container} from '../../coreModule'
 
 export default class EventsListViewBody extends Component {
 
@@ -33,7 +33,9 @@ export default class EventsListViewBody extends Component {
           <Text style={styles.sectionHeader}>All Events</Text>
           <Icon name="more-horiz" style={styles.searchIcon} size={25} onPress={this._showCalendarPage.bind(this)}/>
         </View>
-        <EventsListContainer navigator={this.props.navigator}/>
+        {
+          <container.eventsListContainer/>
+        }
       </View >
     );
   }
