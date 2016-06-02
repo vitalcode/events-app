@@ -26,11 +26,6 @@ export default class EventsList extends Component {
       dataSource: this._createDataSource(props)
     };
   }
-
-  // componentWillMount() {
-  //   this.props.actions.updateEvents(); // todo refactor may be in store construction
-  // }
-
   componentWillReceiveProps(nextProps) {
     this.setState({
       dataSource: this._createDataSource(nextProps)

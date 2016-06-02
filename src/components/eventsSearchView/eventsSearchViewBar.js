@@ -30,7 +30,7 @@ export default class EventsSearchViewBar extends AppNavBar {
   }
 
   renderBar() {
-    console.log('this.props.clue', this.props.clue);
+   // console.log('this.props.clue', this.props.clue);
     return (
       <View style={styles.searchTextInputContainer}>
         {
