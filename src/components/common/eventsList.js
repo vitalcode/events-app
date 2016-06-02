@@ -27,9 +27,9 @@ export default class EventsList extends Component {
     };
   }
 
-  componentWillMount() {
-    this.props.actions.updateEvents(); // todo refactor
-  }
+  // componentWillMount() {
+  //   this.props.actions.updateEvents(); // todo refactor may be in store construction
+  // }
 
   componentWillReceiveProps(nextProps) {
     this.setState({

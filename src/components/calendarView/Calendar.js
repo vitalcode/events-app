@@ -107,14 +107,14 @@ export default class Calendar extends Component {
       <View style={styles.container}>
         <View style={styles.pageHeader}>
           <Icon name="arrow-back" style={styles.pageHeaderIcon} size={25} onPress={() => this.props.navigator.pop()}/>
-          <TouchableHighlight style={styles.pageHeaderIcon} onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
+          <TouchableHighlight onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
             <Text style={styles.pageHeaderText}>Today</Text>
           </TouchableHighlight>
         </View>
         <View style={styles.weekHeader}>
           {
-            this.state.weekDays.map(weekDay =>
-              <View style={styles.weekDay}>
+            this.state.weekDays.map((weekDay, index) =>
+              <View key={index} style={styles.weekDay}>
                 <Text style={styles.weekDayText}>{weekDay}</Text>
               </View>
             )
@@ -135,10 +135,11 @@ export default class Calendar extends Component {
           <Text style={styles.monthTitleText}>{month.name}</Text>
         </View>
         {
-          month.weeks.map((week) =>
-            <View style={styles.week}>
+          month.weeks.map((week, weekIndex) =>
+            <View key={weekIndex} style={styles.week}>
               {
-                week.days.map((day) => <CalendarDay day={day} onDateSelected={(date) => this._showEventsList(date)}/>)
+                week.days.map((day, dayIndex) => (
+                  <CalendarDay key={dayIndex} day={day} onDateSelected={(date) => this._showEventsList(date)}/>))
               }
             </View>
           )

@@ -32,8 +32,8 @@ const restService = {
     const url = `http://suggestqueries.google.com/complete/search?q=${clue}&client=firefox`;
     return fetch(url).then(response => response.json());
   },
-  getEvents(clue, date, refresh) {
-    const request = buildAllEventsUrl(clue, date, refresh);
+  getEvents(clue, date, refresh, total, pageSize, nextPage) {
+    const request = buildAllEventsUrl(clue, date, refresh, total, pageSize, nextPage);
     return request.then(response => response.json());
   },
   getEventDetails(id){
@@ -46,23 +46,32 @@ const restService = {
 export const actions = new function () {
   this.clueSet = createAction('CLUE_SET'),
     this.dateSet = createAction('DATE_SET'),
+    this.nextPage = createAction('UPDATE_PAGE'),
+    this.pageReset = createAction('PAGE_RESET'),
     this.clueSuggest = createActionAsync('CLUE_SUGGEST', restService.getClueSuggestions),
     this.getEvents = createActionAsync('GET_EVENTS', restService.getEvents, {metaReducer: (...args) => args[1] ? args[1][2] : false}),
     this.getEventDetails = createActionAsync('GET_EVENT_DETAILS', restService.getEventDetails),
     this.updateEvents = () => (dispatch, getState) => {
       const {clue, date} = getState().core;
-      console.log('updateEvents: clue, date', clue, date);
-      dispatch(this.getEvents(clue, date, false));
+      const {total, pageSize, nextPage} = getState().core.events;
+      console.log('updateEvents: clue, date, total, pageSize, nextPage', clue, date, total, pageSize, nextPage);
+
+      if (!total || pageSize * nextPage < total) {
+        dispatch(this.nextPage());
+        dispatch(this.getEvents(clue, date, false, total, pageSize, nextPage));
+      }
     },
     this.clueUpdate = clue => (dispatch, getState) => {
-      const {date} = getState().core;
+     // const {date} = getState().core;
       dispatch(this.clueSet(clue));
-      dispatch(this.getEvents(clue, date, true));
+      dispatch(this.pageReset());
+      dispatch(this.updateEvents());
     },
     this.dateUpdate = date => (dispatch, getState) => {
-      const {clue} = getState().core;
+    //  const {clue} = getState().core;
       dispatch(this.dateSet(date));
-      dispatch(this.getEvents(clue, date, true));
+      dispatch(this.pageReset());
+      dispatch(this.updateEvents());
     }
 };
 
@@ -75,7 +84,8 @@ const eventsReducer = createReducer({
     });
   },
   [actions.getEvents.ok]: (state, payload, meta) => {
-    console.log('meta', meta)
+    console.log('meta', meta);
+    const total = payload.hits.total;
     const events = payload.hits.hits
       .map(hit => {
         const source = hit._source;
@@ -93,7 +103,13 @@ const eventsReducer = createReducer({
       },
       list: {
         [meta? '$set': '$push']: eventsToDisplayEvents(events)
-      }
+      },
+      total: {
+        $set: total
+      },
+      // nextPage: {
+      //   $set: state.nextPage + 1
+      // }
     });
   },
   [actions.getEvents.error]: (state) => {
@@ -102,8 +118,28 @@ const eventsReducer = createReducer({
         $set: false
       }
     });
+  },
+  [actions.nextPage]: (state) => {
+    return update(state, {
+      nextPage: {
+        $set: state.nextPage + 1
+      }
+    });
+  },
+  [actions.pageReset]: (state) => {
+    return update(state, {
+      list: {
+        $set: []
+      },
+      total: {
+        $set: 0
+      },
+      nextPage: {
+        $set: 0
+      }
+    });
   }
-}, {requesting: false, list: []});
+}, {requesting: false, list: [], total: 0, pageSize: 10, nextPage: 0});
 
 const eventDetailsReducer = createReducer({
   [actions.getEventDetails.request]: (state) => {

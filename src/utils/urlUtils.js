@@ -1,12 +1,13 @@
 import {Config} from './../config'
 
-const pageSize = 10;
+// const pageSize = 10;
+//
+// let from = 0;
+// let total = 0;
 
-let from = 0;
-let total = 0;
+export function buildAllEventsUrl(clue, date, refresh, total, pageSize, nextPage) {
 
-export function buildAllEventsUrl(clue, date, refresh) {
-
+  let from = pageSize * nextPage;
 
   console.log('buildAllEventsUrl');
 
@@ -14,10 +15,10 @@ export function buildAllEventsUrl(clue, date, refresh) {
     from = 0;
   }
 
-  if (!total || from < total) {
+  //if (!total || from < total) {
     const url = `http://${Config.host}:9200/lisenok/_search?from=${from}&size=${pageSize}`;
     console.log('url', url);
-    from += pageSize;
+    //from += pageSize;
 
 
     const mustQuery = []
@@ -64,12 +65,11 @@ export function buildAllEventsUrl(clue, date, refresh) {
       method: "POST",
       body: JSON.stringify(query)
     });
-
-  }
+  //}
 }
 
-export function updateTotal(json) {
-  total = json.hits.total;
-  console.log('updateTotal', total);
-}
+// export function updateTotal(json) {
+//   total = json.hits.total;
+//   console.log('updateTotal', total);
+// }
 
