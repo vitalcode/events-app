@@ -221,6 +221,13 @@ const clueSuggestionsReducer = createReducer({
       }
     });
   },
+  [actions.clueClear]: (state) => {
+    return update(state, {
+      list: {
+        $set: []
+      },
+    });
+  },
 }, {requesting: false, list: []});
 
 const reducer = combineReducers({
