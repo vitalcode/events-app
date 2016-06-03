@@ -13,6 +13,7 @@ import EventsListViewBody from './components/eventsListView/eventsListViewBody'
 import EventsList from './components/common/eventsList'
 import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsViewBody'
 import Calendar from './components/calendarView/calendar'
+import CoreRouter from './coreRouter'
 
 
 function eventsToDisplayEvents(events) {
@@ -43,8 +44,9 @@ const restService = {
   }
 };
 
-export const actions = new function () {
+const actions = new function () {
   this.clueSet = createAction('CLUE_SET'),
+    this.clueClear = createAction('CLUE_CLEAR'),
     this.dateSet = createAction('DATE_SET'),
     this.nextPage = createAction('UPDATE_PAGE'),
     this.pageReset = createAction('PAGE_RESET'),
@@ -62,13 +64,13 @@ export const actions = new function () {
       }
     },
     this.clueUpdate = clue => (dispatch, getState) => {
-     // const {date} = getState().core;
+      // const {date} = getState().core;
       dispatch(this.clueSet(clue));
       dispatch(this.pageReset());
       dispatch(this.updateEvents());
     },
     this.dateUpdate = date => (dispatch, getState) => {
-    //  const {clue} = getState().core;
+      //  const {clue} = getState().core;
       dispatch(this.dateSet(date));
       dispatch(this.pageReset());
       dispatch(this.updateEvents());
@@ -102,7 +104,7 @@ const eventsReducer = createReducer({
         $set: false
       },
       list: {
-        [meta? '$set': '$push']: eventsToDisplayEvents(events)
+        [meta ? '$set' : '$push']: eventsToDisplayEvents(events)
       },
       total: {
         $set: total
@@ -179,7 +181,10 @@ const eventDetailsReducer = createReducer({
 const clueReducer = createReducer({
   [actions.clueSet]: (state, payload) => {
     return payload
-  }
+  },
+  [actions.clueClear]: () => {
+    return ''
+  },
 }, "");
 
 const calendarReducer = createReducer({
@@ -218,7 +223,7 @@ const clueSuggestionsReducer = createReducer({
   },
 }, {requesting: false, list: []});
 
-export const reducer = combineReducers({
+const reducer = combineReducers({
   events: eventsReducer,
   eventDetails: eventDetailsReducer,
   clue: clueReducer,
@@ -227,7 +232,7 @@ export const reducer = combineReducers({
 });
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
-export const container = {
+const containers = {
   eventsSearchViewBarContainer: connect((state) => {
       return {
         clue: state.core.clue
@@ -269,4 +274,16 @@ export const container = {
       }
     },
     mapDispatchToProps)(Calendar),
+  coreRouterContainer: connect((state) => {
+      return {
+        date: state.core.date,
+      }
+    },
+    mapDispatchToProps)(CoreRouter),
 };
+
+export default {
+  actions: actions,
+  reducer: reducer,
+  containers: containers,
+}

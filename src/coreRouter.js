@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-  Animated,
-  Platform
-} from 'react-native'
+import {Animated, Platform} from 'react-native'
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} from 'react-native-router-flux'
 import BaseNavBar from './components/common/baseNavBar'
-import {container} from './coreModule'
+import CoreModule from './coreModule'
 
 const reducerCreate = params => {
   const defaultReducer = Reducer(params);
@@ -16,38 +13,36 @@ const reducerCreate = params => {
 };
 
 export default class App extends React.Component {
-
   render() {
+    const {containers} = CoreModule;
+    const {actions} = this.props;
     return <Router createReducer={reducerCreate}>
-
       <Scene key="modal" component={Modal}>
         <Scene key="root">
-
-          <Scene key="eventsListView" component={container.eventsListViewBodyContainer} title="All Events" type="push"
+          <Scene key="eventsListView" title="All Events" type="push"
                  navBar={BaseNavBar}
+                 component={containers.eventsListViewBodyContainer}
                  onLeft={()=>Actions.eventsSearch()} leftButtonImage="search"
                  onRight={()=>Actions.eventsDetails()} rightButtonImage="more-horiz"
           />
-
-          <Scene key="eventsSearch" component={container.eventsSearchViewBodyContainer} type="push"
-                 navBar={container.eventsSearchViewBarContainer}
-                 onRight={()=>Actions.calendarView()} rightButtonImage="clear"
+          <Scene key="eventsSearch" type="push"
+                 navBar={CoreModule.containers.eventsSearchViewBarContainer}
+                 component={containers.eventsSearchViewBodyContainer}
+                 onRight={()=>actions.clueClear()} rightButtonImage="clear"
           />
-
-          <Scene key="eventsDetails" component={container.eventDetailsViewBodyContainer} type="push"
+          <Scene key="eventsDetails" type="push"
                  hideNavBar={true}
+                 component={containers.eventDetailsViewBodyContainer}
                  onRight={()=>Actions.eventsListView()} rightTitle="Right"
           />
-
-          <Scene key="calendarView" component={container.calendarContainer} type="push"
+          <Scene key="calendarView" type="push"
                  navBar={BaseNavBar}
+                 component={containers.calendarContainer}
                  onRight={()=>Actions.eventsListView()} rightTitle="Today"
                  initial={false}
           />
-
         </Scene>
       </Scene>
-
     </Router>
   }
 }

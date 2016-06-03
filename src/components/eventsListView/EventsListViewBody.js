@@ -9,7 +9,7 @@ import React, {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {commonStyles} from '../../utils/commonStyles'
-import {container} from '../../coreModule'
+import CoreModule from '../../coreModule'
 
 export default class EventsListViewBody extends Component {
 
@@ -34,7 +34,7 @@ export default class EventsListViewBody extends Component {
           <Icon name="more-horiz" style={styles.searchIcon} size={25} onPress={this._showCalendarPage.bind(this)}/>
         </View>
         {
-          <container.eventsListContainer/>
+          <CoreModule.containers.eventsListContainer/>
         }
       </View >
     );

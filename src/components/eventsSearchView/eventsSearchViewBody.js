@@ -2,20 +2,13 @@ import React, {
   StyleSheet,
   View,
   Text,
-  Image,
   ListView,
   TouchableOpacity,
   Component,
   ActivityIndicatorIOS,
-  PanResponder,
   InteractionManager,
-  TextInput
 } from 'react-native'
-import _ from 'lodash'
-import moment from 'moment'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import {container} from '../../coreModule'
-import {buildAllEventsUrl, updateTotal} from '../../utils/urlUtils'
+import CoreModule from '../../coreModule'
 
 export default class eventsSearchViewBody extends Component {
 
@@ -45,7 +38,7 @@ export default class eventsSearchViewBody extends Component {
     return (
       <View style={styles.container}>
         {
-          !!this.props.clue && <container.eventsListContainer/>
+          !!this.props.clue && <CoreModule.containers.eventsListContainer/>
         }
         {
           !this.props.clue &&
