@@ -226,6 +226,9 @@ const clueSuggestionsReducer = createReducer({
       list: {
         $set: []
       },
+      requesting: {
+        $set: false
+      }
     });
   },
 }, {requesting: false, list: []});
@@ -283,7 +286,7 @@ const containers = {
     mapDispatchToProps)(Calendar),
   coreRouterContainer: connect((state) => {
       return {
-        date: state.core.date,
+        clue: state.core.clue,
       }
     },
     mapDispatchToProps)(CoreRouter),

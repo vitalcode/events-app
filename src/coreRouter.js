@@ -28,7 +28,6 @@ export default class App extends React.Component {
           <Scene key="eventsSearch" type="push"
                  navBar={CoreModule.containers.eventsSearchViewBarContainer}
                  component={containers.eventsSearchViewBodyContainer}
-                 onRight={()=>actions.clueClear()} rightButtonImage="clear"
           />
           <Scene key="eventsDetails" type="push"
                  hideNavBar={true}
