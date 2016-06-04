@@ -1,4 +1,4 @@
-import React, {Component} from 'react-native'
+import React, { Component } from 'react';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';

@@ -1,8 +1,8 @@
-import React, {
+import React, { Component } from 'react';
+import {
   StyleSheet,
   View,
   Text,
-  Component,
   InteractionManager,
   Animated,
   Picker
