@@ -4,19 +4,23 @@ import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} 
 import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
 
-const reducerCreate = params => {
-  const defaultReducer = Reducer(params);
-  return (state, action)=> {
-    console.log("ACTION:", action);
-    return defaultReducer(state, action);
-  }
-};
 
 export default class App extends React.Component {
+
+  reducerCreate(params) {
+    const defaultReducer = Reducer(params);
+    return (state, action)=> {
+      console.log("ACTION:", action);
+      if (action.scene && action.scene.name === 'eventsListView') {
+        this.props.actions.getAllEvents();
+      }
+      return defaultReducer(state, action);
+    }
+  };
+
   render() {
     const {containers} = CoreModule;
-    const {actions} = this.props;
-    return <Router createReducer={reducerCreate}>
+    return <Router createReducer={this.reducerCreate.bind(this)}>
       <Scene key="modal" component={Modal}>
         <Scene key="root">
           <Scene key="eventsListView" title="All Events" type="push"

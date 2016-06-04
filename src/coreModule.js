@@ -15,7 +15,6 @@ import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsVie
 import Calendar from './components/calendarView/calendar'
 import CoreRouter from './coreRouter'
 
-
 function eventsToDisplayEvents(events) {
   return events.map(event => eventToDisplayEvent(event));
 }
@@ -56,22 +55,24 @@ const actions = new function () {
     this.updateEvents = () => (dispatch, getState) => {
       const {clue, date} = getState().core;
       const {total, pageSize, nextPage} = getState().core.events;
-      console.log('updateEvents: clue, date, total, pageSize, nextPage', clue, date, total, pageSize, nextPage);
-
       if (!total || pageSize * nextPage < total) {
         dispatch(this.nextPage());
         dispatch(this.getEvents(clue, date, false, total, pageSize, nextPage));
       }
     },
     this.clueUpdate = clue => (dispatch, getState) => {
-      // const {date} = getState().core;
       dispatch(this.clueSet(clue));
       dispatch(this.pageReset());
       dispatch(this.updateEvents());
     },
     this.dateUpdate = date => (dispatch, getState) => {
-      //  const {clue} = getState().core;
       dispatch(this.dateSet(date));
+      dispatch(this.pageReset());
+      dispatch(this.updateEvents());
+    },
+    this.getAllEvents = () => (dispatch) => {
+      dispatch(this.clueClear());
+      dispatch(this.dateSet(''));
       dispatch(this.pageReset());
       dispatch(this.updateEvents());
     }
