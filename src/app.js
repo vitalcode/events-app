@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -16,7 +16,7 @@ const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunkMiddleware, logger)(createStore);
 const store = createStoreWithMiddleware(rootModule.reducer);
 
-store.dispatch(CoreModule.actions.updateEvents());
+store.dispatch(CoreModule.actions.categoryEventsGet());
 
 export default class App extends Component {
   render() {

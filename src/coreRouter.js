@@ -11,9 +11,12 @@ export default class App extends React.Component {
     const defaultReducer = Reducer(params);
     return (state, action)=> {
       console.log("ACTION:", action);
-      if (action.scene && action.scene.name === 'eventsListView') {
-        this.props.actions.getAllEvents();
+      if (action.type === 'focus' && action.scene.name === 'eventsSearch') {
+        this.props.actions.clearSearch();
       }
+      // if (action.type === 'focus' && action.scene.name === 'eventsListView') {
+      //   this.props.actions.getAllEvents();
+      // }
       return defaultReducer(state, action);
     }
   };
@@ -27,11 +30,12 @@ export default class App extends React.Component {
                  navBar={BaseNavBar}
                  component={containers.eventsListViewBodyContainer}
                  onLeft={()=>Actions.eventsSearch()} leftButtonImage="search"
-                 onRight={()=>Actions.eventsDetails()} rightButtonImage="more-horiz"
+                 onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
           />
           <Scene key="eventsSearch" type="push"
                  navBar={CoreModule.containers.eventsSearchViewBarContainer}
                  component={containers.eventsSearchViewBodyContainer}
+                 onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
           />
           <Scene key="eventsDetails" type="push"
                  hideNavBar={true}

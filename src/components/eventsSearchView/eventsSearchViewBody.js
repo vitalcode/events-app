@@ -9,6 +9,7 @@ import React, {
   InteractionManager,
 } from 'react-native'
 import CoreModule from '../../coreModule'
+import EventsList from '../common/eventsList'
 
 export default class eventsSearchViewBody extends Component {
 
@@ -38,7 +39,10 @@ export default class eventsSearchViewBody extends Component {
     return (
       <View style={styles.container}>
         {
-          !!this.props.clue && <CoreModule.containers.eventsListContainer/>
+          !!this.props.clue &&
+          <EventsList events={this.props.events}
+                      requestingEvents={this.props.requestingEvents}
+                      getEvents={this.props.actions.searchEventsGet}/>
         }
         {
           !this.props.clue &&

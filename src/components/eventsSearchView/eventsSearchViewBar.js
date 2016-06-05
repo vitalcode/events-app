@@ -15,7 +15,7 @@ export default class EventsSearchViewBar extends AppNavBar {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      text: props.clue,
     };
   }
 

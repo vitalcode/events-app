@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {commonStyles} from '../../utils/commonStyles'
-import CoreModule from '../../coreModule'
+import EventsList from '../common/eventsList'
 
 export default class EventsListViewBody extends Component {
 
@@ -33,9 +33,9 @@ export default class EventsListViewBody extends Component {
           <Text style={styles.sectionHeader}>All Events</Text>
           <Icon name="more-horiz" style={styles.searchIcon} size={25} onPress={this._showCalendarPage.bind(this)}/>
         </View>
-        {
-          <CoreModule.containers.eventsListContainer/>
-        }
+        <EventsList events={this.props.events}
+                    requestingEvents={this.props.requestingEvents}
+                    getEvents={this.props.actions.categoryEventsGet}/>
       </View >
     );
   }

@@ -8,9 +8,6 @@ import {Config} from './../config'
 export function buildAllEventsUrl(clue, date, refresh, total, pageSize, nextPage) {
 
   let from = pageSize * nextPage;
-
-  console.log('buildAllEventsUrl');
-
   if (refresh) {
     from = 0;
   }

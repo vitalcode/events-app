@@ -20,8 +20,6 @@ export default class EventsList extends Component {
 
   constructor(props) {
     super(props);
-
-    console.log('EventsList extends Component')
     this.state = {
       dataSource: this._createDataSource(props)
     };
@@ -64,7 +62,7 @@ export default class EventsList extends Component {
   }
 
   _onEndReached() {
-    this.props.actions.updateEvents()
+    this.props.getEvents()
   }
 
   _showDatePicker() {

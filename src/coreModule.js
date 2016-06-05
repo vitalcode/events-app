@@ -1,5 +1,4 @@
-import {combineReducers} from 'redux'
-import {bindActionCreators} from 'redux';
+import {combineReducers, bindActionCreators} from 'redux'
 import {connect} from 'react-redux';
 import {createAction, createReducer} from 'redux-act';
 import {createActionAsync} from 'redux-act-async';
@@ -10,7 +9,6 @@ import {buildAllEventsUrl} from './utils/urlUtils'
 import EventsSearchViewBar from './components/eventsSearchView/eventsSearchViewBar'
 import EventsSearchViewBody from './components/eventsSearchView/eventsSearchViewBody'
 import EventsListViewBody from './components/eventsListView/eventsListViewBody'
-import EventsList from './components/common/eventsList'
 import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsViewBody'
 import Calendar from './components/calendarView/calendar'
 import CoreRouter from './coreRouter'
@@ -32,8 +30,8 @@ const restService = {
     const url = `http://suggestqueries.google.com/complete/search?q=${clue}&client=firefox`;
     return fetch(url).then(response => response.json());
   },
-  getEvents(clue, date, refresh, total, pageSize, nextPage) {
-    const request = buildAllEventsUrl(clue, date, refresh, total, pageSize, nextPage);
+  getEvents(clue, date, total, pageSize, nextPage) {
+    const request = buildAllEventsUrl(clue, date, false, total, pageSize, nextPage);
     return request.then(response => response.json());
   },
   getEventDetails(id){
@@ -47,47 +45,68 @@ const actions = new function () {
   this.clueSet = createAction('CLUE_SET'),
     this.clueClear = createAction('CLUE_CLEAR'),
     this.dateSet = createAction('DATE_SET'),
-    this.nextPage = createAction('UPDATE_PAGE'),
     this.pageReset = createAction('PAGE_RESET'),
+    this.pageResetAll = createAction('PAGE_RESET_ALL'),
     this.clueSuggest = createActionAsync('CLUE_SUGGEST', restService.getClueSuggestions),
-    this.getEvents = createActionAsync('GET_EVENTS', restService.getEvents, {metaReducer: (...args) => args[1] ? args[1][2] : false}),
     this.getEventDetails = createActionAsync('GET_EVENT_DETAILS', restService.getEventDetails),
-    this.updateEvents = () => (dispatch, getState) => {
-      const {clue, date} = getState().core;
-      const {total, pageSize, nextPage} = getState().core.events;
+
+    this.dateUpdate = date => (dispatch) => {
+      dispatch(this.dateSet(date));
+
+      
+      dispatch(this.pageResetAll());
+      dispatch(this.categoryEventsGet());
+    },
+
+    this.categoryEventsGet = () => (dispatch, getState) => {
+      const {date} = getState().core;
+      const {total, pageSize, nextPage} = getState().core.categoryEvents;
       if (!total || pageSize * nextPage < total) {
-        dispatch(this.nextPage());
-        dispatch(this.getEvents(clue, date, false, total, pageSize, nextPage));
+        dispatch(this.categoryEventsNextPage());
+        dispatch(this.categoryEventsFetch(null, date, total, pageSize, nextPage));
       }
     },
-    this.clueUpdate = clue => (dispatch, getState) => {
+    this.categoryEventsNextPage = createAction('CATEGORY_EVENTS_NEXT_PAGE'),
+    this.categoryEventsFetch = createActionAsync('CATEGORY_EVENTS_FETCH', restService.getEvents),
+
+    this.searchEventsGet = () => (dispatch, getState) => {
+      const {clue, date} = getState().core;
+      const {total, pageSize, nextPage} = getState().core.searchEvents;
+      if (!total || pageSize * nextPage < total) {
+        dispatch(this.searchEventsNextPage());
+        dispatch(this.searchEventsFetch(clue, date, total, pageSize, nextPage));
+      }
+    },
+    this.searchEventsNextPage = createAction('SEARCH_EVENTS_NEXT_PAGE'),
+    this.searchEventsFetch = createActionAsync('SEARCH_EVENTS_FETCH', restService.getEvents),
+
+
+
+    this.clueUpdate = clue => (dispatch) => {
       dispatch(this.clueSet(clue));
       dispatch(this.pageReset());
-      dispatch(this.updateEvents());
-    },
-    this.dateUpdate = date => (dispatch, getState) => {
-      dispatch(this.dateSet(date));
-      dispatch(this.pageReset());
-      dispatch(this.updateEvents());
+      dispatch(this.searchEventsGet());
     },
     this.getAllEvents = () => (dispatch) => {
+      dispatch(this.pageResetAll());
+      dispatch(this.categoryEventsGet());
+    },
+    this.clearSearch = () => (dispatch) => {
       dispatch(this.clueClear());
       dispatch(this.dateSet(''));
       dispatch(this.pageReset());
-      dispatch(this.updateEvents());
     }
 };
 
-const eventsReducer = createReducer({
-  [actions.getEvents.request]: (state) => {
+const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer({
+  [getAction.request]: (state) => {
     return update(state, {
       requesting: {
         $set: true
       }
     });
   },
-  [actions.getEvents.ok]: (state, payload, meta) => {
-    console.log('meta', meta);
+  [getAction.ok]: (state, payload) => {
     const total = payload.hits.total;
     const events = payload.hits.hits
       .map(hit => {
@@ -105,7 +124,7 @@ const eventsReducer = createReducer({
         $set: false
       },
       list: {
-        [meta ? '$set' : '$push']: eventsToDisplayEvents(events)
+        $push: eventsToDisplayEvents(events)
       },
       total: {
         $set: total
@@ -115,22 +134,25 @@ const eventsReducer = createReducer({
       // }
     });
   },
-  [actions.getEvents.error]: (state) => {
+  [getAction.error]: (state) => {
     return update(state, {
       requesting: {
         $set: false
       }
     });
   },
-  [actions.nextPage]: (state) => {
+  [nextPageAction]: (state) => {
     return update(state, {
       nextPage: {
         $set: state.nextPage + 1
       }
     });
   },
-  [actions.pageReset]: (state) => {
+  [resetAction]: (state) => {
     return update(state, {
+      requesting: {
+        $set: false
+      },
       list: {
         $set: []
       },
@@ -179,6 +201,12 @@ const eventDetailsReducer = createReducer({
   }
 }, {requesting: false, item: {}});
 
+const calendarReducer = createReducer({
+  [actions.dateSet]: (state, payload) => {
+    return payload
+  }
+}, "");
+
 const clueReducer = createReducer({
   [actions.clueSet]: (state, payload) => {
     return payload
@@ -186,12 +214,6 @@ const clueReducer = createReducer({
   [actions.clueClear]: () => {
     return ''
   },
-}, "");
-
-const calendarReducer = createReducer({
-  [actions.dateSet]: (state, payload) => {
-    return payload
-  }
 }, "");
 
 const clueSuggestionsReducer = createReducer({
@@ -235,11 +257,12 @@ const clueSuggestionsReducer = createReducer({
 }, {requesting: false, list: []});
 
 const reducer = combineReducers({
-  events: eventsReducer,
+  searchEvents: eventsReducer(actions.searchEventsFetch, actions.searchEventsNextPage, actions.pageReset),
+  categoryEvents: eventsReducer(actions.categoryEventsFetch, actions.categoryEventsNextPage, actions.pageResetAll),
   eventDetails: eventDetailsReducer,
   clue: clueReducer,
   clueSuggestions: clueSuggestionsReducer,
-  date: calendarReducer
+  date: calendarReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
@@ -255,16 +278,11 @@ const containers = {
         clue: state.core.clue,
         clueSuggestions: state.core.clueSuggestions.list,
         requestingClueSuggestions: state.core.clueSuggestions.requesting,
+        events: state.core.searchEvents.list,
+        requestingEvents: state.core.searchEvents.requesting,
       }
     },
     mapDispatchToProps)(EventsSearchViewBody),
-  eventsListContainer: connect((state) => {
-      return {
-        events: state.core.events.list,
-        requestingEvents: state.core.events.requesting,
-      }
-    },
-    mapDispatchToProps)(EventsList),
   eventDetailsViewBodyContainer: connect((state) => {
       return {
         eventDetails: state.core.eventDetails.item,
@@ -274,8 +292,8 @@ const containers = {
     mapDispatchToProps)(EventDetailsViewBody),
   eventsListViewBodyContainer: connect((state) => {
       return {
-        eventDetails: state.core.events.list,
-        requesting: state.core.events.requesting,
+        events: state.core.categoryEvents.list,
+        requestingEvents: state.core.categoryEvents.requesting,
       }
     },
     mapDispatchToProps)(EventsListViewBody),
@@ -285,12 +303,7 @@ const containers = {
       }
     },
     mapDispatchToProps)(Calendar),
-  coreRouterContainer: connect((state) => {
-      return {
-        clue: state.core.clue,
-      }
-    },
-    mapDispatchToProps)(CoreRouter),
+  coreRouterContainer: connect(null, mapDispatchToProps)(CoreRouter),
 };
 
 export default {
