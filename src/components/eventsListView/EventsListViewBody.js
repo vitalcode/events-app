@@ -35,7 +35,8 @@ export default class EventsListViewBody extends Component {
         </View>
         <EventsList events={this.props.events}
                     requestingEvents={this.props.requestingEvents}
-                    getEvents={this.props.actions.categoryEventsGet}/>
+                    getEvents={this.props.actions.categoryEventsGet}
+                    getEventDetails={this.props.actions.getEventDetails}/>
       </View >
     );
   }

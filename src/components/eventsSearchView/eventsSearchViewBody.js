@@ -42,7 +42,8 @@ export default class eventsSearchViewBody extends Component {
           !!this.props.clue &&
           <EventsList events={this.props.events}
                       requestingEvents={this.props.requestingEvents}
-                      getEvents={this.props.actions.searchEventsGet}/>
+                      getEvents={this.props.actions.searchEventsGet}
+                      getEventDetails={this.props.actions.getEventDetails}/>
         }
         {
           !this.props.clue &&

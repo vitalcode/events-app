@@ -42,21 +42,8 @@ const restService = {
 };
 
 const actions = new function () {
-  this.clueSet = createAction('CLUE_SET'),
-    this.clueClear = createAction('CLUE_CLEAR'),
-    this.dateSet = createAction('DATE_SET'),
-    this.pageReset = createAction('PAGE_RESET'),
-    this.pageResetAll = createAction('PAGE_RESET_ALL'),
-    this.clueSuggest = createActionAsync('CLUE_SUGGEST', restService.getClueSuggestions),
+  this.clueSuggest = createActionAsync('CLUE_SUGGEST', restService.getClueSuggestions),
     this.getEventDetails = createActionAsync('GET_EVENT_DETAILS', restService.getEventDetails),
-
-    this.dateUpdate = date => (dispatch) => {
-      dispatch(this.dateSet(date));
-
-      
-      dispatch(this.pageResetAll());
-      dispatch(this.categoryEventsGet());
-    },
 
     this.categoryEventsGet = () => (dispatch, getState) => {
       const {date} = getState().core;
@@ -66,8 +53,13 @@ const actions = new function () {
         dispatch(this.categoryEventsFetch(null, date, total, pageSize, nextPage));
       }
     },
+    this.categoryEventsReload = date => (dispatch) => {
+      dispatch(this.categoryEventsReset());
+      dispatch(this.categoryEventsGet());
+    },
     this.categoryEventsNextPage = createAction('CATEGORY_EVENTS_NEXT_PAGE'),
     this.categoryEventsFetch = createActionAsync('CATEGORY_EVENTS_FETCH', restService.getEvents),
+    this.categoryEventsReset = createAction('CATEGORY_EVENTS_RESET'),
 
     this.searchEventsGet = () => (dispatch, getState) => {
       const {clue, date} = getState().core;
@@ -77,25 +69,31 @@ const actions = new function () {
         dispatch(this.searchEventsFetch(clue, date, total, pageSize, nextPage));
       }
     },
-    this.searchEventsNextPage = createAction('SEARCH_EVENTS_NEXT_PAGE'),
-    this.searchEventsFetch = createActionAsync('SEARCH_EVENTS_FETCH', restService.getEvents),
-
-
-
-    this.clueUpdate = clue => (dispatch) => {
-      dispatch(this.clueSet(clue));
-      dispatch(this.pageReset());
+    this.searchEventsReload = date => (dispatch) => {
+      dispatch(this.searchEventsReset());
       dispatch(this.searchEventsGet());
-    },
-    this.getAllEvents = () => (dispatch) => {
-      dispatch(this.pageResetAll());
-      dispatch(this.categoryEventsGet());
     },
     this.clearSearch = () => (dispatch) => {
       dispatch(this.clueClear());
-      dispatch(this.dateSet(''));
-      dispatch(this.pageReset());
-    }
+      dispatch(this.searchEventsReset());
+    },
+    this.searchEventsNextPage = createAction('SEARCH_EVENTS_NEXT_PAGE'),
+    this.searchEventsFetch = createActionAsync('SEARCH_EVENTS_FETCH', restService.getEvents),
+    this.searchEventsReset = createAction('SEARCH_EVENTS_RESET'),
+
+    this.dateUpdate = (date) => (dispatch) => {
+      dispatch(this.dateSet(date));
+      dispatch(this.categoryEventsReload());
+      dispatch(this.searchEventsReload());
+    },
+    this.dateSet = createAction('DATE_SET'),
+
+    this.clueUpdate = clue => (dispatch) => {
+      dispatch(this.clueSet(clue));
+      dispatch(this.searchEventsReload());
+    },
+    this.clueSet = createAction('CLUE_SET'),
+    this.clueClear = createAction('CLUE_CLEAR')
 };
 
 const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer({
@@ -257,8 +255,8 @@ const clueSuggestionsReducer = createReducer({
 }, {requesting: false, list: []});
 
 const reducer = combineReducers({
-  searchEvents: eventsReducer(actions.searchEventsFetch, actions.searchEventsNextPage, actions.pageReset),
-  categoryEvents: eventsReducer(actions.categoryEventsFetch, actions.categoryEventsNextPage, actions.pageResetAll),
+  searchEvents: eventsReducer(actions.searchEventsFetch, actions.searchEventsNextPage, actions.searchEventsReset),
+  categoryEvents: eventsReducer(actions.categoryEventsFetch, actions.categoryEventsNextPage, actions.categoryEventsReset),
   eventDetails: eventDetailsReducer,
   clue: clueReducer,
   clueSuggestions: clueSuggestionsReducer,

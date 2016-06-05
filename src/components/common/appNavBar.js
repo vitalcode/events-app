@@ -20,7 +20,6 @@ export default class AppNavBar extends BaseNavBar {
   }
 
   _renderTitle(childState, index:number) {
-    console.log('props', this.props.children)
     const title = this.props.getTitle ? this.props.getTitle(childState) : childState.title;
     return (
       <Animated.View key={childState.key} style={[

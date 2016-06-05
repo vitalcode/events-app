@@ -97,8 +97,8 @@ export default class Calendar extends Component {
 
   _showEventsList(date) {
     InteractionManager.runAfterInteractions(() => {
-      Actions.pop();
       this.props.actions.dateUpdate(date);
+      Actions.pop();
     })
   }
 

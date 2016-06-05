@@ -24,6 +24,7 @@ export default class EventsList extends Component {
       dataSource: this._createDataSource(props)
     };
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       dataSource: this._createDataSource(nextProps)
@@ -48,7 +49,7 @@ export default class EventsList extends Component {
   _showEventDetails(id) {
     const {fetchEventDetails, navigateToEventDetailsPage} = this.props;
     InteractionManager.runAfterInteractions(() => {
-      this.props.actions.getEventDetails(id);
+      this.props.getEventDetails(id);
       Actions.eventsDetails();
       //fetchEventDetails(id);
       //navigateToEventDetailsPage();
@@ -65,10 +66,10 @@ export default class EventsList extends Component {
     this.props.getEvents()
   }
 
-  _showDatePicker() {
-    Actions.calendarView();
-    //this.props.navigateToCalendar()
-  }
+  // _showDatePicker() {
+  //   Actions.calendarView();
+  //   //this.props.navigateToCalendar()
+  // }
 
   render() {
     return (
@@ -91,11 +92,7 @@ export default class EventsList extends Component {
 
     return (
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => {
-      that._showDatePicker()
-    }}>
-          <Text style={styles.sectionHeader}>{sectionID}</Text>
-        </TouchableOpacity>
+        <Text style={styles.sectionHeader}>{sectionID}</Text>
       </View>
     );
   }
@@ -154,7 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  
+
   datePickerContainer: {
     flex: 1,
     flexDirection: 'column',

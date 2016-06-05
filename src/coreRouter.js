@@ -4,22 +4,20 @@ import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} 
 import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
 
-
 export default class App extends React.Component {
 
   reducerCreate(params) {
     const defaultReducer = Reducer(params);
     return (state, action)=> {
-      console.log("ACTION:", action);
-      if (action.type === 'focus' && action.scene.name === 'eventsSearch') {
-        this.props.actions.clearSearch();
-      }
-      // if (action.type === 'focus' && action.scene.name === 'eventsListView') {
-      //   this.props.actions.getAllEvents();
-      // }
+      console.log("NAV ACTION:", action);
       return defaultReducer(state, action);
     }
   };
+
+  _navigateToSearchView() {
+    this.props.actions.clearSearch();
+    Actions.eventsSearch();
+  }
 
   render() {
     const {containers} = CoreModule;
@@ -29,7 +27,7 @@ export default class App extends React.Component {
           <Scene key="eventsListView" title="All Events" type="push"
                  navBar={BaseNavBar}
                  component={containers.eventsListViewBodyContainer}
-                 onLeft={()=>Actions.eventsSearch()} leftButtonImage="search"
+                 onLeft={this._navigateToSearchView.bind(this)} leftButtonImage="search"
                  onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
           />
           <Scene key="eventsSearch" type="push"
