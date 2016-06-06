@@ -203,7 +203,7 @@ const calendarReducer = createReducer({
   [actions.dateSet]: (state, payload) => {
     return payload
   }
-}, "");
+}, Config.today);
 
 const clueReducer = createReducer({
   [actions.clueSet]: (state, payload) => {
@@ -297,7 +297,7 @@ const containers = {
     mapDispatchToProps)(EventsListViewBody),
   calendarContainer: connect((state) => {
       return {
-        date: state.core.date,
+        selectedDate: state.core.date,
       }
     },
     mapDispatchToProps)(Calendar),

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -24,14 +24,18 @@ export default class CalendarDay extends Component {
         onPressIn={() => day.currentMonth && this.setState({selected: true})}
         onPressOut={() => day.currentMonth && this.setState({selected: false})}>
         <View style={styles.dayWrapper}>
-          <View style={[styles.day,
-            day.today && day.currentMonth && styles.today,
-            this.state.selected && styles.daySelected]}>
+          <View style={[styles.day, 
+              day.today && day.currentMonth && styles.today, 
+              this.state.selected && styles.daySelected,
+              this.props.selected && styles.daySelected,
+            ]}>
             <Text style={[styles.dayText,
-              day.weekend && styles.dayTextWeekend,
-              day.today && styles.dayTextToday,
-              !day.currentMonth && styles.dayTextHidden,
-              this.state.selected && styles.dayTextSelected]}>
+                day.weekend && styles.dayTextWeekend,
+                day.today && styles.dayTextToday,
+                !day.currentMonth && styles.dayTextHidden,
+                this.state.selected && styles.dayTextSelected,
+                this.props.selected && styles.dayTextSelected,
+              ]}>
               {day.number}
             </Text>
           </View>

@@ -139,7 +139,10 @@ export default class Calendar extends Component {
             <View key={weekIndex} style={styles.week}>
               {
                 week.days.map((day, dayIndex) => (
-                  <CalendarDay key={dayIndex} day={day} onDateSelected={(date) => this._showEventsList(date)}/>))
+                  <CalendarDay key={dayIndex}
+                               day={day}
+                               selected={this.props.selectedDate.isSame(day.date, 'day')}
+                               onDateSelected={(date) => this._showEventsList(date)}/>))
               }
             </View>
           )
