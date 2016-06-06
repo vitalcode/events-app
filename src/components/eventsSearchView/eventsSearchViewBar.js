@@ -8,7 +8,6 @@ import {
   TouchableOpacity
 } from 'react-native'
 import AppNavBar from '../common/appNavBar'
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class EventsSearchViewBar extends AppNavBar {
 
@@ -35,7 +34,7 @@ export default class EventsSearchViewBar extends AppNavBar {
     })
   }
 
-  _onClearButtonPress(){
+  _onClearButtonPress() {
     this.props.actions.clueClear();
     this.setState({text: ''});
   }
@@ -43,7 +42,8 @@ export default class EventsSearchViewBar extends AppNavBar {
   renderBar() {
     const {text} = this.state;
     return (
-      <View style={styles.searchTextInputContainer}>
+      <View style={styles.searchTextInputContainer}
+            onPress={this._onClearButtonPress.bind(this)}>
         {
           !this.props.clue &&
           <TextInput
@@ -63,13 +63,10 @@ export default class EventsSearchViewBar extends AppNavBar {
         }
         {
           !!this.props.clue &&
-          <Text style={styles.searchText}>{this.props.clue}</Text>
+          <TouchableOpacity onPress={this._onClearButtonPress.bind(this)}>
+            <Text style={styles.searchText}>{this.props.clue}</Text>
+          </TouchableOpacity>
         }
-        <TouchableOpacity style={[styles.clearButtonContainer]}
-                          disabled={!text}
-                          onPress={this._onClearButtonPress.bind(this)}>
-          <Icon style={[styles.clearButton, {opacity: !text ? 0.4: 1}]} name='clear' size={25}/>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -81,16 +78,12 @@ const styles = StyleSheet.create({
     height: 21,
     color: 'white',
   },
-  clearButtonContainer: {
-    paddingRight: 15,
-    paddingLeft: 10
-  },
   searchTextInputContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: 50,
-    paddingRight: 0,
+    paddingRight: 50,
   },
   noLeftButton: {
     paddingRight: 50,
