@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Animated,
   Platform,
+  View
 } from 'react-native'
 import {NavBar} from 'react-native-router-flux'
 import BaseNavBar from './baseNavBar'
@@ -20,6 +21,12 @@ export default class AppNavBar extends BaseNavBar {
   }
 
   _renderTitle(childState, index:number) {
+
+    // TODO refactor 
+    if (childState.name === "eventsListView") {
+      return (<View></View>);
+    }
+
     const title = this.props.getTitle ? this.props.getTitle(childState) : childState.title;
     return (
       <Animated.View key={childState.key} style={[
