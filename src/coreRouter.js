@@ -3,6 +3,8 @@ import {Animated, Platform} from 'react-native'
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} from 'react-native-router-flux'
 import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
+import {Config} from './config'
+
 
 export default class App extends React.Component {
 
@@ -17,6 +19,11 @@ export default class App extends React.Component {
   _navigateToSearchView() {
     this.props.actions.clearSearch();
     Actions.eventsSearch();
+  }
+
+  _dateReset() {
+    this.props.actions.dateUpdate(Config.today);
+    Actions.pop();
   }
 
   render() {
@@ -43,7 +50,7 @@ export default class App extends React.Component {
           <Scene key="calendarView" type="push"
                  navBar={BaseNavBar}
                  component={containers.calendarContainer}
-                 onRight={()=>Actions.eventsListView()} rightTitle="Today"
+                 onRight={()=> this._dateReset()} rightTitle="Today"
                  initial={false}
           />
         </Scene>
