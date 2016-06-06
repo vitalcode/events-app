@@ -69,12 +69,17 @@ export default class eventsSearchViewBody extends Component {
     )
   }
 
+  _onSearchClueSubmit(item) {
+    InteractionManager.runAfterInteractions(() => {
+      this.props.actions.clueUpdate(item);
+    })
+  }
+
   _renderSearchRow(item) {
     return (
-      <TouchableOpacity onPress={this._showEventList.bind(this, item)}>
-        <View style={styles.searchRow}>
-          <Text tyle={styles.searchRowText}>{item}</Text>
-        </View>
+      <TouchableOpacity style={styles.searchRow}
+                        onPress={this._onSearchClueSubmit.bind(this, item)}>
+        <Text tyle={styles.searchRowText}>{item}</Text>
       </TouchableOpacity>
     )
   }
