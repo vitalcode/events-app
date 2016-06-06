@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   backButton: {
-    width: 130,
+    width: 50,
     height: 37,
     position: 'absolute',
     bottom: 4,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rightButton: {
-    width: 100,
+    width: 50,
     height: 37,
     position: 'absolute',
     bottom: 4,
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   leftButton: {
-    width: 100,
+    width: 50,
     height: 37,
     position: 'absolute',
     bottom: 4,
