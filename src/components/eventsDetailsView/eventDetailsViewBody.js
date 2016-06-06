@@ -6,7 +6,8 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ActivityIndicatorIOS
 } from 'react-native';
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -24,6 +25,18 @@ export default class EventDetails extends Component {
         this.props.eventDetails
       ])
     };
+  }
+
+  _renderFooter() {
+    return (
+      <View>
+        {this.props.requesting &&
+        <ActivityIndicatorIOS style={styles.spinner}
+                              animating={true}
+                              size={'large'}/>
+        }
+      </View>
+    );
   }
 
   render() {
@@ -76,6 +89,7 @@ export default class EventDetails extends Component {
               </Text>
           </View>
          )}
+        renderFooter={this._renderFooter.bind(this)}
         renderScrollComponent={props => (
           <ParallaxScrollView
             onScroll={onScroll}

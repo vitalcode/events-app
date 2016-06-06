@@ -9,19 +9,26 @@ import React, {
   InteractionManager,
   TouchableOpacity,
   Animated,
-  Picker
+  Picker,
+  Dimensions
 } from 'react-native'
 import _ from 'lodash'
 import moment from 'moment'
 import {Actions} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
+// must be less than ~50px due to ScrollView bug (event only fires once)
+// https://github.com/facebook/react-native/pull/452
+// TODO: expose as a prop when onScroll works properly
+var PULLDOWN_DISTANCE = 15 // pixels
+
 export default class EventsList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: this._createDataSource(props)
+      dataSource: this._createDataSource(props),
+      reloading: false
     };
   }
 
@@ -77,16 +84,18 @@ export default class EventsList extends Component {
         <ListView
           dataSource={this.state.dataSource}
           onEndReached={this._onEndReached.bind(this)}
-          renderSectionHeader={this._renderHeader}
+          renderSectionHeader={this._renderSectionHeader}
           renderSeparator={this._renderSeparator}
           renderFooter={this._renderFooter.bind(this)}
           renderRow={this._renderRow.bind(this)}
+          renderHeader={this._renderHeader.bind(this)}
+          onScroll={this._handleScroll.bind(this)}
         />
       </View>
     );
   }
 
-  _renderHeader(sectionData, sectionID) {
+  _renderSectionHeader(sectionData, sectionID) {
 
     let that = sectionData[0].that;
 
@@ -137,13 +146,36 @@ export default class EventsList extends Component {
   _renderFooter() {
     return (
       <View>
-        {this.props.isLoading &&
+        {this.props.requestingEvents &&
         <ActivityIndicatorIOS style={styles.spinner}
-                              animating={true}
-                              size={'large'}/>
+                              animating={true}/>
         }
       </View>
     );
+  }
+
+  _renderHeader() {
+    var {height, width} = Dimensions.get('window');
+    return (
+      <View style={{position: 'absolute', top: -35, left: width/2-20}}>
+        {this.state.reloading &&
+        <ActivityIndicatorIOS style={styles.spinner}
+                              animating={true}/>
+        }
+      </View>
+    );
+  }
+
+  _handleScroll(e){
+    if (e.nativeEvent.contentOffset.y < -PULLDOWN_DISTANCE) {
+      this.setState({reloading: true})
+    } else {
+      if (this.state.reloading) {
+        this.props.reloadEvents()
+      }
+      this.setState({reloading: false})
+    }
+    this.props.onScroll && this.props.onScroll(e)
   }
 }
 
