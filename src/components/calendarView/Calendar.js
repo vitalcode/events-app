@@ -11,14 +11,16 @@ import {
 import Icon from '../../../node_modules/react-native-vector-icons/MaterialIcons';
 import CalendarDay from './calendarDay'
 import {commonStyles} from '../../utils/commonStyles'
-import {Config} from '../../config'
+import moment from 'moment'
+//import {Config} from '../../config'
+import Config from 'react-native-config'
 import {Actions} from 'react-native-router-flux'
 
 export default class Calendar extends Component {
 
   constructor(props) {
     super(props);
-    const today = Config.today;
+    const today = moment(Config.today);
     this.state = {
       dataSource: this._createDataSource(today),
       weekDays: this._createWeekDays(today),

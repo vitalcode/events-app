@@ -1,4 +1,5 @@
-import {Config} from './../config'
+//import {Config} from './../config'
+import Config from 'react-native-config'
 
 // const pageSize = 10;
 //
@@ -13,7 +14,7 @@ export function buildAllEventsUrl(clue, date, refresh, total, pageSize, nextPage
   }
 
   //if (!total || from < total) {
-    const url = `http://${Config.host}:9200/lisenok/_search?from=${from}&size=${pageSize}`;
+    const url = `http://${Config.host}:${Config.port}/${Config.index}/_search?from=${from}&size=${pageSize}`;
     console.log('url', url);
     //from += pageSize;
 

@@ -3,7 +3,9 @@ import {Animated, Platform} from 'react-native'
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} from 'react-native-router-flux'
 import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
-import {Config} from './config'
+import Config from 'react-native-config'
+import moment from 'moment'
+//import {Config} from './config'
 
 
 export default class App extends React.Component {
@@ -22,7 +24,7 @@ export default class App extends React.Component {
   }
 
   _dateReset() {
-    this.props.actions.dateUpdate(Config.today);
+    this.props.actions.dateUpdate(moment(Config.today));
     Actions.pop();
   }
 

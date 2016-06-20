@@ -4,7 +4,8 @@ import {createAction, createReducer} from 'redux-act';
 import {createActionAsync} from 'redux-act-async';
 import update from 'react/lib/update'
 import moment from 'moment';
-import {Config} from './config'
+//import {Config} from './config'
+import Config from 'react-native-config'
 import {buildAllEventsUrl} from './utils/urlUtils'
 import EventsSearchViewBar from './components/eventsSearchView/eventsSearchViewBar'
 import EventsSearchViewBody from './components/eventsSearchView/eventsSearchViewBody'
@@ -35,7 +36,7 @@ const restService = {
     return request.then(response => response.json());
   },
   getEventDetails(id){
-    const url = `http://${Config.host}:9200/lisenok/events/${encodeURIComponent(id)}`;
+    const url = `http://${Config.host}:${Config.port}/${Config.index}/events/${encodeURIComponent(id)}`;
     console.log('getEventDetails url', url);
     return fetch(url).then(response => response.json());
   }
@@ -203,7 +204,7 @@ const calendarReducer = createReducer({
   [actions.dateSet]: (state, payload) => {
     return payload
   }
-}, Config.today);
+}, moment(Config.today));
 
 const clueReducer = createReducer({
   [actions.clueSet]: (state, payload) => {

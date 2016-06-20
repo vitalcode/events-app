@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 // must be less than ~50px due to ScrollView bug (event only fires once)
 // https://github.com/facebook/react-native/pull/452
 // TODO: expose as a prop when onScroll works properly
-var PULLDOWN_DISTANCE = 30 // pixels
+var PULLDOWN_DISTANCE = 30; // pixels
 
 export default class EventsList extends Component {
 
