@@ -116,7 +116,7 @@ const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer(
           image: source.image && source.image.length > 0 ? source.image[0] : '',
           from: source.from && source.from.length > 0 ? source.from[0] : '',
           to: source.to && source.to.length > 0 ? source.to[0] : '',
-          venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'Cambridge Science Centre'
+          venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'TBC' // TODO rethink
         }
       });
     return update(state, {
