@@ -118,15 +118,13 @@ export default class EventsList extends Component {
         <View style={styles.card}>
           <View style={styles.description}>
             <Text style={styles.title}>{event.title}</Text>
-            <View style={styles.firstRow}>
-              <View style={styles.timeContainer}>
-                <Icon style={styles.locationIcon} name='location-on' size={13}/>
-                <Text style={styles.locationText}>{event.venue}</Text>
-              </View>
-              <View style={styles.timeContainer}>
-                <Icon style={styles.timeIcon} name='access-time' size={12}/>
-                <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
-              </View>
+            <View style={styles.timeContainer}>
+              <Icon style={styles.locationIcon} name='location-on' size={13}/>
+              <Text style={styles.locationText}>{event.venue}</Text>
+            </View>
+            <View style={styles.timeContainer}>
+              <Icon style={styles.timeIcon} name='access-time' size={12}/>
+              <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
             </View>
           </View>
           <View>
@@ -166,7 +164,7 @@ export default class EventsList extends Component {
     );
   }
 
-  _handleScroll(e){
+  _handleScroll(e) {
     if (e.nativeEvent.contentOffset.y < -PULLDOWN_DISTANCE) {
       this.setState({reloading: true})
     } else {
@@ -251,11 +249,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     backgroundColor: '#ddd'
   },
-  firstRow: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    marginTop: 5
-  },
   locationIcon: {
     color: '#666'
   },
@@ -280,10 +273,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginBottom: 2
   },
+
+
   timeContainer: {
+    marginTop: 5,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
+
+
   imagePlaceholder: {
     alignItems: 'center',
     justifyContent: 'center',
