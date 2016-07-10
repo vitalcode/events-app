@@ -121,7 +121,7 @@ export default class EventsList extends Component {
             <View style={styles.firstRow}>
               <View style={styles.timeContainer}>
                 <Icon style={styles.locationIcon} name='location-on' size={13}/>
-                <Text style={styles.locationText}>Cambridge Science Centre</Text>
+                <Text style={styles.locationText}>{event.venue}</Text>
               </View>
               <View style={styles.timeContainer}>
                 <Icon style={styles.timeIcon} name='access-time' size={12}/>
@@ -253,8 +253,7 @@ const styles = StyleSheet.create({
   },
   firstRow: {
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     marginTop: 5
   },
   locationIcon: {

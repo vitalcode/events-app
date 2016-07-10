@@ -22,7 +22,6 @@ function eventToDisplayEvent(event) {
   const fromTime = moment(event.from).format('LT');
   const toTime = event.to ? moment(event.to).format('LT') : '';
   event.timeRangeDisplay = toTime ? `${fromTime} - ${toTime}` : `${fromTime}`;
-  event.title = event.description.substring(0, 80);
   return event;
 }
 
@@ -112,10 +111,12 @@ const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer(
         const source = hit._source;
         return {
           id: hit._id,
+          title: source.title && source.title.length > 0 ? source.title[0] : '',
           description: source.description && source.description.length > 0 ? source.description[0] : '',
           image: source.image && source.image.length > 0 ? source.image[0] : '',
           from: source.from && source.from.length > 0 ? source.from[0] : '',
-          to: source.to && source.to.length > 0 ? source.to[0] : ''
+          to: source.to && source.to.length > 0 ? source.to[0] : '',
+          venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'Cambridge Science Centre'
         }
       });
     return update(state, {
@@ -177,10 +178,12 @@ const eventDetailsReducer = createReducer({
     const source = payload._source;
     const event = {
       id: payload._id,
+      title: source.title && source.title.length > 0 ? source.title[0] : '',
       description: source.description && source.description.length > 0 ? source.description[0] : '',
       image: source.image && source.image.length > 0 ? source.image[0] : '',
       from: source.from && source.from.length > 0 ? source.from[0] : '',
-      to: source.to && source.to.length > 0 ? source.to[0] : ''
+      to: source.to && source.to.length > 0 ? source.to[0] : '',
+      venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'Cambridge Science Centre'
     };
     return update(state, {
       requesting: {

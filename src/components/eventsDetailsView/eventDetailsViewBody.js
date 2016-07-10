@@ -79,7 +79,7 @@ export default class EventDetails extends Component {
 
               <View style={styles.timeContainer}>
                   <Icon style={styles.locationIcon} name='location-on' size={16}/>
-                  <Text style={styles.locationText}>Cambridge Science Centre</Text>
+                  <Text style={styles.locationText}>{event.venue}</Text>
                 </View>
 
               </View>
