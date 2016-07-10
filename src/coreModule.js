@@ -179,7 +179,7 @@ const eventDetailsReducer = createReducer({
     const event = {
       id: payload._id,
       title: source.title && source.title.length > 0 ? source.title[0] : '',
-      description: source.description && source.description.length > 0 ? source.description[0] : '',
+      description: source.description, //&& source.description.length > 0 ? source.description[0] : '',
       image: source.image && source.image.length > 0 ? source.image[0] : '',
       from: source.from && source.from.length > 0 ? source.from[0] : '',
       to: source.to && source.to.length > 0 ? source.to[0] : '',

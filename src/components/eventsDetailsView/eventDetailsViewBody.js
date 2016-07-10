@@ -84,9 +84,11 @@ export default class EventDetails extends Component {
 
               </View>
               </View>
-              <Text style={ styles.rowText }>
-                {event.description}
-              </Text>
+              {
+                event.description && event.description.map(item => (
+                 <Text style={ styles.rowText }>{item}</Text>
+                ))
+              }
           </View>
          )}
         renderFooter={this._renderFooter.bind(this)}
@@ -215,6 +217,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   rowText: {
+    margin: 10,
     lineHeight: 25,
     fontSize: 18,
     fontFamily: 'Helvetica-Light',
