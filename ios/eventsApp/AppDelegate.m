@@ -16,7 +16,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
+  
+#ifdef DEBUG
   /**
    * Loading JavaScript code - uncomment the one you want.
    *
@@ -30,13 +31,8 @@
    * `inet` value under `en0:`) and make sure your computer and iOS device are
    * on the same Wi-Fi network.
    */
-
- //jsCodeLocation = [NSURL URLWithString:@"http://192.168.0.10:8081/index.ios.bundle?platform=ios&dev=true"];
-
- //jsCodeLocation = [NSURL URLWithString:@"http://172.20.10.2:8081/index.ios.bundle?platform=ios&dev=true"];
-
- jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-
+  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+#else
   /**
    * OPTION 2
    * Load from pre-bundled file on disk. The static bundle is automatically
@@ -44,9 +40,9 @@
    * running the project on an actual device or running the project on the
    * simulator in the "Release" build configuration.
    */
-
-//   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"eventsApp"
                                                initialProperties:nil
