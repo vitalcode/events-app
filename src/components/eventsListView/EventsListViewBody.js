@@ -28,9 +28,9 @@ export default class EventsListViewBody extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
+        <View style={styles.sectionHeaderView}>
           <Icon name="search" style={styles.searchIcon} size={25} onPress={this._showSearchPage.bind(this)}/>
-          <Text style={styles.sectionHeader}>All Events</Text>
+          <Text style={styles.sectionHeaderText}>All Events</Text>
           <Icon name="more-horiz" style={styles.searchIcon} size={25} onPress={this._showCalendarPage.bind(this)}/>
         </View>
         <EventsList events={this.props.events}
@@ -45,23 +45,24 @@ export default class EventsListViewBody extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: commonStyles.card.listBackground
   },
-  header: {
+  sectionHeaderView: {
     paddingTop: 20,
-    backgroundColor: commonStyles.firstBackground,
+    backgroundColor: commonStyles.headerBackground,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     opacity: 0.95
   },
   searchIcon: {
-    color: commonStyles.firstColor,
+    color: commonStyles.headerColor,
     marginLeft: 20,
     marginRight: 20
 
   },
-  sectionHeader: {
+  sectionHeaderText: {
     color: 'white',
     marginTop: 6,
     marginBottom: 6,

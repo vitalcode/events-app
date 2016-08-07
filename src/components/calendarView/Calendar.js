@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   pageHeader: {
     paddingTop: 20,
-    backgroundColor: commonStyles.firstBackground,
+    backgroundColor: commonStyles.headerBackground,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
 
   },
   pageHeaderText: {
-    color: commonStyles.firstColor,
+    color: commonStyles.headerColor,
     marginTop: 6,
     marginBottom: 6,
     padding: 5,
@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
   weekHeader: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: commonStyles.secondBackground
+    backgroundColor: commonStyles.sectionBackground
   },
   weekDay: {
     padding: 5
   },
   weekDayText: {
-    color: commonStyles.secondColor,
+    color: commonStyles.sectionColor,
     textAlign: 'center',
     fontFamily: 'Helvetica',
     fontSize: 14

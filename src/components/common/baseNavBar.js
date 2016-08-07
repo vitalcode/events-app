@@ -54,7 +54,7 @@ export default class BaseNavBar extends React.Component {
           barStyle="light-content"
         />
         <Animated.View
-          style={[styles.header, this.props.navigationBarStyle, state.navigationBarStyle, selected.navigationBarStyle]}>
+          style={[styles.sectionHeaderView, this.props.navigationBarStyle, state.navigationBarStyle, selected.navigationBarStyle]}>
           {renderTitle ? renderTitle(selected) : state.children.map(this._renderTitle, this)}
           {renderBackButton() || renderLeftButton()}
           {renderRightButton()}
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  header: {
+  sectionHeaderView: {
     backgroundColor: '#000',
     paddingTop: 0,
     top: 0,

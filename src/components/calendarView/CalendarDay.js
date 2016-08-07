@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   today: {
-    borderColor: commonStyles.secondBackground,
+    borderColor: commonStyles.sectionBackground,
   },
   dayTextToday: {
     fontSize: 18,
@@ -77,13 +77,13 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   daySelected: {
-    backgroundColor: commonStyles.secondBackground,
-    borderColor: commonStyles.secondBackground,
+    backgroundColor: commonStyles.sectionBackground,
+    borderColor: commonStyles.sectionBackground,
   },
   dayTextSelected: {
     fontSize: 18,
     textAlign: 'center',
-    color: commonStyles.secondColor
+    color: commonStyles.sectionColor
   },
   dayTextWeekend: {
     color: commonStyles.thirdFaintColor

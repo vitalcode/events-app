@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "npm run run-ios",
-    "run-prod-ios": "echo '.env.prod' > /tmp/envfile && npm run run-ios",
-    "run-dev-ios": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "prod-ios": "echo '.env.prod' > /tmp/envfile && npm run dev-ios",
+    "dev-ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "build-ios": "echo '.env.prod' > /tmp/envfile && node node_modules/react-native/local-cli/cli.js bundle --platform ios --dev false --entry-file index.ios.js --bundle-output iOS/main.jsbundle"
   },
   "dependencies": {

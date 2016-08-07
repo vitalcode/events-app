@@ -15,7 +15,7 @@ import React, {
 import _ from 'lodash'
 import moment from 'moment'
 import {Actions} from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import {commonStyles as theme} from '../../utils/commonStyles'
 
 // must be less than ~50px due to ScrollView bug (event only fires once)
 // https://github.com/facebook/react-native/pull/452
@@ -54,29 +54,16 @@ export default class EventsList extends Component {
   }
 
   _showEventDetails(id) {
-    const {fetchEventDetails, navigateToEventDetailsPage} = this.props;
+    const {getEventDetails} = this.props;
     InteractionManager.runAfterInteractions(() => {
-      this.props.getEventDetails(id);
+      getEventDetails(id);
       Actions.eventsDetails();
-      //fetchEventDetails(id);
-      //navigateToEventDetailsPage();
-    })
-  }
-
-  _showSearchPage() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.navigateToSearchPage();
     })
   }
 
   _onEndReached() {
     this.props.getEvents()
   }
-
-  // _showDatePicker() {
-  //   Actions.calendarView();
-  //   //this.props.navigateToCalendar()
-  // }
 
   render() {
     return (
@@ -85,7 +72,6 @@ export default class EventsList extends Component {
           dataSource={this.state.dataSource}
           onEndReached={this._onEndReached.bind(this)}
           renderSectionHeader={this._renderSectionHeader}
-          renderSeparator={this._renderSeparator}
           renderFooter={this._renderFooter.bind(this)}
           renderRow={this._renderRow.bind(this)}
           renderHeader={this._renderHeader.bind(this)}
@@ -96,46 +82,39 @@ export default class EventsList extends Component {
   }
 
   _renderSectionHeader(sectionData, sectionID) {
-
-    let that = sectionData[0].that;
-
     return (
-      <View style={styles.header}>
-        <Text style={styles.sectionHeader}>{sectionID}</Text>
+      <View style={styles.sectionHeaderView}>
+        <Text style={styles.sectionHeaderText}>{sectionID}</Text>
       </View>
-    );
-  }
-
-  _renderSeparator(sectionID, rowID) {
-    return (
-      <View key={`${sectionID}-${rowID}`} style={styles.separator}/>
     );
   }
 
   _renderRow(event) {
     return (
-      <TouchableOpacity onPress={this._showEventDetails.bind(this, event.id)}>
-        <View style={styles.card}>
-          <View style={styles.description}>
-            <Text style={styles.title}>{event.title}</Text>
-            <View style={styles.timeContainer}>
-              <Icon style={styles.locationIcon} name='location-on' size={13}/>
-              <Text style={styles.locationText}>{event.venue}</Text>
-            </View>
-            <View style={styles.timeContainer}>
-              <Icon style={styles.timeIcon} name='access-time' size={12}/>
-              <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
-            </View>
+      <TouchableOpacity activeOpacity={0.4} onPress={this._showEventDetails.bind(this, event.id)}>
+        <View style={styles.event}>
+          <View style={styles.timeView}>
+            <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
           </View>
-          <View>
-            {event.image !== '' &&
+          <View style={styles.infoView}>
+            <Text numberOfLines={3} ellipsizeMode="tail" style={styles.titleText}>
+              {event.title}
+            </Text>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.venueText}>
+              {event.venue}
+            </Text>
+            <Text style={styles.categoryText}>
+              {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
+            </Text>
+          </View>
+          {
+            event.image !== '' &&
             <Image
               key={event.image}
-              style={styles.avatar}
+              style={styles.image}
               source={{uri: event.image }}
             />
-            }
-          </View>
+          }
         </View>
       </TouchableOpacity>
     )
@@ -143,10 +122,10 @@ export default class EventsList extends Component {
 
   _renderFooter() {
     return (
-      <View>
-        {this.props.requestingEvents &&
-        <ActivityIndicatorIOS style={styles.spinner}
-                              animating={true}/>
+      <View style={styles.footerView}>
+        {
+          this.props.requestingEvents &&
+          <ActivityIndicatorIOS style={styles.spinner} animating={true}/>
         }
       </View>
     );
@@ -155,7 +134,7 @@ export default class EventsList extends Component {
   _renderHeader() {
     var {height, width} = Dimensions.get('window');
     return (
-      <View style={{position: 'absolute', top: -35, left: width/2-20}}>
+      <View style={{position: 'absolute', top: -35, left: width / 2 - 20}}>
         {this.state.reloading &&
         <ActivityIndicatorIOS style={styles.spinner}
                               animating={true}/>
@@ -181,163 +160,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-
-  datePickerContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+  event: {
+    marginBottom: 10,
+    paddingTop: 0,
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: theme.card.borderColor,
+    backgroundColor: theme.card.background
   },
-  datePicker: {
-    alignItems: 'center',
-  },
-
-  datePickerButtonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  datePickerButton: {
-    padding: 5,
-    borderRadius: 3,
-    borderColor: '#007aff',
+  timeView: {
+    position: 'absolute',
+    top: -7,
+    left: 6,
+    padding: 3,
     borderWidth: 1,
-    borderStyle: 'solid',
-    backgroundColor: '#007aff'
+    borderColor: theme.card.borderColor,
+    shadowColor: "#666",
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: {
+      height: 1,
+      width: 1
+    }
   },
-  dateText: {
-    color: '#fff'
+  timeText: {
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+    color: theme.card.textColor
   },
-
-
-  datePickerGo: {
-    width: 50,
+  infoView: {
+    flex: 1,
     padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#007aff'
+    paddingTop: 15,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 120
   },
-  datePickerGoPressed: {
-    backgroundColor: '#fff',
-    borderColor: '#007aff',
-    borderWidth: 1,
-    borderStyle: 'solid',
-
+  titleText: {
+    color: theme.card.textTitleColor,
+    fontFamily: theme.card.textTitleFamily,
+    fontSize: theme.card.textTitleSize
   },
-  datePickerDoneText: {
-    color: '#fff',
+  categoryText: {
+    fontSize: 14,
+    fontFamily: theme.card.textFamily,
+    flexWrap: 'nowrap',
+    color: theme.card.textColor
   },
-  datePickerDoneTextPressed: {
-    color: '#000',
-
+  venueText: {
+    fontSize: 12,
+    fontFamily: theme.card.textFamily,
+    color: theme.card.textColor
   },
-  header: {
-    backgroundColor: '#ff8000',
+  image: {
+    width: 120,
+    height: 120
+  },
+  sectionHeaderView: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     opacity: 1,
+    marginBottom: 10,
+    backgroundColor: theme.sectionBackground
   },
-  sectionHeader: {
-    color: 'white',
+  sectionHeaderText: {
     padding: 5,
     textAlign: 'center',
     fontFamily: 'Helvetica',
-    fontSize: 14
+    fontSize: 14,
+    color: theme.sectionColor,
   },
-  separator: {
-    height: 1,
-    marginLeft: 20,
-    backgroundColor: '#ddd'
-  },
-  locationIcon: {
-    color: '#666'
-  },
-  locationText: {
-    fontSize: 13,
-    fontFamily: 'Helvetica',
-    flex: 1,
-    flexWrap: 'wrap',
-    color: '#666',
-    marginLeft: 5,
-    marginBottom: 2
-  },
-  timeIcon: {
-    color: '#666'
-  },
-  timeText: {
-    fontSize: 12,
-    fontFamily: 'Arial',
-    flex: 1,
-    flexWrap: 'wrap',
-    color: '#666',
-    marginLeft: 5,
-    marginBottom: 2
-  },
-
-
-  timeContainer: {
-    marginTop: 5,
-    flexDirection: 'row',
-    alignItems: 'flex-start'
-  },
-
-
-  imagePlaceholder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 60,
-    height: 60,
-    backgroundColor: '#ddeedd'
-  },
-  imagePlaceholderIcon: {
-    opacity: 0.5
-  },
-  spinner: {
-    margin: 10
-  },
-  card: {
-    flexDirection: 'row'
-  },
-  avatar: {
-    width: 120,
-    height: 120
-  },
-  description: {
-    flex: 1,
-    padding: 10,
-    paddingLeft: 20,
-    flexDirection: 'column'
-  },
-  title: {
-    flex: 1,
-    flexWrap: 'wrap',
-    color: '#000',
-    fontFamily: 'Helvetica-Bold',
-    fontSize: 14
-  },
-  header2: {
-    paddingTop: 20,
-    width: window.width,
-    backgroundColor: '#000', //'#82d595',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    opacity: 0.95,
-  },
-  searchIcon2: {
-    color: 'white',
-    marginLeft: 20,
-    marginRight: 20,
-
-  },
-  sectionHeader2: {
-    color: 'white',
-    marginTop: 6,
-    marginBottom: 6,
-    padding: 5,
-    textAlign: 'center',
-    fontFamily: 'Helvetica',
-    fontSize: 16
+  footerView: {
+    marginTop: 10
   }
 });
 

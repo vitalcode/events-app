@@ -69,12 +69,12 @@ export default class EventDetails extends Component {
 
                 <View style={styles.timeContainer}>
                   <Icon style={styles.timeIcon} name='today' size={16}/>
-                  <Text style={styles.timeText}>{event.fromDisplay}</Text>
+                  <Text style={styles.categoryText}>{event.fromDisplay}</Text>
                 </View>
 
                 <View style={styles.timeContainer}>
                   <Icon style={styles.timeIcon} name='access-time' size={16}/>
-                  <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
+                  <Text style={styles.categoryText}>{event.timeRangeDisplay}</Text>
                 </View>
 
               <View style={styles.timeContainer}>
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   timeIcon: {
     color: '#ff8000'
   },
-  timeText: {
+  categoryText: {
     fontSize: 16,
     fontFamily: 'Arial',
     flex: 1,

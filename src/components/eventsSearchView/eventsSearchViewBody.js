@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     marginTop: 64,
     backgroundColor: '#fff',
   },
-  header: {
+  sectionHeaderView: {
     backgroundColor: '#ff8000',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     opacity: 1,
   },
-  sectionHeader: {
+  sectionHeaderText: {
     color: 'white',
     padding: 5,
     textAlign: 'center',
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   timeIcon: {
     color: '#666'
   },
-  timeText: {
+  categoryText: {
     fontSize: 12,
     fontFamily: 'Arial',
     flex: 1,
@@ -165,10 +165,10 @@ const styles = StyleSheet.create({
   spinner: {
     margin: 10
   },
-  card: {
+  event: {
     flexDirection: 'row'
   },
-  avatar: {
+  image: {
     width: 120,
     height: 120
   },
