@@ -116,7 +116,7 @@ const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer(
           image: source.image && source.image.length > 0 ? source.image[0] : '',
           from: source.from && source.from.length > 0 ? source.from[0] : '',
           to: source.to && source.to.length > 0 ? source.to[0] : '',
-          category: source.category && source.category.length > 0 ? source.category[0] : '',
+          category: source.category && source.category.length > 0 ? source.category[0].charAt(0).toUpperCase() + source.category[0].slice(1) : '',
           venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'TBC' // TODO rethink
         }
       });
@@ -172,6 +172,9 @@ const eventDetailsReducer = createReducer({
     return update(state, {
       requesting: {
         $set: true
+      },
+      item: {
+        $set: null
       }
     });
   },
@@ -184,7 +187,7 @@ const eventDetailsReducer = createReducer({
       image: source.image && source.image.length > 0 ? source.image[0] : '',
       from: source.from && source.from.length > 0 ? source.from[0] : '',
       to: source.to && source.to.length > 0 ? source.to[0] : '',
-      category: source.category && source.category.length > 0 ? source.category[0] : '',
+      category: source.category && source.category.length > 0 ? source.category[0].charAt(0).toUpperCase() + source.category[0].slice(1) : '',
       venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'Cambridge Science Centre'
     };
     return update(state, {

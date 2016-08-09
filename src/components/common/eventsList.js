@@ -104,7 +104,7 @@ export default class EventsList extends Component {
               {event.venue}
             </Text>
             <Text style={styles.categoryText}>
-              {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
+              {event.category}
             </Text>
           </View>
           {
