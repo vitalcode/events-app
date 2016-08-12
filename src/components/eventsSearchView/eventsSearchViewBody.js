@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     fontSize: 16
   },
-  searchTextInputContainer: {
+  container: {
     flex: 1,
   },
   searchTextInput: {
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     height: 25
 
   },
-  searchText: {
+  text: {
     paddingLeft: 5,
     color: '#fff',
     fontSize: 17

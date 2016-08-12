@@ -33,14 +33,14 @@ export default class App extends React.Component {
     return <Router createReducer={this.reducerCreate.bind(this)}>
       <Scene key="modal" component={Modal}>
         <Scene key="root">
-          <Scene key="eventsListView" title="All Events" type="push"
-                 navBar={BaseNavBar}
+          <Scene key="eventsListView" type="push"
+                 navBar={containers.eventsListViewBarContainer}
                  component={containers.eventsListViewBodyContainer}
                  onLeft={this._navigateToSearchView.bind(this)} leftButtonImage="search"
                  onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
           />
           <Scene key="eventsSearch" type="push"
-                 navBar={CoreModule.containers.eventsSearchViewBarContainer}
+                 navBar={containers.eventsSearchViewBarContainer}
                  component={containers.eventsSearchViewBodyContainer}
                  onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
           />
@@ -55,9 +55,13 @@ export default class App extends React.Component {
                  onRight={()=> this._dateReset()} rightTitle="Today"
                  initial={false}
           />
+          <Scene key="categorySelector" type="push"
+                 navBar={BaseNavBar}
+                 component={containers.categoryViewBodyContainer}
+                 initial={false}
+          />
         </Scene>
       </Scene>
     </Router>
   }
 }
-

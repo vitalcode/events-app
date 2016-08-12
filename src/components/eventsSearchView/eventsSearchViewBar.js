@@ -42,7 +42,7 @@ export default class EventsSearchViewBar extends AppNavBar {
   renderBar() {
     const {text} = this.state;
     return (
-      <View style={styles.searchTextInputContainer}
+      <View style={styles.container}
             onPress={this._onClearButtonPress.bind(this)}>
         {
           !this.props.clue &&
@@ -64,7 +64,7 @@ export default class EventsSearchViewBar extends AppNavBar {
         {
           !!this.props.clue &&
           <TouchableOpacity onPress={this._onClearButtonPress.bind(this)}>
-            <Text style={styles.searchText}>{this.props.clue}</Text>
+            <Text style={styles.text}>{this.props.clue}</Text>
           </TouchableOpacity>
         }
       </View>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     height: 21,
     color: 'white',
   },
-  searchTextInputContainer: {
+  container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     height: 25,
   },
-  searchText: {
+  text: {
     marginTop: 2,
     paddingLeft: 5,
     color: '#fff',

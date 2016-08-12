@@ -4,13 +4,14 @@ import {createAction, createReducer} from 'redux-act';
 import {createActionAsync} from 'redux-act-async';
 import update from 'react/lib/update'
 import moment from 'moment';
-//import {Config} from './config'
 import Config from 'react-native-config'
 import {buildAllEventsUrl} from './utils/urlUtils'
 import EventsSearchViewBar from './components/eventsSearchView/eventsSearchViewBar'
 import EventsSearchViewBody from './components/eventsSearchView/eventsSearchViewBody'
 import EventsListViewBody from './components/eventsListView/eventsListViewBody'
+import EventsListViewBar from './components/eventsListView/eventsListViewBar'
 import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsViewBody'
+import CategoryViewBody from './components/categoryView/categoryViewBody'
 import Calendar from './components/calendarView/calendar'
 import CoreRouter from './coreRouter'
 
@@ -30,8 +31,8 @@ const restService = {
     const url = `http://suggestqueries.google.com/complete/search?q=${clue}&client=firefox`;
     return fetch(url).then(response => response.json());
   },
-  getEvents(clue, date, total, pageSize, nextPage) {
-    const request = buildAllEventsUrl(clue, date, false, total, pageSize, nextPage);
+  getEvents(clue, date, category, total, pageSize, nextPage) {
+    const request = buildAllEventsUrl(clue, date, category, false, total, pageSize, nextPage);
     return request.then(response => response.json());
   },
   getEventDetails(id){
@@ -46,11 +47,11 @@ const actions = new function () {
     this.getEventDetails = createActionAsync('GET_EVENT_DETAILS', restService.getEventDetails),
 
     this.categoryEventsGet = () => (dispatch, getState) => {
-      const {date} = getState().core;
+      const {date, category} = getState().core;
       const {total, pageSize, nextPage} = getState().core.categoryEvents;
       if (!total || pageSize * nextPage < total) {
         dispatch(this.categoryEventsNextPage());
-        dispatch(this.categoryEventsFetch(null, date, total, pageSize, nextPage));
+        dispatch(this.categoryEventsFetch(null, date, category, total, pageSize, nextPage));
       }
     },
     this.categoryEventsReload = date => (dispatch) => {
@@ -62,11 +63,11 @@ const actions = new function () {
     this.categoryEventsReset = createAction('CATEGORY_EVENTS_RESET'),
 
     this.searchEventsGet = () => (dispatch, getState) => {
-      const {clue, date} = getState().core;
+      const {clue, date, category} = getState().core;
       const {total, pageSize, nextPage} = getState().core.searchEvents;
       if (!total || pageSize * nextPage < total) {
         dispatch(this.searchEventsNextPage());
-        dispatch(this.searchEventsFetch(clue, date, total, pageSize, nextPage));
+        dispatch(this.searchEventsFetch(clue, date, category, total, pageSize, nextPage));
       }
     },
     this.searchEventsReload = date => (dispatch) => {
@@ -93,7 +94,13 @@ const actions = new function () {
       dispatch(this.searchEventsReload());
     },
     this.clueSet = createAction('CLUE_SET'),
-    this.clueClear = createAction('CLUE_CLEAR')
+    this.clueClear = createAction('CLUE_CLEAR'),
+    this.categorySet = createAction('CATEGORY_SET'),
+    this.categoryUpdate = category => (dispatch) => {
+      dispatch(this.categorySet(category));
+      dispatch(this.categoryEventsReload());
+      dispatch(this.searchEventsReload());
+    }
 };
 
 const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer({
@@ -263,6 +270,10 @@ const clueSuggestionsReducer = createReducer({
   },
 }, {requesting: false, list: []});
 
+const categoryReducer = createReducer({
+  [actions.categorySet]: (state, payload) => (payload)
+}, "all");
+
 const reducer = combineReducers({
   searchEvents: eventsReducer(actions.searchEventsFetch, actions.searchEventsNextPage, actions.searchEventsReset),
   categoryEvents: eventsReducer(actions.categoryEventsFetch, actions.categoryEventsNextPage, actions.categoryEventsReset),
@@ -270,6 +281,7 @@ const reducer = combineReducers({
   clue: clueReducer,
   clueSuggestions: clueSuggestionsReducer,
   date: calendarReducer,
+  category: categoryReducer
 });
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
@@ -304,6 +316,12 @@ const containers = {
       }
     },
     mapDispatchToProps)(EventsListViewBody),
+  eventsListViewBarContainer: connect((state) => {
+      return {
+        category: state.core.category,
+      }
+    },
+    mapDispatchToProps)(EventsListViewBar),
   calendarContainer: connect((state) => {
       return {
         selectedDate: state.core.date,
@@ -311,6 +329,7 @@ const containers = {
     },
     mapDispatchToProps)(Calendar),
   coreRouterContainer: connect(null, mapDispatchToProps)(CoreRouter),
+  categoryViewBodyContainer: connect(null, mapDispatchToProps)(CategoryViewBody),
 };
 
 export default {
