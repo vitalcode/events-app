@@ -12,6 +12,8 @@ import EventsListViewBody from './components/eventsListView/eventsListViewBody'
 import EventsListViewBar from './components/eventsListView/eventsListViewBar'
 import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsViewBody'
 import CategoryViewBody from './components/categoryView/categoryViewBody'
+import CategoryCell from './components/categoryView/categoryCell'
+import DimensionsProvider from './components/common/dimensionsProvider'
 import Calendar from './components/calendarView/calendar'
 import CoreRouter from './coreRouter'
 
@@ -100,7 +102,8 @@ const actions = new function () {
       dispatch(this.categorySet(category));
       dispatch(this.categoryEventsReload());
       dispatch(this.searchEventsReload());
-    }
+    },
+    this.setDimensions = createAction('DIMENSIONS_SET')
 };
 
 const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer({
@@ -274,6 +277,10 @@ const categoryReducer = createReducer({
   [actions.categorySet]: (state, payload) => (payload)
 }, "all");
 
+const dimensionsReducer = createReducer({
+  [actions.setDimensions]: (state, payload) => (payload)
+}, {});
+
 const reducer = combineReducers({
   searchEvents: eventsReducer(actions.searchEventsFetch, actions.searchEventsNextPage, actions.searchEventsReset),
   categoryEvents: eventsReducer(actions.categoryEventsFetch, actions.categoryEventsNextPage, actions.categoryEventsReset),
@@ -281,7 +288,8 @@ const reducer = combineReducers({
   clue: clueReducer,
   clueSuggestions: clueSuggestionsReducer,
   date: calendarReducer,
-  category: categoryReducer
+  category: categoryReducer,
+  dimensions: dimensionsReducer
 });
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
@@ -330,6 +338,12 @@ const containers = {
     mapDispatchToProps)(Calendar),
   coreRouterContainer: connect(null, mapDispatchToProps)(CoreRouter),
   categoryViewBodyContainer: connect(null, mapDispatchToProps)(CategoryViewBody),
+  categoryCellContainer: connect((state) => {
+    return {
+      dimensions: state.core.dimensions
+    }
+  }, mapDispatchToProps)(CategoryCell),
+  dimensionsProviderContainer: connect(null, mapDispatchToProps)(DimensionsProvider)
 };
 
 export default {

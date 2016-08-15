@@ -5,8 +5,6 @@ import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
 import Config from 'react-native-config'
 import moment from 'moment'
-//import {Config} from './config'
-
 
 export default class App extends React.Component {
 

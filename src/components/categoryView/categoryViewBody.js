@@ -4,10 +4,8 @@ import React, {
   ListView,
   Component,
   Dimensions,
-  InteractionManager
-
 } from 'react-native'
-import CategoryCell from './categoryCell'
+import CoreModule from '../../coreModule'
 
 const categories = [
   'all',
@@ -56,11 +54,12 @@ export default class eventsSearchViewBody extends Component {
 
 
   _renderRow(item, sectionId, rowId) {
-    const {categoryUpdate} = this.props.actions;
+    const {actions, dimensions} = this.props;
+    const CategoryCell = CoreModule.containers.categoryCellContainer;
     return (
-        <CategoryCell onCategorySelected={categoryUpdate} alternate={rowId % 2}>
-          {item}
-        </CategoryCell>
+      <CategoryCell onCategorySelected={actions.categoryUpdate} alternate={rowId % 2} dimensions={dimensions}>
+        {item}
+      </CategoryCell>
     );
   }
 }

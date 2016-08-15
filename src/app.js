@@ -13,9 +13,11 @@ const rootModule = {
   container: CoreModule.containers.coreRouterContainer
 };
 
+const DimensionsProvider = CoreModule.containers.dimensionsProviderContainer;
+
 const logger = createLogger();
 
-const createStoreWithMiddleware = Config.logger === 'true'? applyMiddleware(thunkMiddleware, logger)(createStore):
+const createStoreWithMiddleware = Config.logger === 'true' ? applyMiddleware(thunkMiddleware, logger)(createStore) :
   applyMiddleware(thunkMiddleware)(createStore);
 
 const store = createStoreWithMiddleware(rootModule.reducer);
@@ -25,7 +27,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <rootModule.container />
+        <DimensionsProvider>
+          <rootModule.container />
+        </DimensionsProvider>
       </Provider>
     )
   }

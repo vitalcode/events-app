@@ -1,5 +1,4 @@
 import React, {StyleSheet, View, Text, TouchableOpacity, Component, Dimensions, InteractionManager} from "react-native";
-import Orientation from "react-native-orientation";
 import {Actions} from "react-native-router-flux";
 import {commonStyles as theme} from "../../utils/commonStyles";
 
@@ -9,25 +8,8 @@ export default class CategoryCell extends Component {
 
   constructor(props) {
     super(props);
-    var {height, width} = Dimensions.get('window');
     this.state = {
-      selected: false,
-      height, width
-    }
-  }
-
-  componentWilldMount() {
-    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
-  }
-
-  _orientationDidChange(orientation) {
-    const {height, width} = Dimensions.get('window');
-    switch (orientation) {
-      case 'LANDSCAPE':
-        this.setState({height: width, width: height});
-        break;
-      case 'PORTRAIT':
-        this.setState({height, width});
+      selected: false
     }
   }
 
@@ -40,8 +22,9 @@ export default class CategoryCell extends Component {
   }
 
   render() {
-    const {selected, width, height} = this.state;
-    const {children, alternate} = this.props;
+    const {selected} = this.state;
+    const {children, alternate, dimensions} = this.props;
+    const {width, height} = dimensions;
     return (
       <TouchableOpacity activeOpacity={1}
                         onPress={this._onCategorySelected.bind(this, children)}
@@ -57,7 +40,7 @@ export default class CategoryCell extends Component {
           <Text style={[
               styles.text,
               (alternate ^ selected) && styles.textSelected,
-              {fontSize: width / 3 / 8}]}>
+              {fontSize: 18}]}>
             {children.charAt(0).toUpperCase() + children.slice(1)}
           </Text>
         </View>
