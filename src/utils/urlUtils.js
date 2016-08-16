@@ -59,10 +59,10 @@ export function buildAllEventsUrl(clue, date, category, refresh, total, pageSize
     },
     sort: {
       from: {
-        order: "asc"
+        order: "asc",
+        mode: "min"
       }
     }
-
   };
 
   console.log('query', query, JSON.stringify(query));
