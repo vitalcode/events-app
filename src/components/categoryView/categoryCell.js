@@ -37,10 +37,10 @@ export default class CategoryCell extends Component {
             !alternate && selected && styles.cellSelected,
             alternate && selected && styles.cellOtherSelected,
             {width: width / 3, height: (height - headerHeight) / 4}]}>
-          <Text style={[
+          <Text numberOfLines={1} ellipsizeMode="tail" style={[
               styles.text,
               (alternate ^ selected) && styles.textSelected,
-              {fontSize: 18}]}>
+              {fontSize: 16}]}>
             {children.charAt(0).toUpperCase() + children.slice(1)}
           </Text>
         </View>
