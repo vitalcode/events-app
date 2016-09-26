@@ -36,3 +36,5 @@ npm-debug.log
 #react-native
 ios/main.jsbundle
 
+#configuration
+.env.prod
