@@ -1,40 +1,12 @@
-import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  InteractionManager,
-  Animated,
-  Picker
-} from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import {commonStyles} from '../../utils/commonStyles'
-import EventsList from '../common/eventsList'
+import React, {Component} from "react";
+import {StyleSheet, View, Animated, Picker} from "react-native";
+import {commonStyles} from "../../utils/commonStyles";
+import EventsList from "../common/eventsList";
 
 export default class EventsListViewBody extends Component {
-
-  _showSearchPage() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.navigateToSearchPage();
-    })
-  }
-
-  _showCalendarPage() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.navigateToCalendar()
-    })
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        {/* todo test
-          <View style={styles.sectionHeaderView}>
-            <Icon name="search" style={styles.searchIcon} size={25} onPress={this._showSearchPage.bind(this)}/>
-            <Text style={styles.sectionHeaderText}>All Events</Text>
-            <Icon name="more-horiz" style={styles.searchIcon} size={25} onPress={this._showCalendarPage.bind(this)}/>
-          </View> */
-          }
         <EventsList events={this.props.events}
                     requestingEvents={this.props.requestingEvents}
                     getEvents={this.props.actions.categoryEventsGet}
@@ -48,6 +20,7 @@ export default class EventsListViewBody extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 64,
     backgroundColor: commonStyles.card.listBackground
   },
   sectionHeaderView: {
