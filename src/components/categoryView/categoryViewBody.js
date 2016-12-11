@@ -1,11 +1,6 @@
-import React, {
-  StyleSheet,
-  View,
-  ListView,
-  Component,
-  Dimensions,
-} from 'react-native'
-import CoreModule from '../../coreModule'
+import React, {Component} from "react";
+import {StyleSheet, View, ListView, Dimensions} from "react-native";
+import CoreModule from "../../coreModule";
 
 const categories = [
   'all',

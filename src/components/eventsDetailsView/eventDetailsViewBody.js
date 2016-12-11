@@ -1,5 +1,5 @@
-import React, {
-  Component,
+import React, {Component} from "react";
+import {
   Dimensions,
   Image,
   ListView,
@@ -7,7 +7,7 @@ import React, {
   Text,
   View,
   TouchableWithoutFeedback,
-  ActivityIndicatorIOS
+  ActivityIndicator
 } from "react-native";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import {commonStyles as theme} from "../../utils/commonStyles";
@@ -31,7 +31,7 @@ export default class EventDetails extends Component {
     return (
       <View>
         {this.props.requesting &&
-        <ActivityIndicatorIOS style={styles.spinner}
+        <ActivityIndicator style={styles.spinner}
                               animating={true}
                               size={'large'}/>
         }
@@ -83,13 +83,13 @@ export default class EventDetails extends Component {
             <View style={ styles.sectionSeparator }/>
 
             <View style={ styles.descriptionView }>
-            {
-              event.description && event.description.map(item => (
-                <View style={styles.descriptionParagraph}>
-                  <Text style={styles.descriptionText}>{item}</Text>
-                </View>
-              ))
-            }
+              {
+                event.description && event.description.map(item => (
+                  <View style={styles.descriptionParagraph}>
+                    <Text style={styles.descriptionText}>{item}</Text>
+                  </View>
+                ))
+              }
             </View>
 
           </View>
@@ -105,9 +105,11 @@ export default class EventDetails extends Component {
             fadeOutForeground={false}
             renderBackground={() => (
               <View key="background">
-                <Image source={{uri: event.image,
-                                width: window.width,
-                                height: PARALLAX_HEADER_HEIGHT}}/>
+                <Image source={{
+                  uri: event.image,
+                  width: window.width,
+                  height: PARALLAX_HEADER_HEIGHT
+                }}/>
               </View>
             )}
 
@@ -121,23 +123,23 @@ export default class EventDetails extends Component {
             )}
 
             renderFixedHeader={() => (
-            <TouchableWithoutFeedback onPress={() => Actions.pop()}>
+              <TouchableWithoutFeedback onPress={() => Actions.pop()}>
                 <View key="fixed-header" style={styles.fixedSection}>
-                <Icon name="arrow-back" style={styles.backButton} size={25}/>
+                  <Icon name="arrow-back" style={styles.backButton} size={25}/>
                 </View>
               </TouchableWithoutFeedback>
             )}
 
             renderStickyHeader={() => (
               <View key="sticky-header" style={styles.stickySection}>
-              <TouchableWithoutFeedback onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
-                <View style={styles.topButtonWrapper}>
-                  <Icon name="vertical-align-top" style={styles.topButton} size={25}/>
-                 </View>
-                 </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => this.refs.ListView.scrollTo({x: 0, y: 0})}>
+                  <View style={styles.topButtonWrapper}>
+                    <Icon name="vertical-align-top" style={styles.topButton} size={25}/>
+                  </View>
+                </TouchableWithoutFeedback>
               </View>
             )}
-            />
+          />
         )}
       />
     );

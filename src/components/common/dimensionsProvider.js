@@ -1,4 +1,5 @@
-import React, {Component, Dimensions, View} from "react-native";
+import React, {Component} from 'react';
+import {Dimensions, View} from 'react-native';
 
 export default class DimensionsProvider extends Component {
 

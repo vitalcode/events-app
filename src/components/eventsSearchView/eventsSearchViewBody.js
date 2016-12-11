@@ -1,15 +1,6 @@
-import React, {
-  StyleSheet,
-  View,
-  Text,
-  ListView,
-  TouchableOpacity,
-  Component,
-  ActivityIndicatorIOS,
-  InteractionManager,
-} from 'react-native'
-import CoreModule from '../../coreModule'
-import EventsList from '../common/eventsList'
+import React, {Component} from "react";
+import {StyleSheet, View, Text, ListView, TouchableOpacity, ActivityIndicator, InteractionManager} from "react-native";
+import EventsList from "../common/eventsList";
 
 export default class eventsSearchViewBody extends Component {
 
@@ -54,14 +45,14 @@ export default class eventsSearchViewBody extends Component {
                 dataSource={this.state.dataSource}
                 renderRow={this._renderSearchRow.bind(this)}
                 renderFooter={() =>
-                    <View>
+                  <View>
                     {this.props.requestingClueSuggestions &&
-                      <ActivityIndicatorIOS style={styles.spinner}
-                      animating={true}
-                      size={'small'} />
+                    <ActivityIndicator style={styles.spinner}
+                                       animating={true}
+                                       size={'small'}/>
                     }
-                    </View>
-                  }
+                  </View>
+                }
               />
             }
           </View>

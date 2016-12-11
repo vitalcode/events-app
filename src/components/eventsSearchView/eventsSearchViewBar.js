@@ -1,13 +1,6 @@
-import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  InteractionManager,
-  TouchableOpacity
-} from 'react-native'
-import AppNavBar from '../common/appNavBar'
+import React from "react";
+import {StyleSheet, View, Text, TextInput, InteractionManager, TouchableOpacity} from "react-native";
+import AppNavBar from "../common/appNavBar";
 
 export default class EventsSearchViewBar extends AppNavBar {
 

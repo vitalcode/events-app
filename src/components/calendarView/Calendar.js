@@ -1,20 +1,12 @@
-import React, { Component } from 'react';
-import {
-  Dimensions,
-  ListView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  InteractionManager
-} from 'react-native';
-import Icon from '../../../node_modules/react-native-vector-icons/MaterialIcons';
-import CalendarDay from './calendarDay'
-import {commonStyles} from '../../utils/commonStyles'
-import moment from 'moment'
+import React, {Component} from "react";
+import {Dimensions, ListView, StyleSheet, Text, View, TouchableHighlight, InteractionManager} from "react-native";
+import Icon from "../../../node_modules/react-native-vector-icons/MaterialIcons";
+import CalendarDay from "./calendarDay";
+import {commonStyles} from "../../utils/commonStyles";
+import moment from "moment";
+import Config from "react-native-config";
+import {Actions} from "react-native-router-flux";
 //import {Config} from '../../config'
-import Config from 'react-native-config'
-import {Actions} from 'react-native-router-flux'
 
 export default class Calendar extends Component {
 
@@ -109,7 +101,7 @@ export default class Calendar extends Component {
       <View style={styles.container}>
         <View style={styles.pageHeader}>
           <Icon name="arrow-back" style={styles.pageHeaderIcon} size={25} onPress={() => this.props.navigator.pop()}/>
-          <TouchableHighlight onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
+          <TouchableHighlight onPress={() => this.refs.ListView.scrollTo({x: 0, y: 0})}>
             <Text style={styles.pageHeaderText}>Today</Text>
           </TouchableHighlight>
         </View>
@@ -209,7 +201,7 @@ const styles = StyleSheet.create({
   },
   week: {
     flexDirection: 'row',
-    borderTopColor:  commonStyles.thirdMoreFaintColor,
+    borderTopColor: commonStyles.thirdMoreFaintColor,
     borderTopWidth: 1,
     borderStyle: 'solid'
   }

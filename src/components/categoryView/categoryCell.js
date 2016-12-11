@@ -1,4 +1,5 @@
-import React, {StyleSheet, View, Text, TouchableOpacity, Component, Dimensions, InteractionManager} from "react-native";
+import React, {Component} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, InteractionManager} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {commonStyles as theme} from "../../utils/commonStyles";
 

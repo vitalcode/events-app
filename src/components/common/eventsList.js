@@ -1,21 +1,21 @@
-import React, {
+import React, {Component} from "react";
+import {
   StyleSheet,
   View,
   Text,
   Image,
   ListView,
-  Component,
-  ActivityIndicatorIOS,
+  ActivityIndicator,
   InteractionManager,
   TouchableOpacity,
   Animated,
   Picker,
   Dimensions
-} from 'react-native'
-import _ from 'lodash'
-import moment from 'moment'
-import {Actions} from 'react-native-router-flux'
-import {commonStyles as theme} from '../../utils/commonStyles'
+} from "react-native";
+import _ from "lodash";
+import moment from "moment";
+import {Actions} from "react-native-router-flux";
+import {commonStyles as theme} from "../../utils/commonStyles";
 
 // must be less than ~50px due to ScrollView bug (event only fires once)
 // https://github.com/facebook/react-native/pull/452
@@ -77,7 +77,7 @@ export default class EventsList extends Component {
           renderHeader={this._renderHeader.bind(this)}
           onScroll={this._handleScroll.bind(this)}
         />
-      </View>
+      </View >
     );
   }
 
@@ -112,7 +112,7 @@ export default class EventsList extends Component {
             <Image
               key={event.image}
               style={styles.image}
-              source={{uri: event.image }}
+              source={{uri: event.image}}
             />
           }
         </View>
@@ -125,7 +125,7 @@ export default class EventsList extends Component {
       <View style={styles.footerView}>
         {
           this.props.requestingEvents &&
-          <ActivityIndicatorIOS style={styles.spinner} animating={true}/>
+          <ActivityIndicator style={styles.spinner} animating={true}/>
         }
       </View>
     );
@@ -136,7 +136,7 @@ export default class EventsList extends Component {
     return (
       <View style={{position: 'absolute', top: -35, left: width / 2 - 20}}>
         {this.state.reloading &&
-        <ActivityIndicatorIOS style={styles.spinner}
+        <ActivityIndicator style={styles.spinner}
                               animating={true}/>
         }
       </View>
