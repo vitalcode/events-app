@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity, Dimensions, InteractionManager
 import {Actions} from "react-native-router-flux";
 import {commonStyles as theme} from "../../utils/commonStyles";
 
-const headerHeight = 65;
+const headerHeight = 64;
 
 export default class CategoryCell extends Component {
 
@@ -27,25 +27,25 @@ export default class CategoryCell extends Component {
     const {children, alternate, dimensions} = this.props;
     const {width, height} = dimensions;
     return (
-      <TouchableOpacity activeOpacity={1}
-                        onPress={this._onCategorySelected.bind(this, children)}
-                        onPressIn={() => this.setState({selected: true})}
-                        onPressOut={() => this.setState({selected: false})}>
-        <View
+        <TouchableOpacity
           style={[
             styles.cell,
             alternate && styles.cellOther,
             !alternate && selected && styles.cellSelected,
             alternate && selected && styles.cellOtherSelected,
-            {width: width / 3, height: (height - headerHeight) / 4}]}>
+            {width: width / 3, height: (height - headerHeight) / 4}]}
+          activeOpacity={1}
+          onPress={this._onCategorySelected.bind(this, children)}
+          onPressIn={() => this.setState({selected: true})}
+          onPressOut={() => this.setState({selected: false})}
+        >
           <Text numberOfLines={1} ellipsizeMode="tail" style={[
-              styles.text,
-              (alternate ^ selected) && styles.textSelected,
-              {fontSize: 16}]}>
+            styles.text,
+            (alternate ^ selected) && styles.textSelected,
+            {fontSize: 16}]}>
             {children.charAt(0).toUpperCase() + children.slice(1)}
           </Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
     )
   }
 }

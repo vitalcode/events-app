@@ -62,7 +62,7 @@ export default class eventsSearchViewBody extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 65
+    paddingTop: 65,
   },
   list: {
     justifyContent: 'space-around',
