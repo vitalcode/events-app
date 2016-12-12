@@ -38,7 +38,7 @@
     <false/>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string/>
-    <key>NSAppTransportSecurity</key>
+    <!--key>NSAppTransportSecurity</key>
     <dict>
       <key>NSExceptionDomains</key>
       <dict>
@@ -48,7 +48,7 @@
           <true/>
         </dict>
       </dict>
-    </dict>
+    </dict-->
     <key>UIAppFonts</key>
     <array>
       <string>Entypo.ttf</string>
@@ -61,5 +61,11 @@
       <string>SimpleLineIcons.ttf</string>
       <string>Zocial.ttf</string>
     </array>
+    <!--Include to allow all connections (TODO move all endpoints to HTTPS)-->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
   </dict>
 </plist>
