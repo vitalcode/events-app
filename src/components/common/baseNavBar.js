@@ -3,11 +3,11 @@ import {
   Platform,
   Animated,
   StyleSheet,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
-  NavigationExperimental,
-  StatusBar
+  NavigationExperimental
 } from "react-native";
 import {Actions} from "react-native-router-flux";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -179,6 +179,10 @@ export default class BaseNavBar extends React.Component {
           selected.navigationBarStyle,
         ]}
       >
+        <StatusBar
+          backgroundColor="black"
+          barStyle="light-content"
+        />
         {renderTitle ? renderTitle(navProps) : state.children.map(this.renderTitle, this)}
         {renderBackButton(navProps) || renderLeftButton(navProps)}
         {renderRightButton(navProps)}
