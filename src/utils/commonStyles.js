@@ -11,7 +11,7 @@ export const commonStyles = {
   thirdBackground: '#fff',
   
   card: {
-    listBackground: '#e9e9ef',
+    listBackground: '#fbfbfb',
     background: '#fff',
     borderColor: '#ddd',
     

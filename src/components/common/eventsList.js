@@ -65,22 +65,6 @@ export default class EventsList extends Component {
     this.props.getEvents()
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ListView
-          dataSource={this.state.dataSource}
-          onEndReached={this._onEndReached.bind(this)}
-          renderSectionHeader={this._renderSectionHeader}
-          renderFooter={this._renderFooter.bind(this)}
-          renderRow={this._renderRow.bind(this)}
-          renderHeader={this._renderHeader.bind(this)}
-          onScroll={this._handleScroll.bind(this)}
-        />
-      </View >
-    );
-  }
-
   _renderSectionHeader(sectionData, sectionID) {
     return (
       <View style={styles.sectionHeaderView}>
@@ -93,18 +77,15 @@ export default class EventsList extends Component {
     return (
       <TouchableOpacity activeOpacity={0.4} onPress={this._showEventDetails.bind(this, event.id)}>
         <View style={styles.event}>
-          <View style={styles.timeView}>
-            <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
-          </View>
           <View style={styles.infoView}>
-            <Text numberOfLines={3} ellipsizeMode="tail" style={styles.titleText}>
-              {event.title}
-            </Text>
+            <View>
+              <Text style={styles.timeText}>{event.timeRangeDisplay}</Text>
+              <Text numberOfLines={2} ellipsizeMode="tail" style={styles.titleText}>
+                {event.title}
+              </Text>
+            </View>
             <Text numberOfLines={1} ellipsizeMode="tail" style={styles.venueText}>
               {event.venue}
-            </Text>
-            <Text style={styles.categoryText}>
-              {event.category}
             </Text>
           </View>
           {
@@ -137,7 +118,7 @@ export default class EventsList extends Component {
       <View style={{position: 'absolute', top: -35, left: width / 2 - 20}}>
         {this.state.reloading &&
         <ActivityIndicator style={styles.spinner}
-                              animating={true}/>
+                           animating={true}/>
         }
       </View>
     );
@@ -154,29 +135,38 @@ export default class EventsList extends Component {
     }
     this.props.onScroll && this.props.onScroll(e)
   }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <ListView
+          dataSource={this.state.dataSource}
+          onEndReached={this._onEndReached.bind(this)}
+          renderSectionHeader={this._renderSectionHeader}
+          renderFooter={this._renderFooter.bind(this)}
+          renderRow={this._renderRow.bind(this)}
+          renderHeader={this._renderHeader.bind(this)}
+          onScroll={this._handleScroll.bind(this)}
+        />
+      </View >
+    );
+  }
 }
 
+const itemHight = 100;
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: theme.card.listBackground,
     flex: 1
   },
   event: {
-    marginBottom: 10,
-    paddingTop: 0,
     flexDirection: 'row',
+    marginBottom: 5,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: theme.card.borderColor,
-    backgroundColor: theme.card.background
-  },
-  timeView: {
-    position: 'absolute',
-    top: -7,
-    left: 6,
-    padding: 3,
-    borderWidth: 1,
-    borderColor: theme.card.borderColor,
-    shadowColor: "#666",
+    backgroundColor: theme.card.background,
+    shadowColor: "#777",
     shadowOpacity: 0.2,
     shadowRadius: 1,
     shadowOffset: {
@@ -185,28 +175,23 @@ const styles = StyleSheet.create({
     }
   },
   timeText: {
-    fontSize: 10,
+    marginBottom: 5,
+    fontSize: 12,
     fontFamily: 'Helvetica',
     color: theme.card.textColor
   },
   infoView: {
     flex: 1,
     padding: 10,
-    paddingTop: 15,
+    paddingTop: 10,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: 120
+    height: itemHight
   },
   titleText: {
     color: theme.card.textTitleColor,
     fontFamily: theme.card.textTitleFamily,
     fontSize: theme.card.textTitleSize
-  },
-  categoryText: {
-    fontSize: 14,
-    fontFamily: theme.card.textFamily,
-    flexWrap: 'nowrap',
-    color: theme.card.textColor
   },
   venueText: {
     fontSize: 12,
@@ -214,15 +199,14 @@ const styles = StyleSheet.create({
     color: theme.card.textColor
   },
   image: {
-    width: 120,
-    height: 120
+    width: itemHight,
+    height: itemHight
   },
   sectionHeaderView: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     opacity: 1,
-    marginBottom: 10,
     backgroundColor: theme.sectionBackground
   },
   sectionHeaderText: {
