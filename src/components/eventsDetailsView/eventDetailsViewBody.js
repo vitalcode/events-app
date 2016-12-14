@@ -166,10 +166,8 @@ const styles = StyleSheet.create({
   sectionSeparator: {
     height: 1,
     marginVertical: 10,
-    marginLeft: 22,
-    marginRight: 10,
     borderTopWidth: 1,
-    borderColor: theme.thirdMoreFaintColor
+    borderColor: theme.separatorColor
   },
   text: {
     flex: 1,
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
   },
   infoIcon: {
     marginTop: 1,
-    color: theme.sectionBackground
+    color: "#000" //theme.sectionBackground
   },
   stickySection: {
     height: STICKY_HEADER_HEIGHT,

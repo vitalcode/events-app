@@ -9,7 +9,9 @@ export const commonStyles = {
   thirdFaintColor: '#bbb',
   thirdMoreFaintColor: '#ddd',
   thirdBackground: '#fff',
-  
+
+  separatorColor: '#ccc',
+
   card: {
     listBackground: '#fbfbfb',
     background: '#fff',
