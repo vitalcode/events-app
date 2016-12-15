@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   infoIcon: {
     marginTop: 1,
-    color: "#000" //theme.sectionBackground
+    color: theme.sectionBackground
   },
   stickySection: {
     height: STICKY_HEADER_HEIGHT,

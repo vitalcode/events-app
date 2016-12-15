@@ -3,7 +3,7 @@ export const commonStyles = {
   headerBackground: '#000',
 
   sectionColor: '#fff',
-  sectionBackground: '#ff8000',
+  sectionBackground: '#ee4433',
   
   thirdColor: '#555',
   thirdFaintColor: '#bbb',
