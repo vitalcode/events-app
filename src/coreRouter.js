@@ -1,6 +1,6 @@
 import React from 'react';
 import {Animated, Platform, View, Text} from 'react-native'
-import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} from 'react-native-router-flux'
+import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar, ActionConst} from 'react-native-router-flux'
 import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
 import Config from 'react-native-config'
@@ -32,11 +32,16 @@ export default class App extends React.Component {
     return <Router createReducer={this.reducerCreate.bind(this)}>
       <Scene key="modal" component={Modal}>
         <Scene key="root">
-          <Scene key="eventsListView" type="push" direction="vertical"
+          <Scene key="eventsListView" type={ActionConst.RESET} direction="vertical"
                  navBar={containers.eventsListViewBarContainer}
                  component={containers.eventsListViewBodyContainer}
                  onLeft={this._navigateToSearchView.bind(this)} leftButtonImage="search"
                  onRight={()=>Actions.calendarView()} rightButtonImage="info-outline"/>
+          <Scene key="filterList" type={ActionConst.RESET} direction="vertical" initial={true}
+                 navBar={BaseNavBar}
+                 component={FiltersList}
+                 onLeft={() => Actions.eventsListView()} leftTitle="Done"
+          />
           <Scene key="eventsSearch" type="push"
                  navBar={containers.eventsSearchViewBarContainer}
                  component={containers.eventsSearchViewBodyContainer}
@@ -51,12 +56,10 @@ export default class App extends React.Component {
                  navBar={BaseNavBar}
                  component={containers.calendarContainer}
                  onRight={()=> this._dateReset()} rightTitle="Today"
-                 initial={false}
           />
-          <Scene key="categorySelector" type="push" direction="vertical"
+          <Scene key="categorySelector" type="push"
                  navBar={BaseNavBar}
-                 component={FiltersList} //containers.categoryViewBodyContainer}
-                 initial={false}
+                 component={containers.categoryViewBodyContainer}
           />
         </Scene>
       </Scene>

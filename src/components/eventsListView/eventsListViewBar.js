@@ -12,7 +12,7 @@ export default class categoryViewBar extends AppNavBar {
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.button}
-                          onPress={()=>Actions.categorySelector()}>
+                          onPress={()=>Actions.filterList()}>
           <Icon style={styles.filterIcon} name='filter-list'/>
           <Text style={styles.text}>{`${capitalise(location)}`}</Text>
         </TouchableOpacity>
