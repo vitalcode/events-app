@@ -1,10 +1,11 @@
 import React from 'react';
-import {Animated, Platform} from 'react-native'
+import {Animated, Platform, View, Text} from 'react-native'
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar} from 'react-native-router-flux'
 import BaseNavBar from './components/common/baseNavBar'
 import CoreModule from './coreModule'
 import Config from 'react-native-config'
 import moment from 'moment'
+import FiltersList from './components/filtersView/filtersList'
 
 export default class App extends React.Component {
 
@@ -31,12 +32,11 @@ export default class App extends React.Component {
     return <Router createReducer={this.reducerCreate.bind(this)}>
       <Scene key="modal" component={Modal}>
         <Scene key="root">
-          <Scene key="eventsListView" type="push"
+          <Scene key="eventsListView" type="push" direction="vertical"
                  navBar={containers.eventsListViewBarContainer}
                  component={containers.eventsListViewBodyContainer}
                  onLeft={this._navigateToSearchView.bind(this)} leftButtonImage="search"
-                 onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
-          />
+                 onRight={()=>Actions.calendarView()} rightButtonImage="info-outline"/>
           <Scene key="eventsSearch" type="push"
                  navBar={containers.eventsSearchViewBarContainer}
                  component={containers.eventsSearchViewBodyContainer}
@@ -53,9 +53,9 @@ export default class App extends React.Component {
                  onRight={()=> this._dateReset()} rightTitle="Today"
                  initial={false}
           />
-          <Scene key="categorySelector" type="push"
+          <Scene key="categorySelector" type="push" direction="vertical"
                  navBar={BaseNavBar}
-                 component={containers.categoryViewBodyContainer}
+                 component={FiltersList} //containers.categoryViewBodyContainer}
                  initial={false}
           />
         </Scene>

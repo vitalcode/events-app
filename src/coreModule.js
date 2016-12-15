@@ -326,7 +326,8 @@ const containers = {
     mapDispatchToProps)(EventsListViewBody),
   eventsListViewBarContainer: connect((state) => {
       return {
-        category: state.core.category,
+        category: state.core.category, //todo remove
+        location: 'Cambridge' // TODO
       }
     },
     mapDispatchToProps)(EventsListViewBar),
