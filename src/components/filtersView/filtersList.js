@@ -1,26 +1,21 @@
 import React, {Component} from "react"
-import {StyleSheet, View, ScrollView, Animated, Picker, Text} from "react-native"
-import LocationFilter from './locationFilter'
-import DateFilter from './dateFilter'
+import {StyleSheet, View, ScrollView, Animated, Picker} from "react-native"
 import {commonStyles as theme} from "../../utils/commonStyles"
-import FilterSection from './filterSection'
-import CoreModule from '../../coreModule'
+import CoreModule from "../../coreModule"
+import LocationFilter from "./locationFilter"
 
 export default class FiltersList extends Component {
   render() {
-    const {CategoryFilterContainer} = CoreModule.containers;
+    const {CategoryFilterContainer, DateFilterContainer} = CoreModule.containers;
     return (
       <View style={styles.container}>
         <ScrollView>
-
-          <FilterSection title="WHERE">
-            <Text style={[styles.filterItem, styles.filterItemSelected]}>Cambridge</Text>
-          </FilterSection>
-
-          <FilterSection title="WHEN">
-            <Text style={[styles.filterItem, styles.filterItemSelected]}>10 September 2017</Text>
-          </FilterSection>
-
+          <LocationFilter filterItemStyle={styles.filterItem}
+                          filterItemSelectedStyle={styles.filterItemSelected}
+          />
+          <DateFilterContainer filterItemStyle={styles.filterItem}
+                               filterItemSelectedStyle={styles.filterItemSelected}
+          />
           <CategoryFilterContainer filterItemStyle={styles.filterItem}
                                    filterItemSelectedStyle={styles.filterItemSelected}
           />
@@ -33,7 +28,7 @@ export default class FiltersList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 64,
+    marginTop: 63,
     alignItems: 'stretch',
     backgroundColor: theme.card.listBackground,
   },
@@ -45,5 +40,7 @@ const styles = StyleSheet.create({
     color: theme.sectionBackground
   }
 });
+
+
 
 

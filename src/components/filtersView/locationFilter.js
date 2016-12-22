@@ -1,16 +1,20 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Animated, Picker, Text} from "react-native";
+import {Text, TouchableOpacity} from "react-native";
+import FilterSection from "./filterSection";
 
 export default class LocationFilter extends Component {
   render() {
+    const {filterItemStyle, filterItemSelectedStyle} = this.props;
     return (
-      <View style={styles.container}>
-        <Text>Dlocation Filter</Text>
-      </View >
+      <FilterSection title="WHERE">
+        <TouchableOpacity>
+          <Text style={[
+            filterItemStyle,
+            filterItemSelectedStyle
+          ]}
+          >Cambridge</Text>
+        </TouchableOpacity>
+      </FilterSection>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {}
-});

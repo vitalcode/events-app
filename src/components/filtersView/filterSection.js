@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 20,
     alignItems: 'center',
-    borderBottomWidth: 1,
+    borderTopWidth: 1,
     borderColor: theme.separatorColor
   },
   filterTitle: {

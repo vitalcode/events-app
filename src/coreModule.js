@@ -5,6 +5,7 @@ import {createActionAsync} from 'redux-act-async';
 import update from 'react/lib/update'
 import moment from 'moment';
 import Config from 'react-native-config'
+import {Actions} from "react-native-router-flux"
 import {buildAllEventsUrl} from './utils/urlUtils'
 import EventsSearchViewBar from './components/eventsSearchView/eventsSearchViewBar'
 import EventsSearchViewBody from './components/eventsSearchView/eventsSearchViewBody'
@@ -12,6 +13,7 @@ import EventsListViewBody from './components/eventsListView/eventsListViewBody'
 import EventsListViewBar from './components/eventsListView/eventsListViewBar'
 import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsViewBody'
 import CategoryFilter from './components/filtersView/categoryFilter'
+import DateFilter from './components/filtersView/dateFilter'
 import CategoryViewBody from './components/categoryView/categoryViewBody'
 import CategoryCell from './components/categoryView/categoryCell'
 import DimensionsProvider from './components/common/dimensionsProvider'
@@ -306,7 +308,10 @@ const reducer = combineReducers({
   dimensions: dimensionsReducer
 });
 
-const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch),
+  router: Actions
+});
 const containers = {
   eventsSearchViewBarContainer: connect((state) => {
       return {
@@ -363,7 +368,11 @@ const containers = {
       selected: state.core.category
     }
   }, mapDispatchToProps)(CategoryFilter),
-
+  DateFilterContainer: connect((state) => {
+    return {
+      selectedDate: state.core.date,
+    }
+  }, mapDispatchToProps)(DateFilter),
   dimensionsProviderContainer: connect(null, mapDispatchToProps)(DimensionsProvider)
 };
 

@@ -1,16 +1,28 @@
-import React, {Component} from "react";
-import {StyleSheet, View, Animated, Picker, Text} from "react-native";
+import React, {Component} from "react"
+import {Text, InteractionManager, TouchableOpacity} from "react-native"
+import FilterSection from "./filterSection"
 
 export default class DateFilter extends Component {
+
+  _onDateSelected() {
+    const {router} = this.props;
+    InteractionManager.runAfterInteractions(() => {
+      router.calendarView()
+    })
+  }
+
   render() {
+    const {filterItemStyle, filterItemSelectedStyle, selectedDate} = this.props;
     return (
-      <View style={styles.container}>
-        <Text>Date Filter</Text>
-      </View >
+      <FilterSection title="WHEN">
+        <TouchableOpacity onPress={() => this._onDateSelected()}>
+          <Text style={[
+            filterItemStyle,
+            filterItemSelectedStyle
+          ]}
+          >{selectedDate.format('LL')}</Text>
+        </TouchableOpacity>
+      </FilterSection>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {}
-});

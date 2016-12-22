@@ -1,11 +1,22 @@
-import React from 'react';
-import {Animated, Platform, View, Text} from 'react-native'
-import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions, NavBar, ActionConst} from 'react-native-router-flux'
-import BaseNavBar from './components/common/baseNavBar'
-import CoreModule from './coreModule'
-import Config from 'react-native-config'
-import moment from 'moment'
-import FiltersList from './components/filtersView/filtersList'
+import React from "react";
+import {Animated, Platform} from "react-native";
+import {
+  Scene,
+  Reducer,
+  Router,
+  Switch,
+  TabBar,
+  Modal,
+  Schema,
+  Actions,
+  NavBar,
+  ActionConst
+} from "react-native-router-flux";
+import BaseNavBar from "./components/common/baseNavBar";
+import CoreModule from "./coreModule";
+import Config from "react-native-config";
+import moment from "moment";
+import FiltersList from "./components/filtersView/filtersList";
 
 export default class App extends React.Component {
 
