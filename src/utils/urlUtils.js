@@ -1,5 +1,5 @@
 //import {Config} from './../config'
-import Config from 'react-native-config'
+import Config from "react-native-config";
 
 // const pageSize = 10;
 //
@@ -43,10 +43,14 @@ export function buildAllEventsUrl(clue, date, category, refresh, total, pageSize
     })
   }
 
-  if (category !== 'all') {
+  if (category.length > 0) {
     mustQuery.push({
-      term: {
-        category: category
+      bool: {
+        should: category.map(cat => ({
+          term: {
+            category: cat
+          }
+        }))
       }
     })
   }

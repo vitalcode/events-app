@@ -11,6 +11,7 @@ import EventsSearchViewBody from './components/eventsSearchView/eventsSearchView
 import EventsListViewBody from './components/eventsListView/eventsListViewBody'
 import EventsListViewBar from './components/eventsListView/eventsListViewBar'
 import EventDetailsViewBody from './components/eventsDetailsView/eventDetailsViewBody'
+import CategoryFilter from './components/filtersView/categoryFilter'
 import CategoryViewBody from './components/categoryView/categoryViewBody'
 import CategoryCell from './components/categoryView/categoryCell'
 import DimensionsProvider from './components/common/dimensionsProvider'
@@ -97,7 +98,11 @@ const actions = new function () {
     },
     this.clueSet = createAction('CLUE_SET'),
     this.clueClear = createAction('CLUE_CLEAR'),
-    this.categorySet = createAction('CATEGORY_SET'),
+
+    this.categoryAdd = createAction('CATEGORY_ADD'),
+    this.categoryReset = createAction('CATEGORY_RESET'),
+    this.categorySet = createAction('CATEGORY_SET'), // TODO check if used
+
     this.categoryUpdate = category => (dispatch) => {
       dispatch(this.categorySet(category));
       dispatch(this.categoryEventsReload());
@@ -222,7 +227,7 @@ const calendarReducer = createReducer({
   [actions.dateSet]: (state, payload) => {
     return payload
   }
-}, Config.today ? moment(Config.today): moment());
+}, Config.today ? moment(Config.today) : moment());
 
 const clueReducer = createReducer({
   [actions.clueSet]: (state, payload) => {
@@ -273,9 +278,18 @@ const clueSuggestionsReducer = createReducer({
   },
 }, {requesting: false, list: []});
 
+const categoryReducerDefault = [];
 const categoryReducer = createReducer({
-  [actions.categorySet]: (state, payload) => (payload)
-}, "all");
+  [actions.categorySet]: (state, payload) => payload,
+  [actions.categoryAdd]: (state, payload) => {
+    const index = state.indexOf(payload);
+    if (index === -1) {
+      return update(state, {$push: [payload]})
+    }
+    return update(state, {$splice: [[index, 1]]})
+  },
+  [actions.categoryReset]: (state, payload) => categoryReducerDefault,
+}, categoryReducerDefault);
 
 const dimensionsReducer = createReducer({
   [actions.setDimensions]: (state, payload) => (payload)
@@ -344,6 +358,12 @@ const containers = {
       dimensions: state.core.dimensions
     }
   }, mapDispatchToProps)(CategoryCell),
+  CategoryFilterContainer: connect((state) => {
+    return {
+      selected: state.core.category
+    }
+  }, mapDispatchToProps)(CategoryFilter),
+
   dimensionsProviderContainer: connect(null, mapDispatchToProps)(DimensionsProvider)
 };
 

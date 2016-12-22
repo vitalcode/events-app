@@ -22,6 +22,11 @@ export default class App extends React.Component {
     Actions.eventsSearch();
   }
 
+  _navigateToListView() {
+    this.props.actions.categoryEventsReload();
+    Actions.eventsListView();
+  }
+
   _dateReset() {
     this.props.actions.dateUpdate(moment(Config.today));
     Actions.pop();
@@ -32,15 +37,15 @@ export default class App extends React.Component {
     return <Router createReducer={this.reducerCreate.bind(this)}>
       <Scene key="modal" component={Modal}>
         <Scene key="root">
-          <Scene key="eventsListView" type={ActionConst.RESET} direction="vertical"
+          <Scene key="eventsListView" type={ActionConst.RESET} direction="vertical" initial={true}
                  navBar={containers.eventsListViewBarContainer}
                  component={containers.eventsListViewBodyContainer}
-                 onLeft={this._navigateToSearchView.bind(this)} leftButtonImage="search"
+                 onLeft={() => this._navigateToSearchView()} leftButtonImage="search"
                  onRight={()=>Actions.calendarView()} rightButtonImage="info-outline"/>
-          <Scene key="filterList" type={ActionConst.RESET} direction="vertical" initial={true}
+          <Scene key="filterList" type={ActionConst.RESET} direction="vertical"
                  navBar={BaseNavBar}
                  component={FiltersList}
-                 onLeft={() => Actions.eventsListView()} leftTitle="Done"
+                 onLeft={() => this._navigateToListView()} leftTitle="Done"
           />
           <Scene key="eventsSearch" type="push"
                  navBar={containers.eventsSearchViewBarContainer}
