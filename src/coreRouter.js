@@ -1,5 +1,5 @@
-import React from "react";
-import {Animated, Platform} from "react-native";
+import React from "react"
+import {Animated, Platform} from "react-native"
 import {
   Scene,
   Reducer,
@@ -11,12 +11,13 @@ import {
   Actions,
   NavBar,
   ActionConst
-} from "react-native-router-flux";
-import BaseNavBar from "./components/common/baseNavBar";
-import CoreModule from "./coreModule";
-import Config from "react-native-config";
-import moment from "moment";
-import FiltersList from "./components/filtersView/filtersList";
+} from "react-native-router-flux"
+import BaseNavBar from "./components/common/baseNavBar"
+import CoreModule from "./coreModule"
+import Config from "react-native-config"
+import moment from "moment"
+import FiltersList from "./components/filtersView/filtersList"
+import InfoViewBody from "./components/infoView/infoViewBody"
 
 export default class App extends React.Component {
 
@@ -52,10 +53,15 @@ export default class App extends React.Component {
                  navBar={containers.eventsListViewBarContainer}
                  component={containers.eventsListViewBodyContainer}
                  onLeft={() => this._navigateToSearchView()} leftButtonImage="search"
-                 onRight={()=>Actions.calendarView()} rightButtonImage="info-outline"/>
+                 onRight={()=>Actions.infoView()} rightButtonImage="info-outline"/>
           <Scene key="filterList" type={ActionConst.RESET} direction="vertical"
                  navBar={BaseNavBar}
                  component={FiltersList}
+                 onLeft={() => this._navigateToListView()} leftTitle="Done"
+          />
+          <Scene key="infoView" type={ActionConst.RESET} direction="vertical"
+                 navBar={BaseNavBar}
+                 component={InfoViewBody}
                  onLeft={() => this._navigateToListView()} leftTitle="Done"
           />
           <Scene key="eventsSearch" type="push"
