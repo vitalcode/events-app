@@ -67,7 +67,6 @@ export default class App extends React.Component {
           <Scene key="eventsSearch" type="push"
                  navBar={containers.eventsSearchViewBarContainer}
                  component={containers.eventsSearchViewBodyContainer}
-                 onRight={()=>Actions.calendarView()} rightButtonImage="date-range"
           />
           <Scene key="eventsDetails" type="push"
                  hideNavBar={true}

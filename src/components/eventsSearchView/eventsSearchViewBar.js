@@ -41,13 +41,13 @@ export default class EventsSearchViewBar extends AppNavBar {
           !this.props.clue &&
           <TextInput
             style={styles.searchTextInput}
-            keyboardType="web-search"
+            returnKeyType="search"
             clearButtonMode="never"
             underlineColorAndroid={'#3a3f41'}
             autoCapitalize="none"
             autoFocus={true}
             autoCorrect={false}
-            placeholder="Search event"
+            placeholder="Search events"
             placeholderTextColor={'#ccc'}
             onChangeText={this._onSearchClueChange.bind(this)}
             onSubmitEditing={this._onSearchClueSubmit.bind(this)}
