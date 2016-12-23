@@ -84,8 +84,8 @@ export default class EventDetails extends Component {
 
             <View style={ styles.descriptionView }>
               {
-                event.description && event.description.map(item => (
-                  <View style={styles.descriptionParagraph}>
+                event.description && event.description.map((item, index) => (
+                  <View key={index} style={styles.descriptionParagraph}>
                     <Text style={styles.descriptionText}>{item}</Text>
                   </View>
                 ))

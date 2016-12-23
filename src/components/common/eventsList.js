@@ -147,6 +147,7 @@ export default class EventsList extends Component {
           renderRow={this._renderRow.bind(this)}
           renderHeader={this._renderHeader.bind(this)}
           onScroll={this._handleScroll.bind(this)}
+          enableEmptySections={false}
         />
       </View >
     );

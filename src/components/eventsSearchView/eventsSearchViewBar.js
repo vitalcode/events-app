@@ -33,7 +33,6 @@ export default class EventsSearchViewBar extends AppNavBar {
   }
 
   renderBar() {
-    const {text} = this.state;
     return (
       <View style={styles.container}
             onPress={this._onClearButtonPress.bind(this)}>
