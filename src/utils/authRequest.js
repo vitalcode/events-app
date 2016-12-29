@@ -1,20 +1,22 @@
 import Config from "react-native-config";
 import Jwt from "./jwt";
+import Logger from "./logger";
 
 const graphqlUrl = `${Config.url}/graphql`;
 const user = Config.user;
 const password = Config.password;
+const logger = Logger('Request');
 
 export async function authRequest(graphQuery) {
-
   const response = await graphRequest(graphQuery);
 
-  if (!response.errors) {
-    return response;
+  const errors = response.errors;
+  if (errors && isAuthError(errors)) {
+    await login(user, password);
+    return graphRequest(graphQuery);
   }
 
-  await login(user, password);
-  return graphRequest(graphQuery);
+  return response;
 }
 
 function login(user, password) {
@@ -31,21 +33,24 @@ function login(user, password) {
   return graphRequest(graphQuery)
     .then(response => {
       const token = response.data.login;
-      console.log("TOKEN", token);
+      logger.info('TOKEN', token);
       Jwt.set(token);
       return token;
     });
 }
 
 function graphRequest(graphQuery) {
-  const requestBody = JSON.stringify(graphQuery);
-  console.log('graphRequest query: ', graphQuery, requestBody);
+  logger.info('QUERY: ', graphQuery);
   return fetch(graphqlUrl, {
     method: "POST",
-    body: requestBody,
+    body: JSON.stringify(graphQuery),
     headers: new Headers({
       'Content-Type': 'application/json',
       'authorization': `Bearer ${Jwt.get()}`
     })
   }).then(r => r.json());
+}
+
+function isAuthError(errors) {
+  return !!errors.find(error => error.message === 'Invalid token')
 }

@@ -18,13 +18,16 @@ import Config from "react-native-config"
 import moment from "moment"
 import FiltersList from "./components/filtersView/filtersList"
 import InfoViewBody from "./components/infoView/infoViewBody"
+import Logger from "./utils/logger";
 
-export default class App extends React.Component {
+const logger = Logger('Router');
+
+export default class CoreRouter extends React.Component {
 
   reducerCreate(params) {
     const defaultReducer = Reducer(params);
     return (state, action)=> {
-      console.log("NAV ACTION:", action);
+      logger.info("NAV ACTION:", action);
       return defaultReducer(state, action);
     }
   };
