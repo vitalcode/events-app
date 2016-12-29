@@ -6,7 +6,7 @@ import update from 'react/lib/update'
 import moment from 'moment';
 import Config from 'react-native-config'
 import {Actions} from "react-native-router-flux"
-import {buildAllEventsUrl} from './utils/urlUtils'
+import {fetchEvents, fetchEventDetails} from './utils/graphService'
 import EventsSearchViewBar from './components/eventsSearchView/eventsSearchViewBar'
 import EventsSearchViewBody from './components/eventsSearchView/eventsSearchViewBody'
 import EventsListViewBody from './components/eventsListView/eventsListViewBody'
@@ -36,14 +36,11 @@ const restService = {
     const url = `http://suggestqueries.google.com/complete/search?q=${clue}&client=firefox`;
     return fetch(url).then(response => response.json());
   },
-  getEvents(clue, date, category, total, pageSize, nextPage) {
-    const request = buildAllEventsUrl(clue, date, category, false, total, pageSize, nextPage);
-    return request.then(response => response.json());
+  getEvents(clue, date, category, pageSize, nextPage) {
+    return fetchEvents(clue, date, category, pageSize, nextPage);
   },
-  getEventDetails(id){
-    const url = `http://${Config.host}:${Config.port}/${Config.index}/events/${encodeURIComponent(id)}`;
-    console.log('getEventDetails url', url);
-    return fetch(url).then(response => response.json());
+  getEventDetails(id, token){
+    return fetchEventDetails(id, token);
   }
 };
 
@@ -56,7 +53,7 @@ const actions = new function () {
       const {total, pageSize, nextPage} = getState().core.categoryEvents;
       if (!total || pageSize * nextPage < total) {
         dispatch(this.categoryEventsNextPage());
-        dispatch(this.categoryEventsFetch(null, date, category, total, pageSize, nextPage));
+        dispatch(this.categoryEventsFetch(null, date, category, pageSize, nextPage));
       }
     },
     this.categoryEventsReload = date => (dispatch) => {
@@ -72,7 +69,7 @@ const actions = new function () {
       const {total, pageSize, nextPage} = getState().core.searchEvents;
       if (!total || pageSize * nextPage < total) {
         dispatch(this.searchEventsNextPage());
-        dispatch(this.searchEventsFetch(clue, date, category, total, pageSize, nextPage));
+        dispatch(this.searchEventsFetch(clue, date, category, pageSize, nextPage));
       }
     },
     this.searchEventsReload = date => (dispatch) => {
@@ -122,19 +119,18 @@ const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer(
     });
   },
   [getAction.ok]: (state, payload) => {
-    const total = payload.hits.total;
-    const events = payload.hits.hits
+    const total = payload.data.events.total;
+    const events = payload.data.events.items
       .map(hit => {
-        const source = hit._source;
         return {
-          id: hit._id,
-          title: source.title && source.title.length > 0 ? source.title[0] : '',
-          description: source.description && source.description.length > 0 ? source.description[0] : '',
-          image: source.image && source.image.length > 0 ? source.image[0] : '',
-          from: source.from && source.from.length > 0 ? source.from[0] : '',
-          to: source.to && source.to.length > 0 ? source.to[0] : '',
-          category: source.category && source.category.length > 0 ? source.category[0].charAt(0).toUpperCase() + source.category[0].slice(1) : '',
-          venue: source.venue && source.venue.length > 0 ? source.venue[0] : 'TBC' // TODO rethink
+          id: hit.id,
+          title: hit.title && hit.title.length > 0 ? hit.title[0] : '',
+          description: hit.description && hit.description.length > 0 ? hit.description[0] : '',
+          image: hit.image && hit.image.length > 0 ? hit.image[0] : '',
+          from: hit.from && hit.from.length > 0 ? hit.from[0] : '',
+          to: hit.to && hit.to.length > 0 ? hit.to[0] : '',
+          category: hit.category && hit.category.length > 0 ? hit.category[0].charAt(0).toUpperCase() + hit.category[0].slice(1) : '',
+          venue: hit.venue && hit.venue.length > 0 ? hit.venue[0] : 'TBC' // TODO rethink
         }
       });
     return update(state, {
@@ -196,7 +192,7 @@ const eventDetailsReducer = createReducer({
     });
   },
   [actions.getEventDetails.ok]: (state, payload) => {
-    const source = payload._source;
+    const source = payload.data.event;
     const event = {
       id: payload._id,
       title: source.title && source.title.length > 0 ? source.title[0] : '',
