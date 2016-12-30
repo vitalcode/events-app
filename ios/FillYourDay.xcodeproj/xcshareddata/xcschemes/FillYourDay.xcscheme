@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0620"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "eventsApp.app"
-               BlueprintName = "eventsApp"
-               ReferencedContainer = "container:eventsApp.xcodeproj">
+               BuildableName = "FillYourDay.app"
+               BlueprintName = "FillYourDay"
+               ReferencedContainer = "container:FillYourDay.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,27 +29,27 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "eventsAppTests.xctest"
-               BlueprintName = "eventsAppTests"
-               ReferencedContainer = "container:eventsApp.xcodeproj">
+               BuildableName = "FillYourDayTests.xctest"
+               BlueprintName = "FillYourDayTests"
+               ReferencedContainer = "container:FillYourDay.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "eventsAppTests.xctest"
-               BlueprintName = "eventsAppTests"
-               ReferencedContainer = "container:eventsApp.xcodeproj">
+               BuildableName = "FillYourDayTests.xctest"
+               BlueprintName = "FillYourDayTests"
+               ReferencedContainer = "container:FillYourDay.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,48 +57,51 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "eventsApp.app"
-            BlueprintName = "eventsApp"
-            ReferencedContainer = "container:eventsApp.xcodeproj">
+            BuildableName = "FillYourDay.app"
+            BlueprintName = "FillYourDay"
+            ReferencedContainer = "container:FillYourDay.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "eventsApp.app"
-            BlueprintName = "eventsApp"
-            ReferencedContainer = "container:eventsApp.xcodeproj">
+            BuildableName = "FillYourDay.app"
+            BlueprintName = "FillYourDay"
+            ReferencedContainer = "container:FillYourDay.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "eventsApp.app"
-            BlueprintName = "eventsApp"
-            ReferencedContainer = "container:eventsApp.xcodeproj">
+            BuildableName = "FillYourDay.app"
+            BlueprintName = "FillYourDay"
+            ReferencedContainer = "container:FillYourDay.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

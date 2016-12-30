@@ -1,4 +1,4 @@
-package com.eventsapp;
+package com.fillyourday;
 
 import android.app.Application;
 import android.util.Log;
