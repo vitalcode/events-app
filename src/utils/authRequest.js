@@ -9,14 +9,18 @@ const logger = Logger('Request');
 
 export async function authRequest(graphQuery) {
   const response = await graphRequest(graphQuery);
-
   const errors = response.errors;
-  if (errors && isAuthError(errors)) {
-    await login(user, password);
-    return graphRequest(graphQuery);
+  
+  if (!errors) {
+    return response;
   }
 
-  return response;
+  if (isAuthError(errors)) {
+    await login(user, password);
+    return authRequest(graphQuery);
+  }
+
+  return Promise.reject();
 }
 
 function login(user, password) {

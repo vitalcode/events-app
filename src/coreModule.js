@@ -19,6 +19,7 @@ import CategoryCell from './components/categoryView/categoryCell'
 import DimensionsProvider from './components/common/dimensionsProvider'
 import Calendar from './components/calendarView/calendar'
 import CoreRouter from './coreRouter'
+import _ from 'lodash'
 
 function eventsToDisplayEvents(events) {
   return events.map(event => eventToDisplayEvent(event));
@@ -51,7 +52,7 @@ const actions = new function () {
     this.categoryEventsGet = () => (dispatch, getState) => {
       const {date, category} = getState().core;
       const {total, pageSize, nextPage} = getState().core.categoryEvents;
-      if (!total || pageSize * nextPage < total) {
+      if (_.isUndefined(total) || pageSize * nextPage < total) {
         dispatch(this.categoryEventsNextPage());
         dispatch(this.categoryEventsFetch(null, date, category, pageSize, nextPage));
       }
@@ -67,7 +68,7 @@ const actions = new function () {
     this.searchEventsGet = () => (dispatch, getState) => {
       const {clue, date, category} = getState().core;
       const {total, pageSize, nextPage} = getState().core.searchEvents;
-      if (!total || pageSize * nextPage < total) {
+      if (_.isUndefined(total) || pageSize * nextPage < total) {
         dispatch(this.searchEventsNextPage());
         dispatch(this.searchEventsFetch(clue, date, category, pageSize, nextPage));
       }
@@ -110,6 +111,7 @@ const actions = new function () {
     this.setDimensions = createAction('DIMENSIONS_SET')
 };
 
+const eventsStateDefault = {requesting: false, list: [], total: undefined, pageSize: 10, nextPage: 0};
 const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer({
   [getAction.request]: (state) => {
     return update(state, {
@@ -152,6 +154,9 @@ const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer(
     return update(state, {
       requesting: {
         $set: false
+      },
+      total: {
+        $set: state.pageSize * state.nextPage
       }
     });
   },
@@ -162,23 +167,8 @@ const eventsReducer = (getAction, nextPageAction, resetAction) => createReducer(
       }
     });
   },
-  [resetAction]: (state) => {
-    return update(state, {
-      requesting: {
-        $set: false
-      },
-      list: {
-        $set: []
-      },
-      total: {
-        $set: 0
-      },
-      nextPage: {
-        $set: 0
-      }
-    });
-  }
-}, {requesting: false, list: [], total: 0, pageSize: 10, nextPage: 0});
+  [resetAction]: (state) => eventsStateDefault
+}, eventsStateDefault);
 
 const eventDetailsReducer = createReducer({
   [actions.getEventDetails.request]: (state) => {

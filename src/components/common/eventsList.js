@@ -139,16 +139,22 @@ export default class EventsList extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ListView
-          dataSource={this.state.dataSource}
-          onEndReached={this._onEndReached.bind(this)}
-          renderSectionHeader={this._renderSectionHeader}
-          renderFooter={this._renderFooter.bind(this)}
-          renderRow={this._renderRow.bind(this)}
-          renderHeader={this._renderHeader.bind(this)}
-          onScroll={this._handleScroll.bind(this)}
-          enableEmptySections={false}
-        />
+        {
+          (this.props.events.length === 0 && !this.props.requestingEvents) ?
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyTitle}>No Events</Text>
+            </View>:
+            <ListView
+              dataSource={this.state.dataSource}
+              onEndReached={this._onEndReached.bind(this)}
+              renderSectionHeader={this._renderSectionHeader}
+              renderFooter={this._renderFooter.bind(this)}
+              renderRow={this._renderRow.bind(this)}
+              renderHeader={this._renderHeader.bind(this)}
+              onScroll={this._handleScroll.bind(this)}
+              enableEmptySections={false}
+            />
+        }
       </View >
     );
   }
@@ -159,6 +165,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.card.listBackground,
     flex: 1
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  emptyTitle: {
+    fontSize: 18
   },
   event: {
     flexDirection: 'row',
