@@ -215,7 +215,7 @@ const calendarReducer = createReducer({
   [actions.dateSet]: (state, payload) => {
     return payload
   }
-}, Config.today ? moment(Config.today) : moment());
+}, Config.today ? moment(Config.today) : moment().startOf('day'));
 
 const clueReducer = createReducer({
   [actions.clueSet]: (state, payload) => {
