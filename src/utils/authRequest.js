@@ -44,12 +44,12 @@ function login(user, password) {
     });
 }
 
-async function graphRequest(graphQuery, useCache) {
+async function graphRequest(graphQuery, tryCache) {
   logger.info('QUERY: ', graphQuery);
   const requestBody = JSON.stringify(graphQuery);
   let response;
 
-  if (useCache) {
+  if (tryCache) {
     response = await Cache.get(requestBody);
   }
 
@@ -63,7 +63,7 @@ async function graphRequest(graphQuery, useCache) {
       })
     }).then(r => r.json());
 
-    if (useCache && !response.errors) {
+    if (tryCache && !response.errors) {
       Cache.set(requestBody, response);
     }
   }

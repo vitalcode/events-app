@@ -40,8 +40,8 @@ const restService = {
   getEvents(clue, date, category, pageSize, nextPage) {
     return fetchEvents(clue, date, category, pageSize, nextPage);
   },
-  getEventDetails(id, token){
-    return fetchEventDetails(id, token);
+  getEventDetails(id){
+    return fetchEventDetails(id);
   }
 };
 
